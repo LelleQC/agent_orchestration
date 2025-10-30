@@ -1,0 +1,20 @@
+{
+  "name": "project_snake_game",
+  "version": "1.0.0",
+  "description": "This is a simple, classic Snake game created using HTML, CSS, and vanilla JavaScript.",
+  "main": "script.js",
+  "scripts": {
+    "start-server": "npx http-server -p 8888 -c-1",
+    "test": "start-server-and-test start-server http://localhost:8888 jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "jest": "^30.2.0",
+    "puppeteer": "^24.26.1",
+    "start-server-and-test": "^2.1.2"
+  }
+}

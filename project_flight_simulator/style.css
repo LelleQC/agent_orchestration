@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+    overflow: hidden; /* Prevent scrollbars */
+    font-family: Arial, sans-serif;
+}
+
+canvas {
+    display: block; /* Remove default spacing */
+}
+
+#info {
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    text-align: center;
+    z-index: 100;
+    display:block;
+    color: white;
+    font-size: 1.5em;
+    text-shadow: 2px 2px 4px #000000;
+}
