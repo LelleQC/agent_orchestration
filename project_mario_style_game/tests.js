@@ -36,4 +36,30 @@ runTest("Player should be affected by gravity", () => {
     }
 });
 
+runTest("Player should move left and right based on input", () => {
+    // Setup
+    const testPlayer = { x: 100, y: 0, dx: 0, dy: 0 };
+    const inputs = { left: false, right: false };
+
+    // Action 1: Simulate pressing 'right'
+    inputs.right = true;
+    // This function doesn't exist yet, so it will fail
+    handleInput(inputs, testPlayer); 
+    
+    // Assertion 1
+    if (testPlayer.dx <= 0) {
+        throw new Error(`Player dx should be > 0 when right is pressed, but was ${testPlayer.dx}`);
+    }
+
+    // Action 2: Simulate pressing 'left'
+    inputs.right = false;
+    inputs.left = true;
+    handleInput(inputs, testPlayer);
+
+    // Assertion 2
+    if (testPlayer.dx >= 0) {
+        throw new Error(`Player dx should be < 0 when left is pressed, but was ${testPlayer.dx}`);
+    }
+});
+
 console.log("Tests finished.");

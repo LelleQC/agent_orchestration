@@ -4,6 +4,8 @@ const ctx = canvas.getContext('2d');
 
 // --- Game Constants ---
 const GRAVITY = 0.5;
+const PLAYER_SPEED = 5;
+const FRICTION = 0.8;
 
 // --- Game State ---
 const player = {
@@ -14,6 +16,39 @@ const player = {
     dx: 0, // horizontal velocity
     dy: 0  // vertical velocity
 };
+
+const keys = {
+    right: false,
+    left: false
+};
+
+// --- Input Handling ---
+document.addEventListener('keydown', (e) => {
+    if (e.code === 'ArrowRight') keys.right = true;
+    if (e.code === 'ArrowLeft') keys.left = true;
+});
+
+document.addEventListener('keyup', (e) => {
+    if (e.code === 'ArrowRight') keys.right = false;
+    if (e.code === 'ArrowLeft') keys.left = false;
+});
+
+/**
+ * Handles player input to change player velocity.
+ * @param {object} inputState - The state of the keys.
+ * @param {object} p - The player object.
+ */
+function handleInput(inputState, p) {
+    if (inputState.right) {
+        p.dx = PLAYER_SPEED;
+    } else if (inputState.left) {
+        p.dx = -PLAYER_SPEED;
+    } else {
+        p.dx *= FRICTION; // Apply friction when no key is pressed
+    }
+}
+
+// --- Physics ---
 
 /**
  * Applies physics (like gravity) to a game object.
@@ -31,10 +66,13 @@ function applyPhysics(obj) {
     return { ...obj };
 }
 
+// --- Main Loop ---
+
 /**
  * Updates the entire game state for one frame.
  */
 function update() {
+    handleInput(keys, player);
     applyPhysics(player);
 }
 
