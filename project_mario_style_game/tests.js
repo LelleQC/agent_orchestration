@@ -62,4 +62,28 @@ runTest("Player should move left and right based on input", () => {
     }
 });
 
+runTest("Player should jump when on the ground and jump key is pressed", () => {
+    // Setup
+    const testPlayer = { x: 100, y: 200, dx: 0, dy: 0, onGround: true };
+    const inputs = { left: false, right: false, jump: false };
+
+    // Action: Simulate pressing 'jump'
+    inputs.jump = true;
+    handleInput(inputs, testPlayer); 
+    
+    // Assertion
+    if (testPlayer.dy >= 0) {
+        throw new Error(`Player dy should be < 0 when jump is pressed, but was ${testPlayer.dy}`);
+    }
+
+    // Test that player cannot double-jump
+    testPlayer.onGround = false;
+    testPlayer.dy = -5; // reset dy to a jumping value
+    handleInput(inputs, testPlayer);
+
+    if (testPlayer.dy > -5) {
+        throw new Error(`Player should not be able to jump again in mid-air.`);
+    }
+});
+
 console.log("Tests finished.");

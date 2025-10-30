@@ -6,6 +6,7 @@ const ctx = canvas.getContext('2d');
 const GRAVITY = 0.5;
 const PLAYER_SPEED = 5;
 const FRICTION = 0.8;
+const JUMP_FORCE = 12;
 
 // --- Game State ---
 const player = {
@@ -14,23 +15,27 @@ const player = {
     width: 32,
     height: 48,
     dx: 0, // horizontal velocity
-    dy: 0  // vertical velocity
+    dy: 0,  // vertical velocity
+    onGround: false
 };
 
 const keys = {
     right: false,
-    left: false
+    left: false,
+    jump: false
 };
 
 // --- Input Handling ---
 document.addEventListener('keydown', (e) => {
     if (e.code === 'ArrowRight') keys.right = true;
     if (e.code === 'ArrowLeft') keys.left = true;
+    if (e.code === 'Space') keys.jump = true;
 });
 
 document.addEventListener('keyup', (e) => {
     if (e.code === 'ArrowRight') keys.right = false;
     if (e.code === 'ArrowLeft') keys.left = false;
+    if (e.code === 'Space') keys.jump = false;
 });
 
 /**
@@ -39,12 +44,19 @@ document.addEventListener('keyup', (e) => {
  * @param {object} p - The player object.
  */
 function handleInput(inputState, p) {
+    // Horizontal movement
     if (inputState.right) {
         p.dx = PLAYER_SPEED;
     } else if (inputState.left) {
         p.dx = -PLAYER_SPEED;
     } else {
         p.dx *= FRICTION; // Apply friction when no key is pressed
+    }
+
+    // Vertical movement (jumping)
+    if (inputState.jump && p.onGround) {
+        p.dy = -JUMP_FORCE;
+        p.onGround = false;
     }
 }
 
