@@ -12,7 +12,7 @@ A single, playable level where a character can run left and right, and jump on p
 ## Feature Checklist
 
 -   `[DONE] Set up HTML Canvas and basic game loop.`
--   `[TODO] Implement player character with basic physics (gravity).`
+-   `[DONE] Implement player character with basic physics (gravity).`
 -   `[TODO] Implement player movement (left/right).`
 -   `[TODO] Implement player jumping.`
 -   `[TODO] Create a static level structure with platforms.`
