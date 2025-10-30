@@ -25,6 +25,23 @@ const keys = {
     jump: false
 };
 
+const platforms = [];
+
+// --- Level ---
+function loadLevel() {
+    // Clear existing platforms
+    platforms.length = 0;
+
+    // Ground floor
+    platforms.push({ x: 0, y: 450, width: 800, height: 30 });
+
+    // Some platforms
+    platforms.push({ x: 150, y: 350, width: 100, height: 20 });
+    platforms.push({ x: 300, y: 280, width: 100, height: 20 });
+    platforms.push({ x: 450, y: 200, width: 100, height: 20 });
+    platforms.push({ x: 300, y: 120, width: 100, height: 20 });
+}
+
 // --- Input Handling ---
 document.addEventListener('keydown', (e) => {
     if (e.code === 'ArrowRight') keys.right = true;
@@ -95,6 +112,12 @@ function draw() {
     // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // Draw the platforms
+    ctx.fillStyle = '#86592d'; // Brown color for platforms
+    for (const platform of platforms) {
+        ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
+    }
+
     // Draw the player
     ctx.fillStyle = 'red'; // Mario-like color
     ctx.fillRect(player.x, player.y, player.width, player.height);
@@ -115,12 +138,19 @@ function gameLoop() {
 }
 
 /**
- * Initializes the game.
+ * Initializes the game state and level.
  */
-function init() {
-    // Start the game loop
+function initGame() {
+    loadLevel();
+}
+
+/**
+ * Starts the game loop.
+ */
+function startGame() {
     requestAnimationFrame(gameLoop);
 }
 
-// Start the game
-init();
+// Set up and start the game
+initGame();
+startGame();

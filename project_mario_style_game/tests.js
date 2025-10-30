@@ -86,4 +86,15 @@ runTest("Player should jump when on the ground and jump key is pressed", () => {
     }
 });
 
+runTest("Level should initialize with platforms", () => {
+    // Setup
+    // This function will be added to game.js to set up the level
+    initGame(); 
+
+    // Assertion
+    if (typeof platforms === 'undefined' || platforms.length === 0) {
+        throw new Error("The 'platforms' array should be initialized and contain level data.");
+    }
+});
+
 console.log("Tests finished.");
