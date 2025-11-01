@@ -7,9 +7,9 @@ const config = {
     playerWidth: 50,
     playerHeight: 50,
     gravity: 0.5,
-    jumpForce: -12,
+    jumpForce: -24,
     playerInitialX: 200 - 25,
-    playerInitialY: 550,
+    playerInitialY: 400,
     playerMoveSpeed: 7,
 };
 
@@ -34,7 +34,7 @@ function createPlatforms() {
     for (let i = 0; i < config.numPlatforms; i++) {
         platforms.push({
             x: Math.random() * (config.canvasWidth - config.platformWidth),
-            y: config.canvasHeight - 100 - i * 70,
+            y: config.playerInitialY + player.height - (i * 70) - 20,
             width: config.platformWidth,
             height: config.platformHeight
         });

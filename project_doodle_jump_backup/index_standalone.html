@@ -22,21 +22,21 @@
 </head>
 <body>
     <h1>Doodle Jump</h1>
-    <canvas id="gameCanvas" width="400" height="600"></canvas>
+    <canvas id="gameCanvas" width="800" height="1200"></canvas>
     <script>
         const game = (function() {
             const config = {
-                canvasWidth: 400,
-                canvasHeight: 600,
+                canvasWidth: 800,
+                canvasHeight: 1200,
                 platformWidth: 80,
                 platformHeight: 10,
                 numPlatforms: 10,
                 playerWidth: 50,
                 playerHeight: 50,
                 gravity: 0.5,
-                jumpForce: -12,
+                jumpForce: -24,
                 playerInitialX: 200 - 25,
-                playerInitialY: 550,
+                playerInitialY: 400,
                 playerMoveSpeed: 7,
             };
 
@@ -58,10 +58,19 @@
 
             function createPlatforms() {
                 platforms.length = 0;
-                for (let i = 0; i < config.numPlatforms; i++) {
+                // Place the first platform directly under the player
+                platforms.push({
+                    x: config.playerInitialX, // Place it under the player's initial X
+                    y: config.playerInitialY + player.height / 2,
+                    width: config.platformWidth,
+                    height: config.platformHeight
+                });
+
+                // Generate remaining platforms above the first one
+                for (let i = 1; i < config.numPlatforms; i++) {
                     platforms.push({
                         x: Math.random() * (config.canvasWidth - config.platformWidth),
-                        y: config.canvasHeight - 100 - i * 70,
+                        y: platforms[i-1].y - (Math.random() * 70 + 50), // Random distance above previous platform
                         width: config.platformWidth,
                         height: config.platformHeight
                     });
