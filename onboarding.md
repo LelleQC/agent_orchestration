@@ -4,13 +4,20 @@ Welcome to the agent orchestration project. This guide is for developers who wan
 
 ## Understanding the Environment
 
-This repository is designed to be a self-improving system where an AI agent can autonomously manage software development projects. The core of this system is defined by a set of documents that guide the agent's behavior.
+This repository is a **monolithic repository (mono-repo)**, designed to be a self-improving system where an AI agent can autonomously manage software development projects. All projects, including the agent's own documentation and the games it develops, are stored within this single Git repository.
+
+### Repository Structure
+
+The key characteristic of this setup is its simplicity. Instead of using complex Git features like submodules, we use a straightforward directory structure:
+
+- **Root Directory (`/`):** Contains the agent's core logic, documentation, and overall configuration.
+- **Project Directories (`/project_*/`):** Each subdirectory represents a distinct project the agent is working on (e.g., a game, a library). These are normal folders, not separate Git repositories.
+
+This structure allows for easy tracking of all changes in one place and simplifies the agent's workflow.
 
 ### Key Files and Directories
 
 *   **`agent_manual.md`**: This is the most important file. It contains the standard operating procedures for the agent, detailing the entire workflow from initial analysis and planning to development, testing, and finalization. If you want to change how the agent behaves, this is the first place to look.
-
-*   **`project_documentation.ipynb`**: This Jupyter Notebook contains high-level documentation about the agent system itself. It includes architectural descriptions, evaluations, and future outlooks.
 
 *   **`onboarding.md` (This file)**: You are here. This file is intended to be the starting point for anyone new to this system.
 
@@ -20,11 +27,17 @@ This repository is designed to be a self-improving system where an AI agent can 
 
 *   **`VERSION`**: A simple text file containing the current version of the agent's operational process. This is used to track which version of the agent created a project.
 
-*   **`WORKFLOW_REPORT.ipynb`**: This notebook is likely used for generating reports about the agent's workflow and performance.
-
 *   **`knowledge_base/`**: A directory containing markdown files with generalized principles and solutions that the agent can consult for future projects.
 
-*   **`project_*/`**: Each of these directories represents a distinct project that the agent is working on. They contain the source code, documentation, and the agent's `roadmap.md` for that specific project.
+*   **`project_*/`**: Each of these directories represents a distinct project that the agent is working on. They contain the source code, documentation, and the agent's `roadmap.md` for that specific project. All files within these directories are tracked by the main Git repository.
+
+## How to Work with this Repository
+
+All Git operations should be performed from the root of the `agent_orchestration` directory.
+
+- **Checking Status:** Run `git status` to see changes across all projects.
+- **Committing:** Add files from any project (`git add .`) and commit them from the root.
+- **Viewing History:** To see the history for a specific project, use `git log -- <path_to_project>`. For example: `git log -- project_vampire_rpg/`.
 
 ## How to Contribute to the Agent's Process
 

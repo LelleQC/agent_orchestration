@@ -15,6 +15,19 @@
 
 ---
 
+## 🏛️ 1.5. Repository & Git Workflow
+
+This project operates as a **monolithic repository (mono-repo)**. All projects, including the agent's own documentation and the applications it develops (e.g., games), are stored within this single Git repository. There are no submodules or nested repositories.
+
+**Workflow Principles:**
+
+1.  **Centralized Commits:** All `git` commands (commit, status, log) must be run from the root directory of the `agent_orchestration` project.
+2.  **Atomic Commits:** Each commit should represent a single, logical unit of work (e.g., one feature, one bug fix). Changes across multiple projects (e.g., a fix in a game and an update to the agent manual) can be included in the same commit if they are part of the same logical change.
+3.  **Feature-Based Commits:** As a general rule, a commit should be made after each feature is marked as `[DONE]` in the `roadmap.md`.
+4.  **No Nested Repositories:** Never run `git init` within a sub-project directory. This would create a nested repository and break the mono-repo structure.
+
+---
+
 ## 🔁 2. Core Development Cycle (Test-Driven)
 
 This cycle is to be repeated for **each feature** listed in the `roadmap.md`.
