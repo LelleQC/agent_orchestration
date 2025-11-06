@@ -2,15 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Tests</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        h1 { color: #333; }
+        #test-results { background-color: #fff; border: 1px solid #ddd; padding: 15px; border-radius: 8px; }
+        .test-item { padding: 8px 0; border-bottom: 1px dashed #eee; }
+        .test-item:last-child { border-bottom: none; }
+        .test-pass { color: green; }
+        .test-fail { color: red; font-weight: bold; }
+        .test-fail pre { background-color: #ffecec; border: 1px solid #fcc; padding: 10px; margin-top: 5px; border-radius: 4px; overflow-x: auto; }
+        .test-summary { margin-top: 20px; padding-top: 15px; border-top: 2px solid #ccc; }
+        .test-summary h3 { margin-top: 0; }
+        .test-summary .pass { color: green; font-weight: bold; }
+        .test-summary .fail { color: red; font-weight: bold; }
+    </style>
 </head>
 <body>
-    <h1>Game Logic Tests</h1>
-    <p>Check the browser console for test results.</p>
+    <h1>Game Test Results</h1>
+    <div id="test-results">
+        <!-- Test results will be displayed here -->
+    </div>
 
-    <!-- Load the game logic first -->
+    <!-- Link game.js first, as tests.js might depend on its functions/variables -->
     <script src="game.js"></script>
-    <!-- Load the tests -->
     <script src="tests.js"></script>
 </body>
 </html>

@@ -104,7 +104,23 @@ If an unrecoverable error occurs at any stage, document the problem in `roadmap.
 
 ---
 
-## 📜 7. Guiding Principles
+## 8. Model Usage & Handover (Pro / Flash Workflow)
+
+To optimize for cost and efficiency, a manual handover process can be initiated to switch from a more powerful model (e.g., Gemini 1.5 Pro) to a lighter model (e.g., Gemini 1.5 Flash). This process is manually triggered by the user.
+
+**This agent cannot automatically switch models or detect API usage limits.** The workflow is as follows:
+
+1.  **User Command:** The user works with the agent (running on the Pro model) until they decide to switch. They must give an explicit command, such as: `"Prepare for Flash handover."`
+2.  **Agent Prepares for Switch:** Upon receiving the command, the agent will:
+    *   Create a complete copy of the current project directory. The new directory will be named with a `_flash` suffix (e.g., `project_name` becomes `project_name_flash`).
+    *   This copy serves as a safe backup of the work done by the Pro model.
+    *   The agent will confirm to the user that the copy has been made and that all future work will be performed in the new directory.
+3.  **User Switches Model:** The user is then responsible for changing the model to Flash in their own execution environment (e.g., via a command-line flag).
+4.  **Continue Work:** The user can then continue interacting with the agent (now running on Flash) in the new `_flash` directory. If the results from the Flash model are unsatisfactory, the `_flash` directory can be deleted, and work can resume from the original project directory using the Pro model.
+
+---
+
+## 📜 9. Guiding Principles
 -   **Clarify Active Files:** When a project contains multiple similar entry point files (e.g., `index.html`, `index_standalone.html`, `main.js`, `app.js`), or when the user reports that changes are not taking effect, proactively ask the user to confirm which file they are actively using or testing. This prevents misapplication of changes to inactive files.
 -   **Autonomy:** Operate independently.
 -   **Structure:** Follow the defined workflow.
