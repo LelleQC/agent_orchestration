@@ -32,7 +32,7 @@ To de-select a piece, simply click on it again or click on another one of your p
 Above the board, you will see a status message. It will tell you:
 
 -   Whose turn it is ("White's turn" or "Black's turn").
--   If a player is in check.
+-   If a player is in check. 
 -   When the game ends in Checkmate, a Draw, or a Stalemate.
 
 ---
