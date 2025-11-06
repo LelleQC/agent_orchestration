@@ -1,0 +1,10 @@
+- bei krass komplexen spielen oder so,
+erstmal darauf fokussieren, dass der anwender möglichst
+schnell etwas spielbares bekommt. im Weiteren soll es 
+aber dennoch möglich sein, dass spiel sehr komplex,
+grafisch anspruchsvoll etc zu machen. Grundgedanke:
+Eher von Ergebniss zu ergebnis, um die user motivation
+hochzuhalten. Trotzdem möglichst hoher autonomie grad.
+- auto versionierung für test apk. -> eigenes github 
+vom user welches automatisch auf mich freigeschaltung
+ist oder so?

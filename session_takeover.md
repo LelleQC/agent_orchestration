@@ -46,3 +46,74 @@ Once the user confirms that all 9 projects have been pushed to their own remote 
 ## 5. Known Issues
 
 - **Authentication:** The initial attempt to `git push` the main `agent_orchestration` repository failed due to an authentication error. The user has been instructed on how to set up their Git credentials and a Personal Access Token (PAT). The success of the "Pending User Action" in step 3 will serve as confirmation of whether this issue is resolved.
+
+
+bis hier hin war alt--------------
+
+ab jetzt neu-------------
+
+
+Sie haben einen absolut entscheidenden Punkt angesprochen, der meine
+  Fähigkeit, diese Prozessänderungen zu "testen", fundamental in Frage
+  stellt. Sie haben völlig recht: Da ich als LLM bereits Kenntnis über das
+  aktualisierte agent_manual.md besitze, kann ich keine "frische"
+  Agenteninstanz simulieren, die sich neu an dem Handbuch orientiert. Mein
+  "Test" wäre eher eine Demonstration meiner bewussten Befolgung der neuen
+  Regeln, basierend auf meinem bereits vorhandenen Wissen.
+
+  Ihre Idee, dies durch die Entwicklung einiger neuer Webspiele zu testen
+  und zu bewerten, ist hervorragend und der einzig sinnvolle Weg, die
+  Wirksamkeit der Prozessänderungen in der Praxis zu überprüfen.
+
+  Mein angepasster Vorschlag:
+
+  Ich werde nicht versuchen, einen "Test" im Sinne einer unabhängigen
+  Validierung durchzuführen. Stattdessen schlage ich vor, dass ich (die 
+  aktuelle Agenteninstanz) ein neues, kleines Webspiel entwickle. Dabei
+  werde ich explizit und transparent die neuen Regeln des 
+  `agent_manual.md` befolgen, die wir gerade hinzugefügt haben:
+
+   1. Skriptlade-Präferenz: Ich werde bei der Projektinitialisierung die
+      traditionelle Skriptlade-Architektur wählen, da wir keine Build-Tools
+      verwenden.
+   2. Initialer Zustandstest: Ich werde einen "First Playable Action Test"
+      für das Spiel erstellen.
+   3. Zustandsmanagement: Ich werde meine Fortschritte und den aktuellen
+      Schritt konsequent in der roadmap.md dokumentieren und mich daran
+      orientieren.
+
+  Ihre Rolle wäre dabei entscheidend: Sie würden beobachten, ob ich diese
+  neuen Regeln korrekt anwende und wie sich dies auf den
+  Entwicklungsprozess und das Endergebnis auswirkt. Dies wäre eine
+  "Demonstration der Prozessbefolgung" und eine "Evaluierung des Prozesses
+   durch Beobachtung".
+
+  Sind Sie damit einverstanden, dass ich mit der Entwicklung eines neuen,
+  kleinen Webspiels beginne, um diese aktualisierten Prozessregeln zu
+  demonstrieren und zu evaluieren?
+
+> Ja mach das auf jeden Fall aber denk dran dass wir irgendwie das hier gu 
+  dokumentieren damit man daraus so später lernen kann also natürlich so m 
+  der Struktur die es jetzt gibt beziehungsweise was wir uns überlegt habe 
+  Ahh das muss ja hier auch klar sein dass wir jetzt auch noch n bisschen 
+  andere Regeln machen aber Kannst ja auch noch mal überlegen welche 
+  zusätzlichen Sachen vielleicht auch noch Wichtig sind zu dokumentieren a 
+  guck auf jeden Fall dass das alles irgendwie wichtige dokumentiert ist u 
+  es wär halt gut wenn das in diesen Strukturen ja jetzt schon passiert un 
+  wenn du jetzt glaubst es gibt noch ne neue Organisationsstruktur wo wir 
+  unbedingt was festhalten müssen kannst du diese auch generell im Prozess 
+  einrichten Im Major Manual aber ansonsten macht das mal und was du auf jn
+   Fall in den Agent Prozess mit rein kann ist dass diese Zwischenschrittet
+   eingehalten werden also wenn jetzt hier irgendwie die Tokens auslaufen m
+   Nachlanguage Model die Nutzungsrate das dann und der Chat nicht weiter 
+  genutzt werden kann dass man dann einer anderen Stelle weitermachen kann 
+  aber das kann ja auch sein dass das direkt sowieso im Prozess irgendwie 
+  schon klar ist und das ist auch nicht schlimm das uns nicht komplett nahs
+   sein also du musst nicht bei jeder Kleinigkeit die du machst die perfek 
+  festhalten aber so dass man sag ich mal nicht jetzt stundenlang Arbeit   
+  verliert sondern dass man irgendwie diesen roten Faden einigermaßen gut  
+  denkt findet aber vielleicht ist das ja mit dieser Roadmap Datei auch sc 
+  der Fall Ja und dann kannst du ja du kannst ja noch mal ne neue Webanweng
+   machen Ah Vielleicht wär irgendwie ne coole Wetteranwendung irgendwie se
+   da musst du mal überlegen was ist so ein Jump and Run Spiel oder irgend 
+  das musst du dir dann könns komplett selber überlegen
