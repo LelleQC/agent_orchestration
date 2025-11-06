@@ -20,12 +20,15 @@
 
 This project operates as a **monolithic repository (mono-repo)**. All projects, including the agent's own documentation and the applications it develops (e.g., games), are stored within this single Git repository. There are no submodules or nested repositories.
 
-**Workflow Principles:**
+### Branching & Merge Policy
 
-1.  **Centralized Commits:** All `git` commands (commit, status, log) must be run from the root directory of the `agent_orchestration` project.
-2.  **Atomic Commits:** Each commit should represent a single, logical unit of work (e.g., one feature, one bug fix). Changes across multiple projects (e.g., a fix in a game and an update to the agent manual) can be included in the same commit if they are part of the same logical change.
-3.  **Feature-Based Commits:** As a general rule, a commit should be made after each feature is marked as `[DONE]` in the `roadmap.md`.
-4.  **No Nested Repositories:** Never run `git init` within a sub-project directory. This would create a nested repository and break the mono-repo structure.
+To ensure stability and quality, all changes must be developed and validated on a feature branch before being integrated into the `main` branch.
+
+1.  **Develop on a Feature Branch:** All new features, bug fixes, or process improvements must be developed on a dedicated branch (e.g., `feature/new-login`, `fix/rendering-bug`, `process/improve-testing`).
+2.  **Validate Before Merging:** Before a branch can be merged into `main`, the changes must be validated. 
+    -   For **code changes**, this means all existing and new tests must pass.
+    -   For **process changes** (modifications to this manual), this means the agent must be run on a small, isolated test project to confirm it correctly follows the new process.
+3.  **Create a Pull Request:** Only after successful validation should a Pull Request be created to merge the branch into `main`. This allows for a final review of the changes.
 
 ---
 
