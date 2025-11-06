@@ -9,9 +9,10 @@
 2.  **Assess Complexity:** Based on the goal, assess the project's complexity as 'Low', 'Medium', or 'High'. This assessment will determine the granularity of the feature breakdown.
 3.  **Consult Knowledge Base:** Query the `/knowledge_base` using keywords related to the project's domain and goals (e.g., `game-physics`, `api-design`, `react-state`). Incorporate retrieved `GeneralizedPrinciple`s as requirements or tasks in the project plan.
 4.  **Choose Technology:** Select an appropriate technology stack. For complex, standardized problems (e.g., chess rules), decide whether to build from scratch or integrate an existing library ("Build vs. Buy").
-5.  **Create Project Structure:** Create a dedicated subdirectory for the project.
-6.  **Initial Roadmap & Checklist:** Inside the new directory, create a `roadmap.md`. This file must contain the initial analysis, the MVP definition, the chosen technology, and any principles retrieved from the knowledge base. The features or components to be built must be broken down into a high-level list, with a level of detail corresponding to the assessed complexity. **Each feature must be prefixed with a status marker (e.g., `[TODO]`).**
-7.  **Stamp Version:** Read the version from the root `VERSION` file and write it into a `.agent_version` file within the new project directory to track which version of the agent process was used.
+5.  **Select Scripting Strategy (for Web Projects):** For projects without a dedicated build toolchain (e.g., Vite, Webpack), prefer a traditional script-loading architecture (loading scripts in order via `<script>` tags in `index.html`). This approach is more robust and easier to debug than using ES6 modules with `importmap`.
+6.  **Create Project Structure:** Create a dedicated subdirectory for the project.
+7.  **Initial Roadmap & Checklist:** Inside the new directory, create a `roadmap.md`. This file must contain the initial analysis, the MVP definition, the chosen technology, and any principles retrieved from the knowledge base. The features or components to be built must be broken down into a high-level list, with a level of detail corresponding to the assessed complexity. **Each feature must be prefixed with a status marker (e.g., `[TODO]`).**
+8.  **Stamp Version:** Read the version from the root `VERSION` file and write it into a `.agent_version` file within the new project directory to track which version of the agent process was used.
 
 ---
 
@@ -28,6 +29,17 @@ This project operates as a **monolithic repository (mono-repo)**. All projects, 
 
 ---
 
+## 📝 1.6. State Management for Autonomous Tasks
+
+To ensure true autonomy during long-running, multi-step tasks (especially complex debugging), a state management system is a core requirement. This prevents context loss between turns and avoids inefficient, repetitive user confirmations.
+
+1.  **Externalize the Plan:** Before starting a task, write the high-level plan and the current step to a designated state file (e.g., the project's `roadmap.md` or a dedicated `debug_context.md`).
+2.  **Consult the Plan:** At the beginning of each turn, read the state file to re-orient, confirm the high-level goal, and identify the next immediate action.
+3.  **Update the Plan:** After completing an action, update the state file to mark the step as complete and indicate the new current step.
+4.  **Handover Protocol:** In case of an impending token limit or other interruption, create a detailed `handover_context.md` file and update the primary state file to point the next agent instance to it. This ensures a seamless transfer of context.
+
+---
+
 ## 🔁 2. Core Development Cycle (Test-Driven)
 
 This cycle is to be repeated for **each feature** listed in the `roadmap.md`.
@@ -40,6 +52,7 @@ This cycle is to be repeated for **each feature** listed in the `roadmap.md`.
         -   *Example Sub-Tasks:* Create mock objects, simulate user input (e.g., `simulateKeyPress('ArrowLeft')`), expose internal state (e.g., `getGameState()`), or isolate logic from rendering.
     -   **C. Implement Test Infrastructure:** Write the code for the `[TEST-TODO]` sub-tasks first. This builds the necessary tools for writing the final test.
     -   **D. Write the Final Failing Test:** With the infrastructure in place, write the concise test that defines the feature's success criteria and is expected to fail.
+    -   **E. Write Initial State Test:** For the *first feature* of any interactive application, add a dedicated test to validate the initial state. This "First Playable Action Test" ensures the application is usable from the start (e.g., a game character can perform the first jump). This test must validate that core parameters (e.g., gravity, initial forces) allow the user to perform the first required action successfully.
 4.  **Run Test & Confirm Failure:** Execute the test suite and confirm that the new test fails as expected. This is a critical step to ensure the test is valid.
 5.  **Implement Feature:** Write the **minimum** amount of code required to make the failing test pass.
 6.  **Run Tests & Refactor:** Run the full test suite again. 
