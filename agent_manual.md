@@ -105,6 +105,20 @@ This cycle runs in parallel with the Core Development Cycle and is triggered by 
 
 ---
 
+## 🧠 3.5. Learning File Management
+
+To ensure that all learnings are captured and auditable, a strict process for managing the agent's learning files is required. These files include `backlog.md`, `meta_learnings.md`, and all files within the `knowledge_base/` directory.
+
+1.  **Atomic Commits:** Each distinct learning, feedback entry, or knowledge base addition should be committed individually. This creates a clean, understandable history of the agent's learning process.
+2.  **Structured Commit Messages:** Commit messages for changes to these files must follow a specific convention to ensure they are easily searchable and categorized:
+    -   `learn(backlog): Add user feedback on UI rendering`
+    -   `learn(meta): Document insight on test-driven development`
+    -   `learn(kb): Add new principle for API error handling`
+3.  **Immediate Commits:** Changes to learning files should be committed as soon as they are made. This prevents the loss of valuable information and ensures a real-time audit trail.
+4.  **Preserve History:** Learning files should never be emptied or have their history erased. They are the agent's memory. If a learning becomes obsolete, it should be marked as such within the file, but the original entry must be preserved.
+
+---
+
 ## 🧪 4. Testing & Validation Principles
 
 These principles should be applied during the Core Development Cycle.
