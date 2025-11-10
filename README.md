@@ -125,31 +125,16 @@ Dies ist ein Leitfaden für die nächsten Entwicklungsschritte, um die Autonomie
 
 ### Schritt 3: Multi-Agenten-Architektur (Vom Solo-Entwickler zum Team)
 
-**Problem:** Ein einzelner Agent muss alle Aufgaben (Planung, Code, Test, Doku) beherrschen, was bei steigender Komplexität ineffizient wird.
-
-**Lösung:** Aufteilung des Systems in ein **kollaboratives Multi-Agenten-System**, inspiriert von Frameworks wie MetaGPT oder CrewAI.
-
--   **`Manager-Agent`:** Zerlegt die Hauptaufgabe, pflegt die `roadmap.md` und koordiniert die anderen Agenten.
--   **`Entwickler-Agent`:** Schreibt den Code basierend auf den Spezifikationen des Managers.
--   **`Tester-Agent`:** Schreibt die Tests und führt die in Schritt 1 definierte Verifikation durch.
--   **`Doku-Agent`:** Schreibt die Dokumentation, nachdem die Features implementiert und getestet wurden.
-
-**Orchestrierung durch Gemini CLI (mit Gemini 1.5 Pro):**
-Die Gemini CLI, die den Hauptagenten mit Gemini 1.5 Pro ausführt, kann als zentraler Orchestrator für das Multi-Agenten-System dienen.
-
-*   **High-Level-Planung:** Gemini 1.5 Pro übernimmt die komplexe Aufgabenzerlegung, die Generierung der `roadmap.md` und die übergeordnete Koordination.
-*   **Aufgabenzuweisung:** Der Orchestrator weist spezifische Unteraufgaben an spezialisierte Sub-Agenten zu.
-*   **Kommunikationszentrale:** Verwaltet den Input und Output zwischen den Sub-Agenten.
-*   **Entscheidungsfindung bei Komplexität:** Greift bei Konflikten ein oder wenn Sub-Agenten auf unvorhergesehene Herausforderungen stoßen.
-
-**Integration weiterer Modelle für Token-Effizienz:**
-Um Kosten und Effizienz zu optimieren, kann der Orchestrator dynamisch verschiedene Modelle für spezifische Aufgaben nutzen:
-
-*   **Gemini Flash (oder ähnliche schnelle/günstige Modelle):** Ideal für Routineaufgaben mit geringerer Komplexität, z.B. Code-Formatierung, einfache Dokumentationsgenerierung oder grundlegendes Test-Scaffolding.
-*   **Externe Modelle/APIs (z.B. über Callpin, spezialisierte LLMs):** Für sehr spezifische Aufgaben, bei denen ein spezialisiertes Modell überlegen sein könnte, z.B. Code-Generierung für eine bestimmte Sprache/Framework, fortgeschrittene natürliche Sprachverarbeitung oder Bildanalyse.
-*   **Mechanismus:** Der Orchestrator (Gemini 1.5 Pro) wählt das passende Modell dynamisch basierend auf der Komplexität der Unteraufgabe, Kostenüberlegungen und den erforderlichen Fähigkeiten aus. Dies kann über Tool-Aufrufe an verschiedene Modell-APIs implementiert werden.
-
-**Ergebnis:** Höhere Spezialisierung und Effizienz, robustere Ergebnisse durch "Cross-Validation" zwischen den Agenten und eine klarere Trennung der Verantwortlichkeiten.
+*   **Ziel:** Detailliert beschreiben, wie Gemini CLI (mit Gemini 1.5 Pro) als Orchestrator für ein Multi-Agenten-System fungieren kann, indem es andere Modelle für Effizienz nutzt.
+*   **Orchestrierungsrolle von Gemini CLI (Gemini 1.5 Pro):**
+    *   **High-Level-Planung:** Gemini 1.5 Pro, als Hauptagent in der CLI, übernimmt die komplexe Aufgabenzerlegung, die Generierung der `roadmap.md` und die übergeordnete Koordination.
+    *   **Aufgabenzuweisung:** Weist spezifische Unteraufgaben an spezialisierte Sub-Agenten zu.
+    *   **Kommunikationszentrale:** Verwaltet den Input/Output zwischen den Sub-Agenten.
+    *   **Entscheidungsfindung bei Komplexität:** Greift bei Konflikten ein oder wenn Sub-Agenten auf unvorhergesehene Herausforderungen stoßen.
+*   **Integration anderer Modelle (Token-Effizienz):**
+    *   **Gemini Flash (oder ähnliche schnelle/günstige Modelle):** Für Routineaufgaben mit geringerer Komplexität (z.B. Code-Formatierung, einfache Dokumentationsgenerierung, grundlegendes Test-Scaffolding).
+    *   **Externe Modelle/APIs (z.B. Callpin, spezialisierte LLMs):** Für sehr spezifische Aufgaben, bei denen ein spezialisiertes Modell überlegen sein könnte (z.B. Code-Generierung für eine bestimmte Sprache/Framework, fortgeschrittene natürliche Sprachverarbeitung, Bildanalyse).
+    *   **Mechanismus:** Der Orchestrator (Gemini 1.5 Pro) wählt das passende Modell dynamisch basierend auf der Komplexität der Unteraufgabe, Kostenüberlegungen und den erforderlichen Fähigkeiten aus. Dies könnte über Tool-Aufrufe an verschiedene Modell-APIs implementiert werden.
 
 ### Schritt 4 (Zukunft): Dynamische Modellauswahl & Selbst-Reflexion
 
@@ -184,6 +169,10 @@ Die vorgeschlagenen Schritte zur Steigerung der Autonomie lassen sich hinsichtli
 
 #### 4.5.2 Parallelintegration verschiedener Ansätze für ein Gesamtsystem
 
+**Fokus und Begründung:**
+*   **Fokus:** Agentic RAG und Multi-Agenten-Systeme.
+*   **Begründung:** Diese sind im bestehenden `README.md` als logische nächste Schritte zur Verbesserung des Lernens bzw. zur Bewältigung von Komplexität identifiziert. Sie stellen eine Weiterentwicklung des aktuellen Single-Agenten-Systems dar.
+
 Die Idee, verschiedene Ansätze parallel in ein Gesamtsystem zu integrieren und je nach Aufgabe den am besten geeigneten auszuwählen, ist äußerst sinnvoll und zukunftsweisend für autonome Agenten.
 
 **Vorteile der Parallelintegration:**
@@ -210,25 +199,45 @@ Die Parallelintegration verschiedener Agenten-Architekturen ist nicht nur sinnvo
 
 ### 4.6 Repository-Struktur für modulare Agenten-Architekturen
 
-Um verschiedene Agenten-Architekturen (Single-Agent, Agentic RAG, Multi-Agent) sinnvoll in diesem Repository zu integrieren und eine klare Trennung sowie Skalierbarkeit zu gewährleisten, wird folgende Struktur vorgeschlagen:
-
-*   **`agents/`**: Das Hauptverzeichnis für alle Agenten-Implementierungen.
-    *   **`agents/single_agent/`**: Beherbergt die Logik des aktuellen Single-Agenten. Dies kann entweder der Kern des Hauptagenten sein oder eine eigenständige Implementierung, die als Basis für andere Architekturen dient.
-    *   **`agents/rag_agent/`**: Enthält Komponenten, die spezifisch für die RAG-Implementierung sind. Dazu gehören Skripte für das Setup der Vektor-Datenbank, die Embedding-Logik und die Retrieval-Funktionen.
-    *   **`agents/multi_agent/`**: Beinhaltet die Orchestrator-Logik und die Definitionen für spezialisierte Sub-Agenten (z.B. `manager_agent.py`, `coder_agent.py`, `tester_agent.py`).
-    *   **`agents/common/`**: Hier werden gemeinsam genutzte Dienstprogramme, Tools und Schnittstellen abgelegt, die von allen Agententypen verwendet werden können.
-
-Diese Struktur ermöglicht es, neue Agenten-Architekturen modular hinzuzufügen, ohne die bestehenden Implementierungen zu beeinträchtigen, und fördert die Wiederverwendbarkeit von Code.
+*   **Ziel:** Eine klare, skalierbare Ordnerstruktur definieren, um verschiedene Agentenarchitekturen (Single-Agent, Agentic RAG, Multi-Agent) in diesem Repository unterzubringen.
+*   **Vorgeschlagene Struktur:**
+    *   `agents/`: Hauptverzeichnis für alle Agentenimplementierungen.
+        *   `agents/single_agent/`: Enthält die aktuelle Single-Agent-Logik (oder einen Verweis darauf, wenn es der Kern des Hauptagenten ist).
+        *   `agents/rag_agent/`: Enthält Komponenten, die spezifisch für die RAG-Implementierung sind (z.B. Skripte für das Vektor-DB-Setup, Embedding-Logik, Retrieval-Funktionen).
+        *   `agents/multi_agent/`: Enthält die Orchestrator-Logik und Definitionen für spezialisierte Sub-Agenten.
+        *   `agents/common/`: Gemeinsam genutzte Dienstprogramme, Tools und Schnittstellen, die von allen Agententypen verwendet werden.
 
 ### 4.7 Qualitätssicherung und State-of-the-Art-Ansatz
 
-Um sicherzustellen, dass die integrierten Systeme stets eine hohe Qualität aufweisen und keine wichtigen Aspekte übersehen werden, sind folgende Mechanismen entscheidend:
+*   **Ziel:** Detaillierte, umsetzbare Mechanismen definieren, um die Qualität, Zuverlässigkeit und Reproduzierbarkeit der Agentensysteme zu gewährleisten und sicherzustellen, dass sie dem aktuellen Stand der Forschung entsprechen.
 
-*   **Kontinuierliches Benchmarking:** Das im Abschnitt "5. Measuring Success: A Framework for Evaluating Agent Learning" definierte A/B-Test-Framework sollte regelmäßig für *jede* integrierte Agenten-Architektur angewendet werden. Dies liefert quantitative Daten über die Performance und den Lernfortschritt.
-*   **Architektur-Reviews & Dokumentation:** Für jede Agenten-Architektur muss eine detaillierte Dokumentation des Designs, des Entscheidungsprozesses und der Tool-Nutzung gepflegt werden. Regelmäßige (simulierte oder menschliche) Reviews helfen, potenzielle Lücken oder Fehlentwicklungen frühzeitig zu erkennen.
-*   **Erweiterung der Wissensbasis:** Neue Erkenntnisse, Best Practices und häufige Fallstricke, die bei der Entwicklung oder dem Betrieb der verschiedenen Agententypen auftreten, müssen proaktiv in die `knowledge_base` aufgenommen werden. Dies stellt sicher, dass das gesamte System aus Erfahrungen lernt.
-*   **Test-Driven Development (TDD) für Agenten-Logik:** Die Prinzipien des TDD sollten nicht nur auf den vom Agenten generierten Code angewendet werden, sondern auch auf die eigene Entscheidungslogik und die Tool-Interaktionen des Agenten. Dies erhöht die Robustheit und Vorhersagbarkeit des Agentenverhaltens.
-*   **Human-in-the-Loop (für kritische Entscheidungen/Lernprozesse):** Für wirklich neuartige oder risikoreiche Aufgaben bleibt menschliche Aufsicht und Feedback unerlässlich. Dies ermöglicht es dem System, aus komplexen Situationen zu lernen und Kurskorrekturen vorzunehmen, die über die aktuellen autonomen Fähigkeiten hinausgehen.
+*   **Grundprinzip: Mehrschichtige Qualitätssicherung für LLM-Systeme**
+    Die Qualitätssicherung für LLM-Agenten unterscheidet sich fundamental von traditionellem Software-Testing. Sie konzentriert sich auf die probabilistische Natur der Modelle und die Qualität ihrer Ergebnisse. Ein moderner Ansatz erfordert eine mehrschichtige Strategie:
+
+*   **Schlüsselmechanismen:**
+
+    1.  **Kontinuierliches Benchmarking und Leistungsmessung:**
+        *   **Was es ist:** Regelmäßige, automatisierte Tests des Agenten gegen eine standardisierte Reihe von Aufgaben (Benchmarks), um seine Leistung über die Zeit zu messen. Dies ist im `README.md` unter "5. Measuring Success" bereits konzipiert.
+        *   **State-of-the-Art-Ansatz:** Wir müssen über einfache Erfolgsmetriken hinausgehen. Moderne Benchmarks für Agenten (z.B. `AutoGenBench`, `AgentBench`, `SWE-bench`) testen spezifische Fähigkeiten wie Code-Generierung, Tool-Nutzung und logisches Denken. Wir werden einen internen Benchmark definieren (z.B. "Erstelle ein voll funktionsfähiges Pong-Spiel"), der Metriken wie **Time-to-Completion**, **Token-Kosten**, **proaktive Fehlervermeidung** und **Code-Qualität (via Linter)** erfasst. Dies ermöglicht A/B-Tests zwischen verschiedenen Architekturen (z.B. Single-Agent vs. RAG-Agent).
+
+    2.  **Funktionales und Verantwortungsvolles Testen (Responsibility Testing):**
+        *   **Was es ist:** Eine Erweiterung des Testings, die sich auf die spezifischen Risiken von LLMs konzentriert.
+        *   **State-of-the-Art-Ansatz:**
+            *   **Halluzinationstests:** Wir entwickeln Tests, bei denen der Agent Fakten oder Code-Snippets generieren muss, die im Kontext verankert sind. Ein "LLM-as-a-judge"-Ansatz kann hier genutzt werden, bei dem ein zweites LLM (z.B. Gemini Pro) die Ausgabe des Agenten bewertet und prüft, ob sie auf den bereitgestellten Informationen basiert oder frei erfunden ("halluziniert") ist.
+            *   **Bias- und Toxizitätstests:** Wir erstellen eine Bibliothek von "Red-Teaming"-Prompts, die den Agenten gezielt provozieren, um zu prüfen, ob seine Antworten fair, unvoreingenommen und frei von schädlichen Inhalten bleiben.
+            *   **TDD für Agentenlogik:** Die Idee des Test-Driven Development wird auf die Agentenlogik selbst angewendet. Anstatt nur den generierten Code zu testen, testen wir die *Entscheidungen* des Agenten.
+                *   **Beispiel:** Wir erstellen einen Mock-Tool-Aufruf, der einen bekannten Fehler zurückgibt. Der Test prüft dann, ob der Agent den Fehler korrekt identifiziert und den im `Incident-Knowledge-Loop` vorgesehenen Prozess zur Fehlerbehebung einleitet. Dies validiert die interne Logik und den Lernmechanismus des Agenten.
+
+    3.  **Gewährleistung der Reproduzierbarkeit:**
+        *   **Was es ist:** Die Fähigkeit, bei gleichen Eingaben konsistente Ergebnisse zu erzielen, was bei nicht-deterministischen LLMs eine große Herausforderung darstellt.
+        *   **State-of-the-Art-Ansatz:**
+            *   **Kontrollierte Inferenz-Parameter:** Für alle LLM-Aufrufe werden Parameter wie `temperature` auf einen niedrigen Wert (z.B. `0.1`) und, wenn möglich, ein `seed` gesetzt. Dies reduziert die Zufälligkeit der Modellausgaben drastisch.
+            *   **Strikte Versionierung:** Jede Komponente des Systems – der Agentencode, die Tool-Implementierungen, die Python-Bibliotheken (`requirements.txt` oder `package.json`) und die Wissensdatenbank – wird streng versioniert. Ein Projekt, das mit Version 1.2 des Agenten erstellt wurde, muss mit derselben Version reproduzierbar sein.
+            *   **Detaillierte Protokollierung:** Jeder Schritt, jede Entscheidung und jeder Tool-Aufruf des Agenten wird in einem strukturierten Log (`session_log.md`) festgehalten. Dies dient nicht nur der Nachvollziehbarkeit, sondern auch als Grundlage für die Fehleranalyse und zukünftige Regressionstests.
+
+    4.  **Human-in-the-Loop (HITL) für kontinuierliches Lernen:**
+        *   **Was es ist:** Menschliche Überprüfung und Korrektur an kritischen Punkten.
+        *   **State-of-the-Art-Ansatz:** Anstatt nur auf Fehler zu reagieren, wird der HITL-Prozess proaktiv genutzt. Bei Aufgaben mit hoher Komplexität oder Ambiguität kann der Agent explizit um Feedback bitten ("Ich habe zwei mögliche Lösungswege identifiziert. Welcher soll priorisiert werden?"). Diese Interaktionen werden ebenfalls Teil der Wissensdatenbank und trainieren den Agenten darin, seine eigene Unsicherheit zu bewerten.
 
 ---
 
@@ -315,6 +324,40 @@ Für jede neu implementierte Architektur (Agentic RAG, Multi-Agent) führen wir 
 4.  **Ergebnisse analysieren:** Ich sammle die Metriken (Zeit bis zur Fertigstellung, Token-Verbrauch, Anzahl der Schritte, Fehlerquote, proaktive Fehlervermeidung) und präsentiere dir einen detaillierten Vergleichsbericht.
 
 Durch diesen strukturierten Prozess können wir datengestützt bewerten, welche Architektur für welche Art von Aufgabe am besten geeignet ist, und die Intelligenz dieses Systems schrittweise und messbar steigern.
+
+### 5.5 CoppeliaSim Haushaltsroboter-Aufgabe
+
+#### 5.5.1 Verbindungsstrategie
+
+*   **Ziel:** Eine Kommunikationsbrücke zwischen dem Gemini CLI Agenten und CoppeliaSim herstellen.
+*   **Optionen:**
+    *   **CoppeliaSim Remote API (Python/C++/Java/Lua):** Die direkteste und robusteste Methode. Der Agent (oder ein vom Agenten aufgerufenes Python-Skript) würde die API verwenden, um Befehle zu senden und Sensordaten zu empfangen.
+    *   **Dateibasierte Kommunikation:** Agent schreibt Befehle in eine Datei, CoppeliaSim-Skript liest diese und führt sie aus. CoppeliaSim schreibt Status-/Sensordaten in eine andere Datei, Agent liest diese. (Weniger Echtzeit, robuster für asynchrone Aufgaben).
+    *   **Benutzerdefinierter Webserver/Socket:** Agent startet einen lokalen Server, CoppeliaSim verbindet sich damit. (Komplexere Einrichtung, aber Echtzeit).
+*   **Empfehlung:** Beginn mit der CoppeliaSim Python Remote API für direkte Steuerung und Feedback.
+
+#### 5.5.2 Anwendung von Agentenarchitekturen auf Roboteraufgaben
+
+*   **Single-Agent:**
+    *   **Rolle:** Grundlegende Aufgabenausführung (z.B. "Gehe zur Küche", "Objekt aufheben").
+    *   **Einschränkungen:** Fehlt Lernfähigkeit, Schwierigkeiten bei unerwarteten Ereignissen.
+*   **Agentic RAG:**
+    *   **Rolle:** Roboter lernt aus vergangenen Erfahrungen/Fehlern (z.B. "Wie man Hindernisse im Flur vermeidet", "Beste Methode zum Greifen eines bestimmten Objekts").
+    *   **Wissensbasis:** Incident Reports von fehlgeschlagenen Roboteraktionen, optimale Pfadplanungsdaten, Objekterkennungsmuster.
+*   **Multi-Agenten-System:**
+    *   **Orchestrator (Gemini CLI):** High-Level-Aufgabenplanung ("Reinige das Wohnzimmer").
+    *   **Wahrnehmungsagent:** Verarbeitet Sensordaten (Kamera, Lidar) zur Objekterkennung, Kartierung.
+    *   **Navigationsagent:** Plant Pfade, vermeidet Hindernisse.
+    *   **Manipulationsagent:** Steuert Roboterarm/-greifer zum Aufnehmen/Platzieren von Objekten.
+    *   **Aufgabenüberwachungsagent:** Überprüft, ob Unteraufgaben abgeschlossen sind, meldet Abweichungen.
+    *   **Lernagent (RAG-fähig):** Speist Erfahrungen in die Wissensbasis zurück.
+
+#### 5.5.3 Wichtige Herausforderungen/Überlegungen
+
+*   **Echtzeit-Interaktion:** Roboteraufgaben erfordern oft schnelle Reaktionen.
+*   **Sensordatenverarbeitung:** Interpretation von visuellen, Tiefen- und anderen Sensordaten.
+*   **Aktionsausführung & Feedback:** Übersetzung von High-Level-Befehlen in Low-Level-Roboterbewegungen und Überprüfung der Ausführung.
+*   **Fehlerbehandlung & Wiederherstellung:** Was passiert, wenn der Roboter eine Aufgabe nicht erfüllt? Wie lernt er und erholt sich?
 
 ---
 
