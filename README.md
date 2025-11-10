@@ -1,15 +1,297 @@
-## Anleitung: Persönliche Notizen in VS Code hinzufügen
+# Dokumentation: Autonomes Agenten-System
 
-Dieses Dokument besteht aus vielen kleinen Abschnitten (Zellen), damit Sie Ihre Notizen präzise an der richtigen Stelle einfügen können. So fügen Sie eine persönliche, rote Notizbox hinzu:
+**Version: 1.0.0**
 
-1.  **Zelle zum Bearbeiten auswählen:** Klicken Sie in den Bereich des Textes, den Sie kommentieren möchten. Die Zelle wechselt daraufhin in den Bearbeitungsmodus (ein Rahmen erscheint).
-2.  **Vorlage kopieren:** Kopieren Sie den gesamten HTML-Code aus der grauen Box unten.
-3.  **Einfügen und Anpassen:** Fügen Sie die kopierte Vorlage an der gewünschten Stelle im Text ein. Ersetzen Sie den Platzhalter `*Hier können Sie Ihre persönliche Notiz eintragen...*` mit Ihrem Text.
-4.  **Anzeige überprüfen:** Klicken Sie außerhalb der Zelle oder drücken Sie `Esc`, um den Bearbeitungsmodus zu verlassen. Die Notizbox wird nun rot und deutlich sichtbar angezeigt.
+Dieses Dokument beschreibt die Architektur, die Ziele und den strategischen Entwicklungspfad dieses autonomen Agenten-Systems. Es dient als zentrale Anlaufstelle, um das aktuelle System zu verstehen, es im Kontext moderner KI-Forschung einzuordnen und die nächsten Schritte zur Erreichung echter Autonomie zu planen.
+
+## 1. Vision & Kernphilosophie
+
+Das Projekt verfolgt zwei miteinander verbundene Hauptziele:
+
+1.  **Funktionale Autonomie:** Die Entwicklung eines Agenten, der komplexe, abstrakt definierte Aufgaben (z.B. "Erstelle ein Spiel") selbstständig in konkrete Schritte zerlegen, ausführen, testen und dokumentieren kann.
+2.  **Evolutionäre Kompetenz (Lernfähigkeit):** Die Schaffung eines Systems, das mit jeder Aufgabe und jedem Fehler lernt. Der Agent soll ein "Gedächtnis" entwickeln, um vergangene Fehler proaktiv zu vermeiden und Best Practices über Projektgrenzen hinweg zu generalisieren.
+
+**Unsere Kernphilosophie: Prozess-getriebene Zuverlässigkeit**
+
+Im Gegensatz zu "Open-Ended"-Agenten (wie dem ursprünglichen AutoGPT), die oft unvorhersehbar agieren und in Schleifen geraten können, verfolgt dieses Projekt einen **prozess-getriebenen Ansatz**. Wir sehen den `agent_manual.md` nicht als Einschränkung, sondern als ein bewusst gewähltes "Betriebssystem", das Zuverlässigkeit, Qualität und Nachvollziehbarkeit erzwingt. Das Ziel ist nicht, den schnellsten oder kreativsten Agenten zu bauen, sondern den **zuverlässigsten und diszipliniertesten Ingenieur**.
 
 ---
-### Vorlage zum Kopieren:
 
+## 2. Aktuelle Systemarchitektur (Version 1.0.0)
+
+Die Architektur basiert auf einem deterministischen Kreislauf, der durch klar definierte Prozesse und einen strukturierten Lernmechanismus gestützt wird.
+
+```
++---------------------------+
+|      User-Anweisung       |
++-------------+-------------+
+              |
+              v
++-------------+-------------+
+|   AGENT (LLM) folgt dem   |
+|    `agent_manual.md`      |
++-------------+-------------+
+              |
+              v
++-----------------------------------------------------------------+
+| KREISLAUF: Plan -> Test -> Implement -> Refactor -> Commit -> Doc |
++---------------------------+-------------------------------------+
+                            |
++---------------------------+-------------------------------------+
+| LERNEN: Bei Fehler -> Incident Report -> Generalisierung -> WISSEN |
++-----------------------------------------------------------------+
+```
+
+### 2.1 Das "Betriebssystem": `agent_manual.md`
+
+Das Herzstück des Agenten. Es schreibt einen strengen, testgetriebenen Entwicklungszyklus (TDD) vor, der Qualität und Funktionalität sicherstellt:
+
+1.  **Planung:** Analyse der Aufgabe und Erstellung einer `roadmap.md`.
+2.  **Testen:** Für jedes Feature wird zuerst ein fehlschlagender Test geschrieben.
+3.  **Implementierung:** Minimaler Code, um den Test erfolgreich zu machen.
+4.  **Refactoring:** Verbesserung des Codes.
+5.  **Commit:** Automatische, atomare Git-Commits nach jedem Feature.
+6.  **Dokumentation:** Erstellung der finalen Dokumente nach Abschluss.
+
+### 2.2 Das "Gedächtnis": Der Incident-Knowledge-Loop
+
+Dies ist der erste Schritt zu einem lernfähigen System.
+
+1.  **Fehleranalyse:** Ein behobener Fehler wird in einem **`Incident Report`** im `/knowledge_base`-Ordner dokumentiert.
+2.  **Generalisierung:** Aus der spezifischen Lösung wird ein allgemeingültiges **Prinzip** abgeleitet.
+3.  **Wissensanwendung:** Bei **neuen** Projekten wird die Wissensdatenbank konsultiert. Relevante Prinzipien werden zu proaktiven Aufgaben in der neuen `roadmap.md`, um bekannte Fehler von vornherein zu vermeiden.
+
+### 2.3 Unterstützende Säulen: Versionierung & Git-Workflow
+
+-   **Versionierung:** Eine `VERSION`-Datei im Root und `.agent_version` in jedem Projekt stempeln den genauen Prozess, nach dem ein Projekt erstellt wurde.
+-   **Automatischer Git-Workflow:** Der Agent erstellt nach jedem abgeschlossenen Feature eigenständig einen Commit. Dies sorgt für eine saubere, nachvollziehbare Git-Historie.
+
+---
+
+## 3. System-Bewertung: Stärken, Schwächen & Einordnung
+
+### 3.1 Aktueller Stand
+
+| Stärken (Pros) | Schwächen (Cons) |
+| :--- | :--- |
+| **Struktur & Vorhersehbarkeit:** Der rigide Prozess sorgt für disziplinierte, nachvollziehbare Ergebnisse. | **Reaktivität & "Blindheit":** Der Agent kann seine Arbeit nicht selbst "sehen" oder "benutzen". Er ist auf menschliches Feedback zur Fehlererkennung angewiesen. |
+| **Qualitätssicherung durch TDD:** Der testgetriebene Ansatz sichert die logische Korrektheit. | **Starrer Prozess:** Ineffizienzen im `agent_manual.md` werden wiederholt, statt den Prozess selbst zu optimieren. |
+| **Grundstein für Lernen:** Der 'Incident-Knowledge-Loop' ist eine robuste Grundlage für zukünftige RAG-Systeme. | **Begrenzte Wissensanwendung:** Die simple Keyword-Suche schränkt das Lernen auf explizit ähnliche Probleme ein. |
+| **Saubere Git-Historie:** Automatische, atomare Commits schaffen eine mustergültige Versionsgeschichte. | **Begrenzte Test-Tiefe:** TDD sichert Logik, aber keine User Experience (UX) oder visuelle Aspekte. |
+
+### 3.2 Einordnung in die KI-Agenten-Landschaft (Stand 2025)
+
+Um unser System einzuordnen, vergleichen wir es mit den dominanten Architekturen in der aktuellen Forschung.
+
+| Architektur | Beschreibung | Stärken (Pros) | Schwächen (Cons) | Ideal für... |
+| :--- | :--- | :--- | :--- | :--- |
+| **Single-Agent + Tools** | Ein zentrales LLM wählt aus einem Set von Werkzeugen (APIs, Funktionen), um eine Aufgabe zu lösen. | - **Einfach & Robust:** Leicht zu implementieren und zu debuggen.<br>- **Direkte Kontrolle:** Der Weg von Anweisung zu Ausführung ist klar nachvollziehbar. | - **Wissens-Amnesie:** Lernt nicht über eine Sitzung hinaus.<br>- **Reaktiv:** Kann Fehler nicht proaktiv vermeiden.<br>- **Skalierungsgrenze:** Stößt bei sehr komplexen Aufgaben an seine Grenzen. | Klar definierte, in sich geschlossene Aufgaben (z.B. "Erstelle ein Snake-Spiel"). |
+| **Agentic RAG** | Ein Agent, der seine Aktionen auf Basis von Informationen plant, die er dynamisch aus Wissensdatenbanken abruft (Retrieval-Augmented Generation). | - **Lernfähig:** Generalisiert aus vergangenen Fehlern.<br>- **Proaktiv:** Kann bekannte Probleme von vornherein vermeiden.<br>- **Effizienter:** Löst bekannte Probleme schneller und mit weniger Schritten. | - **Komplexere Einrichtung:** Benötigt eine Vektor-Datenbank und Embedding-Prozesse.<br>- **Abhängig von Qualität:** Die Leistung hängt stark von der Qualität der Wissensdatenbank ab. | Aufgaben, bei denen ähnliche Probleme wiederholt auftreten (z.B. Debugging von Web-Anwendungen). |
+| **Multi-Agenten-Systeme** | Mehrere spezialisierte Agenten (z.B. "Planer", "Coder", "Tester") kollaborieren, um eine komplexe Aufgabe zu lösen (z.B. in Frameworks wie CrewAI, AutoGen). | - **Hohe Spezialisierung:** Jeder Agent ist Experte für seine Domäne.<br>- **Parallelisierung:** Aufgaben können parallel bearbeitet werden.<br>- **Robustheit:** Ergebnisse werden durch "interne Reviews" (z.B. Tester prüft Code) besser. | - **Hohe Komplexität:** Orchestrierung und Kommunikation zwischen Agenten sind aufwendig.<br>- **Overhead:** Kann für einfache Aufgaben "zu viel des Guten" sein.<br>- **Kosten:** Mehr Agenten bedeuten potenziell höhere Token-Kosten. | Große, komplexe und langlebige Projekte (z.B. "Entwickle eine komplette E-Commerce-Plattform").
+
+---
+
+## 4. Der Weg zu größerer Autonomie: Eine strategische Roadmap
+
+Dies ist ein Leitfaden für die nächsten Entwicklungsschritte, um die Autonomie und Intelligenz des Systems systematisch zu steigern.
+
+### Schritt 1: Proaktive Selbst-Verifikation (Von "Blind" zu "Bewusst")
+
+**Problem:** Der Agent ist "blind" und kann nicht prüfen, ob seine Web-Anwendung tatsächlich funktioniert.
+
+**Lösung:** Implementierung einer automatisierten **Verifikations-Phase** am Ende des Entwicklungszyklus.
+
+1.  **Funktionale Tests:** Der Agent startet die Web-Anwendung auf einem lokalen Server und nutzt **Headless-Browser-Tools** (z.B. Playwright), um zu prüfen:
+    -   Lädt die Seite ohne Konsolenfehler?
+    -   Sind die Hauptelemente (z.B. Spiel-Canvas, Buttons) im DOM vorhanden?
+    -   Kann eine Basis-Interaktion simuliert werden (z.B. ein Klick)?
+2.  **Visuelle Verifikation (VLM):** Als fortgeschrittener Schritt könnte der Agent einen Screenshot der Anwendung an ein **multimodales Modell (VLM)** senden und gezielte Fragen stellen:
+    -   "Wird auf diesem Screenshot ein Spiel korrekt gerendert oder ist der Bildschirm schwarz?"
+    -   "Ist das Layout dieser Seite fehlerhaft?"
+
+**Ergebnis:** Der Agent kann seine Arbeit selbstständig validieren und bei Fehlern autonom einen neuen `Incident-Knowledge-Loop` starten, ohne auf menschliches Feedback angewiesen zu sein.
+
+### Schritt 2: Fortgeschrittenes Lernen (Implementierung von echtem RAG)
+
+**Problem:** Das aktuelle "Gedächtnis" ist keyword-basiert und kann keine konzeptionellen Zusammenhänge erkennen.
+
+**Lösung:** Umwandlung der Wissensdatenbank in ein echtes **Retrieval-Augmented Generation (RAG)** System.
+
+1.  **Embedding:** Jeder `Incident Report` wird beim Speichern durch ein Text-Embedding-Modell (z.B. `text-embedding-ada-002`) in einen Vektor umgewandelt.
+2.  **Vektor-Datenbank:** Diese Vektoren werden in einer lokalen Vektor-Datenbank (z.B. ChromaDB, FAISS) gespeichert.
+3.  **Semantische Suche:** Bei der Planung eines neuen Projekts formuliert der Agent eine semantische Anfrage (z.B. "Wie stelle ich sicher, dass die grundlegende Spielphysik funktioniert?") und erhält die relevantesten vergangenen Lektionen zurück, auch wenn die Keywords nicht exakt passen.
+
+**Ergebnis:** Der Agent lernt auf einer konzeptionellen Ebene und kann Wissen aus vergangenen Projekten viel effektiver auf neue, unterschiedliche Aufgaben anwenden.
+
+### Schritt 3: Multi-Agenten-Architektur (Vom Solo-Entwickler zum Team)
+
+**Problem:** Ein einzelner Agent muss alle Aufgaben (Planung, Code, Test, Doku) beherrschen, was bei steigender Komplexität ineffizient wird.
+
+**Lösung:** Aufteilung des Systems in ein **kollaboratives Multi-Agenten-System**, inspiriert von Frameworks wie MetaGPT oder CrewAI.
+
+-   **`Manager-Agent`:** Zerlegt die Hauptaufgabe, pflegt die `roadmap.md` und koordiniert die anderen Agenten.
+-   **`Entwickler-Agent`:** Schreibt den Code basierend auf den Spezifikationen des Managers.
+-   **`Tester-Agent`:** Schreibt die Tests und führt die in Schritt 1 definierte Verifikation durch.
+-   **`Doku-Agent`:** Schreibt die Dokumentation, nachdem die Features implementiert und getestet wurden.
+
+**Ergebnis:** Höhere Spezialisierung und Effizienz, robustere Ergebnisse durch "Cross-Validation" zwischen den Agenten und eine klarere Trennung der Verantwortlichkeiten.
+
+### 4.5 Analyse der Roadmap-Schritte und Integrationsstrategien
+
+Die vorgeschlagenen Schritte zur Steigerung der Autonomie lassen sich hinsichtlich ihrer Natur und Integrationsweise kategorisieren:
+
+#### 4.5.1 Kategorisierung der Roadmap-Schritte
+
+1.  **Schritt 1: Proaktive Selbst-Verifikation (Von "Blind" zu "Bewusst")**
+    *   **Kategorie:** **Offensichtlicher/Logischer Schritt.**
+    *   **Begründung:** Dies ist eine direkte und notwendige Verbesserung der aktuellen "blinden" Arbeitsweise des Agenten. Die Fähigkeit, die eigene Arbeit (insbesondere UI-basierte Anwendungen) zu verifizieren, ist eine grundlegende Anforderung für einen autonomen Agenten und schließt eine kritische Lücke im aktuellen Prozess. Es ist eine Erweiterung der bestehenden Fähigkeiten, keine grundlegende Änderung der Architektur.
+
+2.  **Schritt 2: Fortgeschrittenes Lernen (Implementierung von echtem RAG)**
+    *   **Kategorie:** **Entscheidung über technische Richtung.**
+    *   **Begründung:** Während der aktuelle "Incident-Knowledge-Loop" eine Vorstufe darstellt, erfordert die Implementierung eines vollwertigen RAG-Systems die Auswahl spezifischer Technologien (Embedding-Modelle, Vektor-Datenbanken) und einen Paradigmenwechsel von schlüsselwortbasierter zu semantischer Suche. Dies ist eine strategische Entscheidung, um die Lernfähigkeit des Systems auf eine neue Ebene zu heben.
+
+3.  **Schritt 3: Multi-Agenten-Architektur (Vom Solo-Entwickler zum Team)**
+    *   **Kategorie:** **Völlig anderer Ansatz/Architekturwechsel.**
+    *   **Begründung:** Dieser Schritt verändert die interne Struktur des Agenten grundlegend von einer einzelnen entscheidungsfindenden Entität zu einem kollaborativen Team. Es ist ein großer architektonischer Wandel, der eine neue Orchestrierungslogik und Kommunikationsmechanismen erfordert, anstatt nur bestehende Fähigkeiten zu erweitern.
+
+4.  **Schritt 4 (Zukunft): Dynamische Modellauswahl & Selbst-Reflexion**
+    *   **Dynamische Modellauswahl:**
+        *   **Kategorie:** **Entscheidung über technische Richtung.**
+        *   **Begründung:** Dies ist eine Optimierungsstrategie, die die Effizienz und Kosten des Agenten verbessert, indem sie je nach Aufgabe das am besten geeignete Modell auswählt. Es ist eine technische Entscheidung zur Ressourcenverwaltung.
+    *   **Prozess-Selbst-Reflexion:**
+        *   **Kategorie:** **Völlig anderer Ansatz/Hohe Autonomie.**
+        *   **Begründung:** Die Fähigkeit des Agenten, seine eigenen Kernprozesse zu analysieren und proaktiv zu verbessern, stellt eine sehr hohe Stufe der Autonomie dar und ist ein fundamentaler Wandel in der Art und Weise, wie der Agent sich selbst verwaltet.
+
+#### 4.5.2 Parallelintegration verschiedener Ansätze für ein Gesamtsystem
+
+Die Idee, verschiedene Ansätze parallel in ein Gesamtsystem zu integrieren und je nach Aufgabe den am besten geeigneten auszuwählen, ist äußerst sinnvoll und zukunftsweisend für autonome Agenten.
+
+**Vorteile der Parallelintegration:**
+
+*   **Optimale Aufgabenbearbeitung:** Unterschiedliche Aufgaben erfordern unterschiedliche Strategien. Ein einfacher Bugfix mag keine Multi-Agenten-Orchestrierung benötigen, während die Entwicklung eines komplexen Spiels davon stark profitieren könnte.
+*   **Flexibilität und Robustheit:** Das System kann sich an die Komplexität und die Anforderungen der jeweiligen Aufgabe anpassen. Fällt ein Ansatz aus oder ist ineffizient, kann auf einen anderen umgeschaltet werden.
+*   **Schrittweise Evolution:** Neue Architekturen können inkrementell hinzugefügt und getestet werden, ohne das gesamte System umbauen zu müssen.
+*   **Lernfähigkeit auf Meta-Ebene:** Langfristig könnte der Agent selbst lernen, welcher Ansatz für welche Art von Aufgabe am effektivsten ist, und diese Auswahl autonom treffen.
+
+**Integrationsstrategie für ein hybrides System:**
+
+Ein solches Gesamtsystem könnte als eine Art "Meta-Agent" oder "Orchestrator" konzipiert werden, der die eingehende Benutzeranweisung analysiert und basierend auf vordefinierten Kriterien oder sogar durch ein eigenes LLM entscheidet, welche "Agenten-Persönlichkeit" oder welcher "Agenten-Modus" aktiviert werden soll:
+
+1.  **Task-Analyse:** Der Orchestrator analysiert die Komplexität, den Umfang und die Art der Aufgabe (z.B. "Bugfix", "Feature-Implementierung", "Neues Projekt").
+2.  **Modus-Auswahl:**
+    *   **"Standard-Modus" (Single-Agent + Tools):** Für einfache, klar definierte Aufgaben, bei denen keine tiefgreifende Wissensintegration oder komplexe Koordination erforderlich ist.
+    *   **"Lern-Modus" (Agentic RAG):** Wenn die Aufgabe potenziell von vergangenen Erfahrungen profitieren könnte oder wenn es sich um ein bekanntes Problemfeld handelt. Der RAG-Mechanismus würde proaktiv relevante Informationen abrufen und in die Planung des Single-Agenten einspeisen.
+    *   **"Team-Modus" (Multi-Agenten-System):** Für große, komplexe Projekte, die eine Aufteilung in spezialisierte Rollen erfordern. Der Orchestrator würde die Manager-Rolle übernehmen und die Kommunikation zwischen den spezialisierten Agenten steuern.
+3.  **Dynamische Modellauswahl:** Innerhalb jedes Modus könnte zusätzlich die dynamische Modellauswahl (Schritt 4) greifen, um die Effizienz weiter zu optimieren.
+
+**Fazit zur Parallelintegration:**
+
+Die Parallelintegration verschiedener Agenten-Architekturen ist nicht nur sinnvoll, sondern der logische nächste Schritt, um ein wirklich fortschrittliches und autonomes System zu schaffen. Es ermöglicht eine maßgeschneiderte Aufgabenbearbeitung, maximiert die Effizienz und legt den Grundstein für einen Agenten, der nicht nur Aufgaben löst, sondern auch seine eigene Arbeitsweise optimiert. Dieses Projekt ist ideal positioniert, um solche hybriden Ansätze zu erforschen und zu implementieren.
+
+---
+
+How do we know if the agent is truly *learning*? To answer this, we need a structured way to measure its performance over time and prove that the `knowledge_base` has a tangible, positive impact. Your idea of an A/B test is the perfect foundation for this.
+
+### 5.1 The Core Methodology: Comparative A/B Testing
+
+This approach provides empirical evidence of the learning mechanism's effectiveness.
+
+1.  **Define a Benchmark Task:** Choose a standardized, non-trivial project that the agent has not been explicitly trained on (e.g., "Create a complete, playable Tetris game with scoring").
+2.  **Establish a Control Group (Run A):** Execute the benchmark task with a "Tabula Rasa" agent. This agent's access to the `knowledge_base` is disabled. This shows its baseline performance.
+3.  **Establish a Test Group (Run B):** Execute the exact same benchmark task with the standard agent that has full access to the `knowledge_base`.
+4.  **Analyze and Compare:** Measure both runs using the quantitative and qualitative metrics outlined below. The difference between Run A and Run B is a direct measure of the learning's impact.
+
+This process should be repeated periodically (e.g., after major architectural changes or significant additions to the knowledge base) to track the agent's evolution.
+
+### 5.2 Key Evaluation Metrics
+
+We can group metrics into four key areas to get a holistic view of the agent's performance.
+
+| Category | Metric | Description & Measurement |
+| :--- | :--- | :--- |
+| **1. Efficiency & Cost** | **Time to Completion** | Total wall-clock time from start to finish. A learning agent should be faster. |
+| | **Token Usage / Cost** | Total input/output tokens consumed. Fewer tokens for the same result indicates higher efficiency. |
+| | **Number of Steps** | Total number of tool calls or commands executed. A more direct agent will use fewer steps. |
+| **2. Quality & Correctness** | **Task Success Rate** | Binary (Yes/No): Did the agent successfully complete all requirements of the benchmark? |
+| | **Code Quality Score** | Run a static analysis tool (linter) on the final code. A lower number of errors/warnings indicates higher quality. |
+| | **Bug Count** | Number of bugs found during a final manual review or by running a predefined, external test suite against the finished project. |
+| **3. Autonomy & Robustness** | **Error & Retry Rate** | How many times did the agent encounter an error and have to retry a step? Learning should reduce this. |
+| | **Human Interventions** | How many times would a human need to intervene to correct the agent's course? (Can be simulated in review). |
+| **4. Direct Learning Evidence** | **Proactive Error Avoidance** | **(Most Important)** Does the "learning" agent (Run B) proactively add tasks to its `roadmap.md` to avoid known issues from the `knowledge_base`? (e.g., adding a physics test after the Doodle Jump incident). This is direct proof of learning. |
+| | **Reduced Debugging Loops** | When a known *type* of error occurs, does the learning agent solve it in fewer steps than the control agent? |
+
+### 5.3 Practical Implementation
+
+To implement this, we can create a `/benchmarks` directory. Each sub-directory could contain a benchmark task defined in a `prompt.txt` file. The results of each run (A and B) can be stored in separate output folders, containing the final project code, the agent's logs, and a `results.md` file summarizing the metrics.
+
+
+
+### 5.4 Erweiterung der Autonomie: Implementierung und Evaluation neuer Agenten-Architekturen
+
+Um die Autonomie und Intelligenz des Systems schrittweise zu steigern, können wir die im `README.md` beschriebene "Strategische Roadmap" und das "Framework for Evaluating Agent Learning" als unseren gemeinsamen Fahrplan nutzen. Hier wird beschrieben, wie wir die verschiedenen Agenten-Architekturen implementieren und bewerten können.
+
+#### Schritt 1: Implementierung von Agentic RAG (Der lernende Agent)
+
+Dies ist der nächste logische Schritt, um das System lernfähiger zu machen.
+
+1.  **Setup einer Vektor-Datenbank:**
+    *   Wir richten eine lokale Vektor-Datenbank ein (z.B. mit `ChromaDB` oder `FAISS`). Diese Bibliotheken lassen sich gut in Python oder Node.js integrieren.
+    *   **Aktion des Agenten:** Ich kann ein Skript erstellen, das die Initialisierung und Verwaltung dieser Datenbank übernimmt.
+2.  **Aufbau einer Wissens-Pipeline:**
+    *   **Aktion des Agenten:** Ich werde ein Skript entwickeln, das alle `Incident Reports` (z.B. `.md`-Dateien im `knowledge_base`-Ordner) liest.
+    *   **Aktion des Agenten:** Für jeden relevanten Text aus diesen Berichten werde ich ein Text-Embedding-Modell (z.B. über eine API wie `text-embedding-ada-002`) nutzen, um diesen Text in einen Vektor umzuwandeln.
+    *   **Aktion des Agenten:** Diese Vektoren werden dann in der eingerichteten Vektor-Datenbank gespeichert.
+3.  **Integrations-Workflow für neue Aufgaben:**
+    *   **Benutzer:** Gibt eine neue Aufgabe (z.B. "Erstelle ein Tetris-Spiel").
+    *   **Aktion des Agenten:** Ich formuliere eine semantische Suchanfrage basierend auf der Aufgabe (z.B. "Welche bekannten Probleme gibt es bei der Implementierung von Spielphysik und Browser-Kompatibilität?").
+    *   **Aktion des Agenten:** Ich durchsuche die Vektor-Datenbank und rufe die relevantesten `Incident Reports` ab (z.B. den `INC-2025-001` aus dem Doodle-Jump-Projekt).
+    *   **Aktion des Agenten:** Ich integriere das gelernte Wissen proaktiv in meine `roadmap.md`, indem ich z.B. Tasks hinzufüge wie: "Stelle sicher, dass kein Node.js-spezifischer Code im Browser verwendet wird und teste die initiale Spielbarkeit."
+
+#### Schritt 2: Implementierung eines Multi-Agenten-Systems (Das Experten-Team)
+
+Sobald das Agentic RAG-System etabliert ist, können wir die Architektur zu einem Multi-Agenten-System erweitern.
+
+1.  **Rollen und Anweisungen definieren:**
+    *   Wir definieren klare Rollen und spezifische Anweisungen für jeden Agenten (z.B. in separaten `.md`-Dateien wie `manager_manual.md`, `coder_manual.md`, `tester_manual.md`).
+2.  **Orchestrierungs-Logik:**
+    *   **Benutzer:** Gibt mir als `Manager-Agent` die Hauptaufgabe.
+    *   **Aktion des Agenten (Manager-Rolle):** Ich erstelle die `roadmap.md` und zerlege die Aufgabe in kleinere Schritte.
+    *   **Aktion des Agenten (Rollenwechsel):** Für jeden Task auf der Roadmap übernehme ich die entsprechende Rolle:
+        *   **Als `Tester-Agent`:** Ich lese das `tester_manual.md` und schreibe zuerst einen fehlschlagenden Test.
+        *   **Als `Coder-Agent`:** Ich lese das `coder_manual.md` und schreibe den Code, um den Test zu bestehen.
+        *   **Als `Manager-Agent`:** Ich überprüfe das Ergebnis und fahre mit dem nächsten Task fort, koordiniere die Übergaben und stelle die Einhaltung des Gesamtplans sicher.
+
+#### Schritt 3: Evaluierung mit dem A/B-Test-Framework
+
+Für jede neu implementierte Architektur (Agentic RAG, Multi-Agent) führen wir den im Abschnitt "5. Measuring Success: A Framework for Evaluating Agent Learning" beschriebenen Benchmark-Test durch:
+
+1.  **Benchmark-Aufgabe definieren:** Wir wählen eine standardisierte, nicht-triviale Aufgabe, die der Agent noch nicht bearbeitet hat (z.B. "Erstelle ein Pong-Spiel").
+2.  **Kontrolllauf (A):** Ich führe die Aufgabe mit der aktuellen "Single-Agent"-Architektur (ohne RAG oder Multi-Agenten-Logik) aus.
+3.  **Testlauf (B):** Ich führe dieselbe Aufgabe mit der neuen Architektur (z.B. Agentic RAG) aus.
+4.  **Ergebnisse analysieren:** Ich sammle die Metriken (Zeit bis zur Fertigstellung, Token-Verbrauch, Anzahl der Schritte, Fehlerquote, proaktive Fehlervermeidung) und präsentiere dir einen detaillierten Vergleichsbericht.
+
+Durch diesen strukturierten Prozess können wir datengestützt bewerten, welche Architektur für welche Art von Aufgabe am besten geeignet ist, und die Intelligenz dieses Systems schrittweise und messbar steigern.
+
+---
+
+## 6. Entwickler-Leitfaden
+
+### 6.1 Empfohlene VS Code-Erweiterungen
+
+1.  **Markdown All in One:** Unverzichtbar für die Bearbeitung der `.md`-Dateien des Agenten.
+2.  **GitLens — Git supercharged:** Um die automatischen Commits des Agenten detailliert nachzuvollziehen.
+3.  **Code Spell Checker:** Sorgt für fehlerfreie Dokumentation und Kommentare.
+4.  **Prettier - Code formatter / ESLint:** Sichert konsistente Code-Formatierung in den generierten Projekten.
+
+### 6.2 Persönliche Notizen hinzufügen
+
+So fügen Sie eine persönliche, rote Notizbox in diesem Dokument hinzu:
+
+1.  **Zelle zum Bearbeiten auswählen:** Klicken Sie in den Bereich, den Sie kommentieren möchten.
+2.  **Vorlage kopieren:** Kopieren Sie den gesamten HTML-Code aus der Box unten.
+3.  **Einfügen und Anpassen:** Fügen Sie die Vorlage ein und ersetzen Sie den Platzhaltertext.
+
+**Vorlage zum Kopieren:**
 ```html
 <div style="border: 2px solid #e53935; padding: 10px; background-color: #ffebee; border-radius: 5px; margin-top: 15px; margin-bottom: 15px;">
     <b style="color: #c62828;">Meine Notiz:</b>
@@ -18,165 +300,39 @@ Dieses Dokument besteht aus vielen kleinen Abschnitten (Zellen), damit Sie Ihre 
     </p>
 </div>
 ```
+
 ---
-# Dokumentation: Autonomes Agenten-System
 
-**Version: 1.0.0**
+## 7. Anhang & Archiv
 
-Dieses Dokument beschreibt die Architektur, die Ziele und den Entwicklungspfad des autonomen Agenten-Systems. Es dient als zentrale Anlaufstelle, um das aktuelle System zu verstehen und die zukünftige Entwicklung zu planen.
-## 1. Projektziele
+### 7.1 Development Log: Vampire RPG Movement
 
-Das Projekt verfolgt zwei miteinander verbundene Hauptziele:
+*Dieser Abschnitt beschreibt den Prozess der Implementierung und des Debuggings der Charakterbewegung im `project_vampire_rpg`.*
 
-1.  **Funktionale Autonomie:** Das primäre Ziel ist die Entwicklung eines Agenten, der komplexe, abstrakt definierte Aufgaben (z.B. "Erstelle ein Spiel", "Schreibe eine API") selbstständig in konkrete Schritte zerlegen, ausführen, testen und dokumentieren kann. Der Agent operiert dabei ausschließlich über die Kommandozeile und nutzt die zur Verfügung gestellten Werkzeuge.
+**1. Initial Analysis and Testing:**
+Upon reviewing the code, I discovered that a foundational movement and flight system was already present in `Player.js`. My first step was to verify its functionality using automated browser tests. The initial test showed that the player did not move.
 
-2.  **Evolutionäre Kompetenz (Lernfähigkeit):** Das übergeordnete, strategische Ziel ist, dass das System nicht statisch bleibt, sondern mit jeder Aufgabe und jedem Fehler lernt und seine Fähigkeiten verbessert. Das System soll eine Form von "Gedächtnis" entwickeln, das es ihm erlaubt, vergangene Fehler in Zukunft zu vermeiden und Best Practices über Projektgrenzen hinweg zu generalisieren. Langfristig soll so ein immer fähigerer und robusterer autonomer Entwickler entstehen.
-## 2. Kernarchitektur
+**2. Diagnosis and Debugging:**
+I added `console.log()` statements to `InputController.js` and `Player.js`. By retrieving the browser's console logs (`browser_console_messages`), I discovered they were empty, proving that `keydown` events were not being registered. This led to two conclusions:
+*   **Bug 1 (Root Cause):** The code was checking for simple characters (`'w'`) instead of `event.code` strings (`'KeyW'`).
+*   **Bug 2 (Logic Flaw):** Movement was relative to the world's axes, not the camera's direction.
 
-Die Architektur des Systems basiert auf vier Säulen: einem definierten Arbeitsablauf, klarer Versionierung, einem automatisierten Git-Workflow und einem strukturierten Lernmechanismus.
-### 2.1 Arbeitsablauf: `agent_manual.md`
+**3. Implementation of the Fix:**
+*   Corrected all input checks to use `event.code` strings.
+*   Refactored movement logic to be camera-relative, ensuring 'W' always moves the player away from the camera.
+*   Added logic to rotate the player model to face the direction of movement.
 
-Das Herzstück des Agentenverhaltens ist im `agent_manual.md` definiert. Es schreibt einen strengen, testgetriebenen Entwicklungszyklus (Test-Driven Development, TDD) vor:
+**4. Conclusion:**
+The movement system is now correctly implemented. The browser tools were invaluable for debugging by allowing me to read console logs and find the root cause.
 
-1.  **Planung:** Analyse der Aufgabe, Konsultation der Wissensdatenbank und Erstellung einer `roadmap.md` mit allen Features.
-2.  **Testen:** Für jedes Feature wird zuerst ein Test geschrieben, der fehlschlägt.
-3.  **Implementierung:** Es wird der minimal nötige Code geschrieben, damit der Test erfolgreich ist.
-4.  **Refactoring:** Der Code wird verbessert und aufgeräumt.
-5.  **Commit:** Die Änderung wird automatisch als Git-Commit gespeichert.
-6.  **Dokumentation:** Nach Abschluss aller Features werden die finalen Dokumente (`README.md`, `TUTORIAL.md` etc.) erstellt.
+### 7.2 Notizen aus alter README
 
-Dieser Zyklus stellt sicher, dass die Ergebnisse überprüfbar und von hoher Qualität sind.
-### 2.2 Versionierung
+*Dieser Abschnitt archiviert Tabellen und Notizen aus einer früheren Version dieses Dokuments.*
 
-Um die Entwicklung des Agenten-Systems selbst nachvollziehbar zu machen, wurde ein einfaches Versionierungssystem eingeführt:
+**Vergleich: Prozess-getriebener vs. Open-Ended Ansatz**
 
--   **`VERSION`:** Eine Datei im Hauptverzeichnis, die die aktuelle Version des Gesamtsystems nach [Semantischer Versionierung](https://semver.org/lang/de/) (z.B. `1.0.0`) enthält. `MAJOR`-Änderungen für inkompatible Prozessänderungen, `MINOR` für neue Features (wie die Wissensdatenbank) und `PATCH` für Bugfixes.
--   **`.agent_version`:** Bei der Erstellung eines Projekts wird die aktuelle Systemversion aus der `VERSION`-Datei gelesen und in eine `.agent_version`-Datei innerhalb des Projektordners geschrieben. Dies ermöglicht eine exakte Zuordnung, nach welchem "Rezept" ein Projekt erstellt wurde.
-### 2.3 Git-Workflow: Automatische Feature-Commits
-
-Das gesamte Projekt steht unter Git-Versionskontrolle. Der Arbeitsablauf ist so gestaltet, dass er für dich so einfach wie möglich ist:
-
-1.  **Der Agent committet:** Jedes Mal, wenn der Agent ein Feature aus der `roadmap.md` fertigstellt, erstellt er automatisch einen atomaren, lokalen Commit. Die Commit-Nachricht beschreibt das umgesetzte Feature.
-2.  **Du pushst:** Deine einzige Aufgabe ist es, `git push` auszuführen, wann immer du die vom Agenten erstellten Commits auf dein GitHub-Repository hochladen möchtest.
-
-Dieses Vorgehen stellt eine saubere, nachvollziehbare und feature-basierte Git-Historie sicher, ohne dass du dich um das manuelle Committen kümmern musst.
-### 2.4 Der Lernmechanismus: Incident-Knowledge-Loop
-
-Dies ist die wichtigste Neuerung in Version 1.0.0 und der erste Schritt zu einem intelligenten, lernfähigen System. Es löst das Problem, dass der Agent Fehler zwar reaktiv behebt, aber nicht proaktiv aus ihnen lernt.
-
-**Das Problem:** Ohne ein Gedächtnis würde der Agent ähnliche Fehler (z.B. grundlegende Physik-Fehler in Spielen) immer wieder machen.
-
-**Die Lösung:** Ein strukturierter Wissenskreislauf.
-
-```
-      +------------------+       +----------------------+       +---------------------+
-      |   Neues Projekt  |------>| Konsultiere Wissens- |------>|   Proaktive Planung |
-      |      (z.B. Spiel B)  |       |       datenbank      |       | (z.B. Test für Physik)|
-      +------------------+       +----------+-----------+       +----------+----------+
-                                            ^                         |
-                                            | LERNEN                  | AUSFÜHRUNG
-                                            |                         v
-      +------------------+       +----------+-----------+       +----------+----------+
-      | Incident Report  |<------|   Generalisiere zu   |<------|      Fehler in      |
-      | (in /knowledge_base) |       |      Prinzip         |       |    Spiel A gefunden   |
-      +------------------+       +----------------------+       +---------------------+
-```
-
-**So funktioniert der Kreislauf:**
-
-1.  **Fehlerbehebung & Analyse:** Wenn ein Fehler auftritt und behoben wird (wie beim `Doodle Jump`-Projekt), erstellt der Agent einen **`Incident Report`** in Form einer Markdown-Datei im `/knowledge_base`-Ordner.
-2.  **Strukturierte Erfassung:** Jeder Report hat eine feste Struktur (Symptom, Ursache, Lösung, spezifisches Learning und – am wichtigsten – ein **generalisiertes Prinzip**).
-3.  **Wissensanwendung:** Wenn der Agent ein **neues** Projekt startet, durchsucht er die `knowledge_base` nach relevanten `GeneralizedPrinciple`-Einträgen. 
-4.  **Proaktive Planung:** Die gefundenen Prinzipien werden zu konkreten, verpflichtenden Aufgaben in der `roadmap.md` des neuen Projekts. So wird aus dem reaktiven Fix für *Spiel A* eine proaktive Test-Anforderung für *Spiel B*.
-
-**Der Weg zu RAG (Retrieval-Augmented Generation):**
-Dieses System ist die Vorstufe zu einem echten RAG-System. Aktuell basiert die Suche auf einfachen Keywords. Der nächste logische Schritt ist, die `Incident Reports` in einem Vektor-Index zu speichern und eine semantische Suche zu implementieren. Dadurch kann der Agent Zusammenhänge zwischen Problemen erkennen, die auf reiner Keyword-Ebene nicht sichtbar wären.
-## 3. Analyse der aktuellen Schwächen
-
-Eine ehrliche Analyse zeigt folgende Limitationen des aktuellen Systems (Version 1.0.0):
-
-1.  **Reaktive Fehlererkennung:** Der Agent ist darauf angewiesen, dass ein Mensch einen Fehler meldet. Er besitzt keine eigene Fähigkeit zur Verifikation, ob ein Projekt (z.B. ein Spiel) tatsächlich funktioniert oder nur syntaktisch korrekten Code darstellt. Er kann nicht "sehen" oder "ausprobieren".
-
-2.  **Rudimentäre Wissens-Suche:** Die aktuelle Suche in der Wissensdatenbank ist sehr einfach (Keyword-basiert). Sie kann keine konzeptionellen Ähnlichkeiten zwischen Problemen erkennen, wenn die Schlagwörter nicht übereinstimmen.
-
-3.  **Begrenzte Test-Tiefe:** Test-Driven Development (TDD) ist exzellent für die Logik, aber unzureichend für Aspekte der User Experience (UX) oder des visuellen Designs. Ein Test kann prüfen, ob ein Sprung-Wert korrekt berechnet wird, aber nicht, ob sich der Sprung für den Spieler "gut anfühlt" oder ob die Grafiken korrekt angezeigt werden.
-
-4.  **Fehlende Selbst-Reflexion über den Prozess:** Der Agent folgt dem `agent_manual.md` starr. Wenn der Prozess selbst fehlerhaft oder ineffizient ist, hat der Agent keine Metrik oder Fähigkeit, dies zu erkennen und eine Verbesserung des Manuals vorzuschlagen.
-## 4. Ausblick: Der Pfad zu größerer Autonomie
-
-Basierend auf den aktuellen Schwächen und dem Stand der Forschung im Bereich autonomer Agenten, schlage ich folgende Entwicklungsrichtungen vor, um die nächste Stufe der Autonomie zu erreichen:
-### 4.1 Schritt 1: Proaktive Verifikation & Selbst-Korrektur
-
-Das System muss lernen, seine eigene Arbeit zu überprüfen. Dies kann durch einen neuen Schritt am Ende des Entwicklungszyklus geschehen: die **Verifikations-Phase**.
-
--   **Headless Browser-Tests:** Für Web-Projekte kann der Agent einen Headless Browser (z.B. via Playwright oder Puppeteer) starten, die Seite laden und auf Konsole-Fehler prüfen. Er könnte sogar einfache Interaktionen simulieren (z.B. einen Button klicken).
--   **Visuelle Verifikation (VLM):** Zukünftig könnte der Agent Screenshots seiner erstellten Anwendung an ein multimodales Modell (Visual Language Model, VLM) senden und Fragen stellen wie: "Sieht diese Seite kaputt aus?" oder "Wird das Spiel korrekt gerendert?" Dies wäre ein Quantensprung von der Code-Prüfung zur echten Ergebnis-Prüfung.
-
-Wenn in dieser Phase ein Fehler entdeckt wird, startet der Agent selbstständig einen neuen `Incident-Knowledge-Loop`, ohne auf menschliches Feedback angewiesen zu sein.
-### 4.2 Schritt 2: Implementierung eines echten RAG-Systems
-
-Die aktuelle Wissensdatenbank muss zu einem echten RAG-System ausgebaut werden:
-
-1.  **Embedding:** Jeder `Incident Report` wird beim Speichern durch ein Text-Embedding-Modell in einen Vektor umgewandelt.
-2.  **Vektor-Datenbank:** Diese Vektoren werden in einer spezialisierten Vektor-Datenbank (z.B. ChromaDB, FAISS, Pinecone) gespeichert.
-3.  **Semantische Suche:** Bei der Planung eines neuen Projekts formuliert der Agent eine semantische Anfrage (z.B. "Wie stelle ich sicher, dass die grundlegende Spielmechanik funktioniert?") und erhält die relevantesten vergangenen Lektionen zurück, auch wenn die Keywords nicht exakt passen.
-### 4.3 Schritt 3: Multi-Agenten-Architektur (Spezialisierung)
-
-Statt eines einzigen Agenten, der alles macht, könnte das System in spezialisierte Rollen aufgeteilt werden, die zusammenarbeiten. Dies spiegelt menschliche Software-Teams wider und ist ein aktives Forschungsfeld (z.B. MetaGPT, ChatDev).
-
--   **`Projekt-Manager-Agent`:** Zerlegt die Hauptaufgabe und pflegt die `roadmap.md`.
-### 4.4 Bewertung und Einordnung des Systems
-
-Eine abschließende Bewertung des aktuellen Systems im Kontext der Projektziele und im Vergleich zu bestehenden Ansätzen.
-
-**Systembeschreibung und Architektur**
-
-Das aktuelle System ist ein prozessgesteuerter, autonomer Einzelagent. Seine Architektur ist deterministisch und baut auf dem `agent_manual.md` auf, das als sein operatives Betriebssystem fungiert. Der Lernprozess wird durch einen einfachen 'Incident-to-Knowledge'-Kreislauf initiiert, der jedoch auf externem Feedback beruht. Es ist im Kern ein System, das darauf ausgelegt ist, die komplexe Aufgabe der Softwareentwicklung in ein schrittweises, wiederholbares und nachvollziehbares Verfahren zu zerlegen.
-
-**Vorteile (Pros)**
-
-- **Struktur und Vorhersehbarkeit:** Der starre Rahmen des `agent_manual.md` sorgt für einen extrem disziplinierten und nachvollziehbaren Entwicklungsprozess.
-- **Qualitätssicherung durch TDD:** Der testgetriebene Ansatz stellt die logische Korrektheit jedes implementierten Features sicher.
-- **Grundstein für Lernen:** Der 'Incident-Knowledge-Loop' ist, obwohl rudimentär, eine robuste Grundlage für zukünftige, intelligentere Lernmechanismen wie RAG.
-- **Saubere Git-Historie:** Die automatischen, atomaren Commits pro Feature schaffen eine mustergültige und leicht verständliche Versionsgeschichte.
-
-**Nachteile (Cons)**
-
-- **Reaktivität und 'Blindheit':** Der Agent kann die von ihm erstellten Anwendungen nicht selbstständig 'sehen' oder 'benutzen'. Er ist auf menschliches Feedback zur Fehlererkennung angewiesen.
-- **Starrer Prozess:** Der Agent kann seinen eigenen Arbeitsablauf nicht hinterfragen oder optimieren. Ineffizienzen im `agent_manual.md` werden endlos wiederholt.
-- **Begrenzte Wissensanwendung:** Die simple, keyword-basierte Suche schränkt die Fähigkeit des Agenten, aus vergangenen Erfahrungen zu lernen, stark ein.
-
-**Vergleich mit alternativen Ansätzen**
-
-- **Menschliche Entwickler:** Der größte Unterschied liegt in der fehlenden Intuition, Kreativität und dem echten Verständnis für das Problem. Der Agent 'versteht' nicht, was er baut; er folgt einem Prozess.
-- **Open-Ended Agents (z.B. AutoGPT):** Im Gegensatz zu diesen oft unstrukturierten und unvorhersehbaren Agenten, die in Schleifen geraten können, erzwingt dieses System einen disziplinierten Engineering-Ansatz. Das Ziel ist nicht nur, eine Lösung zu finden, sondern sie auf eine robuste und nachvollziehbare Weise zu konstruieren.
-- **Code-Assistenten (z.B. Copilot):** Während Copilot ein Werkzeug zur Code-Vervollständigung ist, das dem menschlichen Entwickler assistiert, zielt dieses System darauf ab, den gesamten Entwicklungs-Lebenszyklus autonom zu managen – von der Planung über das Testen bis zur Dokumentation.
-
-**Einordnung in das Gesamtziel des 'Self-Learning'**
-
-Das aktuelle System ist ein bewusst gewählter erster Schritt auf dem Weg zu einem sich selbst verbessernden KI-Entwickler. Die rigide Struktur des `agent_manual.md` ist ein notwendiges 'Gerüst', um die enorme Komplexität der Softwareentwicklung handhabbar zu machen. Es dient dazu, den unterkomplexen Kontext, den ein LLM von Natur aus hat, zu strukturieren und zu erweitern.
-
-Die Strategie ist, dieses Gerüst schrittweise abzubauen und durch intelligentere, gelernte Fähigkeiten zu ersetzen. Jeder Entwicklungsschritt (wie die Implementierung von RAG oder die Einführung von Selbst-Verifikation) zielt darauf ab, eine Regel aus dem Handbuch durch einen autonomen Entscheidungsprozess zu ersetzen. Das System ist so konzipiert, dass es seine eigene Intelligenz 'bootstrapped' – es nutzt eine starre Struktur, um die Fähigkeiten zu entwickeln, die es eines Tages befähigen werden, ohne diese Struktur zu operieren.
-## 5. Zukünftige Optimierung: Dynamische Modellauswahl
-
-Eine weitere wichtige Dimension zur Optimierung des Agenten ist die intelligente Nutzung der verfügbaren KI-Modelle. Nicht jede Aufgabe erfordert das leistungsstärkste und teuerste Modell. Eine dynamische Modellauswahl kann die Effizienz und Wirtschaftlichkeit des Systems drastisch erhöhen.
-
-**Konzept: Aufgabenbasierte Modellzuweisung**
-
-Die Idee ist, den Agenten so zu gestalten, dass er je nach Art der Aufgabe das am besten geeignete Modell auswählt:
-
-- **Kostengünstige, schnelle Modelle (z.B. Gemini Flash):** Diese Modelle eignen sich hervorragend für Routineaufgaben, die ein großes Kontextverständnis erfordern, aber weniger komplexe Schlussfolgerungen benötigen. Beispiele:
-    - **Code-Formatierung und Refactoring:** Anwenden von Stilrichtlinien auf große Codebasen.
-    - **Zusammenfassungen erstellen:** Generieren von `README.md` oder anderen Dokumenten aus dem Code.
-    - **Einfache Code-Transformationen:** Umschreiben von Code nach einem klaren Muster.
-
-- **Leistungsstarke, teurere Modelle (z.B. Gemini Pro):** Diese Modelle sollten für die kritischsten und komplexesten Aufgaben reserviert werden, bei denen tiefes 'Nachdenken' und logisches Schließen erforderlich sind. Beispiele:
-    - **Initialplanung und Architektur:** Die erste Zerlegung eines abstrakten Ziels in eine `roadmap.md`.
-    - **Fehleranalyse und Debugging:** Die Analyse eines komplexen Fehlers und die Formulierung einer Hypothese zur Ursache.
-    - **Algorithmen-Design:** Das Schreiben von Kernlogik, die komplexen Anforderungen genügen muss.
-
-**Implementierungsansatz**
-
-Die Implementierung könnte über eine vorgeschaltete 'Router'- oder 'Dispatcher'-Logik erfolgen. Bevor der Agent eine Aufgabe ausführt, klassifiziert er sie anhand von Metadaten (z.B. Tags in der `roadmap.md` wie `[LOGIC]`, `[DOCS]`) und leitet die Anfrage an die entsprechende Modell-API weiter.
-
-**Voraussetzung:** Dies setzt voraus, dass die verwendete Inferenz-API (z.B. die Gemini-API) den programmatischen Wechsel des Modells für einen Aufruf erlaubt. Dies müsste im Detail geprüft werden. Sollte dies möglich sein, könnte der Agent seinen Token-Verbrauch pro Tag optimieren und die leistungsstarken Modelle gezielt dort einsetzen, wo sie den größten Mehrwert bringen.
+| Kriterium | Prozess-getriebener Ansatz (Dieses Projekt) | Open-Ended Ansatz (z.B. AutoGPT) |
+| :--- | :--- | :--- |
+| **Grundprinzip** | Ein rigider, vordefinierter Prozess (`agent_manual.md`) strukturiert jeden Schritt. | Der Agent entscheidet bei jedem Schritt selbst, was als Nächstes zu tun ist. |
+| **Vorteile** | **Vorhersehbar, robust, hohe Qualität.** | **Flexibel, kreativ, potenziell schnellere Lösungen.** |
+| **Nachteile** | **Weniger flexibel, langsamere Iteration.** | **Anfällig für Schleifen, unvorhersehbar, oft geringere Code-Qualität.** |
