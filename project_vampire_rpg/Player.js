@@ -1,8 +1,9 @@
 
 class Player {
-    constructor(scene, inputController) {
+    constructor(scene, inputController, camera) {
         this.scene = scene;
         this.inputController = inputController;
+        this.camera = camera; // Store the camera reference
         this.model = this._createModel();
         this.scene.add(this.model);
 
@@ -52,22 +53,31 @@ class Player {
 
     update(deltaTime) {
         // Flight mode toggle
-        if (this.inputController.keys['f'] && !this.fKeyDown) {
+        if (this.inputController.isPressed('KeyF') && !this.fKeyDown) {
             this.isFlying = !this.isFlying;
             this.velocity.y = 0; // Reset vertical velocity when toggling
         }
-        this.fKeyDown = this.inputController.keys['f'];
+        this.fKeyDown = this.inputController.isPressed('KeyF');
+
+        const camera = this.camera.camera; // Get the actual THREE.Camera
 
         if (this.isFlying) {
-            this._handleFlying(deltaTime);
+            this._handleFlying(deltaTime, camera);
         } else {
-            this._handleWalking(deltaTime);
+            this._handleWalking(deltaTime, camera);
         }
 
         // Apply velocity
         this.model.position.x += this.velocity.x * deltaTime;
         this.model.position.y += this.velocity.y * deltaTime;
         this.model.position.z += this.velocity.z * deltaTime;
+        
+        // Rotate player to face movement direction
+        if (this.velocity.x !== 0 || this.velocity.z !== 0) {
+            const angle = Math.atan2(this.velocity.x, this.velocity.z);
+            this.model.rotation.y = angle;
+        }
+
 
         // Ground collision
         if (!this.isFlying && this.model.position.y < 0.75) {
@@ -77,23 +87,30 @@ class Player {
         }
     }
 
-    _handleWalking(deltaTime) {
+    _handleWalking(deltaTime, camera) {
         // Apply gravity
         this.velocity.y += this.gravity * deltaTime;
 
-        // Basic movement
+        // Get camera direction
+        const forward = new THREE.Vector3();
+        camera.getWorldDirection(forward);
+        forward.y = 0;
+        forward.normalize();
+
+        const right = new THREE.Vector3().crossVectors(camera.up, forward).normalize();
+
         let moveDirection = new THREE.Vector3(0, 0, 0);
-        if (this.inputController.keys['w']) {
-            moveDirection.z -= 1;
+        if (this.inputController.isPressed('KeyW')) {
+            moveDirection.add(forward);
         }
-        if (this.inputController.keys['s']) {
-            moveDirection.z += 1;
+        if (this.inputController.isPressed('KeyS')) {
+            moveDirection.sub(forward);
         }
-        if (this.inputController.keys['a']) {
-            moveDirection.x -= 1;
+        if (this.inputController.isPressed('KeyA')) {
+            moveDirection.add(right);
         }
-        if (this.inputController.keys['d']) {
-            moveDirection.x += 1;
+        if (this.inputController.isPressed('KeyD')) {
+            moveDirection.sub(right);
         }
 
         moveDirection.normalize();
@@ -101,30 +118,36 @@ class Player {
         this.velocity.z = moveDirection.z * this.moveSpeed;
 
         // Jumping
-        if (this.inputController.keys[' '] && !this.isJumping) {
+        if (this.inputController.isPressed('Space') && !this.isJumping) {
             this.velocity.y = this.jumpHeight;
             this.isJumping = true;
         }
     }
 
-    _handleFlying(deltaTime) {
+    _handleFlying(deltaTime, camera) {
+        const forward = new THREE.Vector3();
+        camera.getWorldDirection(forward);
+        // No Y normalization for flying
+
+        const right = new THREE.Vector3().crossVectors(camera.up, forward).normalize();
+
         let moveDirection = new THREE.Vector3(0, 0, 0);
-        if (this.inputController.keys['w']) {
-            moveDirection.z -= 1;
+        if (this.inputController.isPressed('KeyW')) {
+            moveDirection.add(forward);
         }
-        if (this.inputController.keys['s']) {
-            moveDirection.z += 1;
+        if (this.inputController.isPressed('KeyS')) {
+            moveDirection.sub(forward);
         }
-        if (this.inputController.keys['a']) {
-            moveDirection.x -= 1;
+        if (this.inputController.isPressed('KeyA')) {
+            moveDirection.add(right);
         }
-        if (this.inputController.keys['d']) {
-            moveDirection.x += 1;
+        if (this.inputController.isPressed('KeyD')) {
+            moveDirection.sub(right);
         }
-        if (this.inputController.keys[' ']) { // Fly up
+        if (this.inputController.isPressed('Space')) { // Fly up
             moveDirection.y += 1;
         }
-        if (this.inputController.keys['shift']) { // Fly down
+        if (this.inputController.isPressed('ShiftLeft') || this.inputController.isPressed('ShiftRight')) { // Fly down
             moveDirection.y -= 1;
         }
 

@@ -30,3 +30,12 @@ This process should be run intentionally and is not part of the standard onboard
 *   **How to run it:** Simply ask the agent: **`"Run a deep analysis"`**.
 
 *   **Process Details:** For the detailed steps the agent follows to create this report, consult the `process_deep_analysis.md` file.
+
+---
+
+## 3. Core Capabilities
+
+The agent possesses several core capabilities that are documented in the `knowledge_base` directory. Understanding these is key to leveraging the agent effectively.
+
+*   **Mandatory Verification for Web Projects:** When working on a project that results in a web interface (e.g., a game, a web app), the agent **must** verify its work by using its browser automation capabilities. This involves launching the application on a local server and using the `browser_*` tools to ensure it loads and functions correctly. The technical details of this process are documented in the [Browser Automation via MCP Server](./knowledge_base/mcp_server_guide.md) guide.
+

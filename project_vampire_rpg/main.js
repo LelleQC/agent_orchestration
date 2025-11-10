@@ -30,11 +30,13 @@ const world = new World(scene);
 // Input Controller
 const inputController = new InputController();
 
-// Player
-const player = new Player(scene, inputController);
-
 // Camera
-const thirdPersonCamera = new ThirdPersonCamera(camera, player.model);
+const thirdPersonCamera = new ThirdPersonCamera(camera, null);
+
+// Player
+const player = new Player(scene, inputController, thirdPersonCamera);
+
+thirdPersonCamera.target = player.model;
 
 // Handle Window Resizing
 function onWindowResize() {
