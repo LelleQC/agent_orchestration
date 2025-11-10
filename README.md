@@ -134,7 +134,27 @@ Dies ist ein Leitfaden für die nächsten Entwicklungsschritte, um die Autonomie
 -   **`Tester-Agent`:** Schreibt die Tests und führt die in Schritt 1 definierte Verifikation durch.
 -   **`Doku-Agent`:** Schreibt die Dokumentation, nachdem die Features implementiert und getestet wurden.
 
+**Orchestrierung durch Gemini CLI (mit Gemini 1.5 Pro):**
+Die Gemini CLI, die den Hauptagenten mit Gemini 1.5 Pro ausführt, kann als zentraler Orchestrator für das Multi-Agenten-System dienen.
+
+*   **High-Level-Planung:** Gemini 1.5 Pro übernimmt die komplexe Aufgabenzerlegung, die Generierung der `roadmap.md` und die übergeordnete Koordination.
+*   **Aufgabenzuweisung:** Der Orchestrator weist spezifische Unteraufgaben an spezialisierte Sub-Agenten zu.
+*   **Kommunikationszentrale:** Verwaltet den Input und Output zwischen den Sub-Agenten.
+*   **Entscheidungsfindung bei Komplexität:** Greift bei Konflikten ein oder wenn Sub-Agenten auf unvorhergesehene Herausforderungen stoßen.
+
+**Integration weiterer Modelle für Token-Effizienz:**
+Um Kosten und Effizienz zu optimieren, kann der Orchestrator dynamisch verschiedene Modelle für spezifische Aufgaben nutzen:
+
+*   **Gemini Flash (oder ähnliche schnelle/günstige Modelle):** Ideal für Routineaufgaben mit geringerer Komplexität, z.B. Code-Formatierung, einfache Dokumentationsgenerierung oder grundlegendes Test-Scaffolding.
+*   **Externe Modelle/APIs (z.B. über Callpin, spezialisierte LLMs):** Für sehr spezifische Aufgaben, bei denen ein spezialisiertes Modell überlegen sein könnte, z.B. Code-Generierung für eine bestimmte Sprache/Framework, fortgeschrittene natürliche Sprachverarbeitung oder Bildanalyse.
+*   **Mechanismus:** Der Orchestrator (Gemini 1.5 Pro) wählt das passende Modell dynamisch basierend auf der Komplexität der Unteraufgabe, Kostenüberlegungen und den erforderlichen Fähigkeiten aus. Dies kann über Tool-Aufrufe an verschiedene Modell-APIs implementiert werden.
+
 **Ergebnis:** Höhere Spezialisierung und Effizienz, robustere Ergebnisse durch "Cross-Validation" zwischen den Agenten und eine klarere Trennung der Verantwortlichkeiten.
+
+### Schritt 4 (Zukunft): Dynamische Modellauswahl & Selbst-Reflexion
+
+-   **Dynamische Modellauswahl:** Der Agent wählt je nach Aufgabe das passende Modell aus (z.B. ein schnelles, günstiges Modell für Dokumentation; ein leistungsstarkes Modell für die Architekturplanung), um Kosten und Effizienz zu optimieren.
+-   **Prozess-Selbst-Reflexion:** Der Agent analysiert seine eigene Performance (z.B. Anzahl der Fehler, benötigte Zeit) und schlägt proaktiv Verbesserungen für sein eigenes "Betriebssystem" (`agent_manual.md`) vor.
 
 ### 4.5 Analyse der Roadmap-Schritte und Integrationsstrategien
 
@@ -188,7 +208,31 @@ Ein solches Gesamtsystem könnte als eine Art "Meta-Agent" oder "Orchestrator" k
 
 Die Parallelintegration verschiedener Agenten-Architekturen ist nicht nur sinnvoll, sondern der logische nächste Schritt, um ein wirklich fortschrittliches und autonomes System zu schaffen. Es ermöglicht eine maßgeschneiderte Aufgabenbearbeitung, maximiert die Effizienz und legt den Grundstein für einen Agenten, der nicht nur Aufgaben löst, sondern auch seine eigene Arbeitsweise optimiert. Dieses Projekt ist ideal positioniert, um solche hybriden Ansätze zu erforschen und zu implementieren.
 
+### 4.6 Repository-Struktur für modulare Agenten-Architekturen
+
+Um verschiedene Agenten-Architekturen (Single-Agent, Agentic RAG, Multi-Agent) sinnvoll in diesem Repository zu integrieren und eine klare Trennung sowie Skalierbarkeit zu gewährleisten, wird folgende Struktur vorgeschlagen:
+
+*   **`agents/`**: Das Hauptverzeichnis für alle Agenten-Implementierungen.
+    *   **`agents/single_agent/`**: Beherbergt die Logik des aktuellen Single-Agenten. Dies kann entweder der Kern des Hauptagenten sein oder eine eigenständige Implementierung, die als Basis für andere Architekturen dient.
+    *   **`agents/rag_agent/`**: Enthält Komponenten, die spezifisch für die RAG-Implementierung sind. Dazu gehören Skripte für das Setup der Vektor-Datenbank, die Embedding-Logik und die Retrieval-Funktionen.
+    *   **`agents/multi_agent/`**: Beinhaltet die Orchestrator-Logik und die Definitionen für spezialisierte Sub-Agenten (z.B. `manager_agent.py`, `coder_agent.py`, `tester_agent.py`).
+    *   **`agents/common/`**: Hier werden gemeinsam genutzte Dienstprogramme, Tools und Schnittstellen abgelegt, die von allen Agententypen verwendet werden können.
+
+Diese Struktur ermöglicht es, neue Agenten-Architekturen modular hinzuzufügen, ohne die bestehenden Implementierungen zu beeinträchtigen, und fördert die Wiederverwendbarkeit von Code.
+
+### 4.7 Qualitätssicherung und State-of-the-Art-Ansatz
+
+Um sicherzustellen, dass die integrierten Systeme stets eine hohe Qualität aufweisen und keine wichtigen Aspekte übersehen werden, sind folgende Mechanismen entscheidend:
+
+*   **Kontinuierliches Benchmarking:** Das im Abschnitt "5. Measuring Success: A Framework for Evaluating Agent Learning" definierte A/B-Test-Framework sollte regelmäßig für *jede* integrierte Agenten-Architektur angewendet werden. Dies liefert quantitative Daten über die Performance und den Lernfortschritt.
+*   **Architektur-Reviews & Dokumentation:** Für jede Agenten-Architektur muss eine detaillierte Dokumentation des Designs, des Entscheidungsprozesses und der Tool-Nutzung gepflegt werden. Regelmäßige (simulierte oder menschliche) Reviews helfen, potenzielle Lücken oder Fehlentwicklungen frühzeitig zu erkennen.
+*   **Erweiterung der Wissensbasis:** Neue Erkenntnisse, Best Practices und häufige Fallstricke, die bei der Entwicklung oder dem Betrieb der verschiedenen Agententypen auftreten, müssen proaktiv in die `knowledge_base` aufgenommen werden. Dies stellt sicher, dass das gesamte System aus Erfahrungen lernt.
+*   **Test-Driven Development (TDD) für Agenten-Logik:** Die Prinzipien des TDD sollten nicht nur auf den vom Agenten generierten Code angewendet werden, sondern auch auf die eigene Entscheidungslogik und die Tool-Interaktionen des Agenten. Dies erhöht die Robustheit und Vorhersagbarkeit des Agentenverhaltens.
+*   **Human-in-the-Loop (für kritische Entscheidungen/Lernprozesse):** Für wirklich neuartige oder risikoreiche Aufgaben bleibt menschliche Aufsicht und Feedback unerlässlich. Dies ermöglicht es dem System, aus komplexen Situationen zu lernen und Kurskorrekturen vorzunehmen, die über die aktuellen autonomen Fähigkeiten hinausgehen.
+
 ---
+
+## 5. Measuring Success: A Framework for Evaluating Agent Learning
 
 How do we know if the agent is truly *learning*? To answer this, we need a structured way to measure its performance over time and prove that the `knowledge_base` has a tangible, positive impact. Your idea of an A/B test is the perfect foundation for this.
 
