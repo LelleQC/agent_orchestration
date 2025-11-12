@@ -22,3 +22,6 @@ Thumbs.db
 
 # Gemini specific
 .gemini/
+
+# Python virtual environment
+**/.venv/

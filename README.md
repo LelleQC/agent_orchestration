@@ -423,3 +423,14 @@ The movement system is now correctly implemented. The browser tools were invalua
 | **Grundprinzip** | Ein rigider, vordefinierter Prozess (`agent_manual.md`) strukturiert jeden Schritt. | Der Agent entscheidet bei jedem Schritt selbst, was als Nächstes zu tun ist. |
 | **Vorteile** | **Vorhersehbar, robust, hohe Qualität.** | **Flexibel, kreativ, potenziell schnellere Lösungen.** |
 | **Nachteile** | **Weniger flexibel, langsamere Iteration.** | **Anfällig für Schleifen, unvorhersehbar, oft geringere Code-Qualität.** |
+
+---
+
+## 8. Abgeschlossene Projekte
+
+### 8.1 Projekt: Haushaltsroboter Simulation (`project_household_robot`)
+
+*   **Status:** Erfolgreich abgeschlossen.
+*   **Ziel:** Einrichtung einer funktionierenden Simulation des XLeRobot in CoppeliaSim, steuerbar über Python.
+*   **Ergebnis:** Die Simulation ist vollständig konfiguriert. Der Roboter kann über die ZMQ Remote API mit den bereitgestellten Python-Skripten (`control_arm.py`) gesteuert werden.
+*   **Dokumentation:** Eine vollständige, neu organisierte Dokumentation befindet sich im Ordner `project_household_robot/docs/`. Sie enthält ein Tutorial, ein Entwicklerhandbuch und einen detaillierten Projektbericht über die aufgetretenen Herausforderungen und deren Lösungen.

@@ -1,0 +1,152 @@
+C:\Users\lenna\Documents\AI_projects\agent_orchestration\project_household_robot\simulation\xlerobot_simulation\XLeRobot_orign_repo\simulation\
+├───Isaac_sim\
+│   ├───readme.md
+│   └───xlerobot.zip
+├───Maniskill\
+│   ├───agents\
+│   │   └───xlerobot\
+│   │       ├───xlerobot.py
+│   │       └───__init__.py
+│   ├───assets\
+│   │   └───xlerobot\
+│   │       ├───meshes\
+│   │       │   ├───Base.stl
+│   │       │   ├───Base.stl.convex.stl
+│   │       │   ├───Base_Motor.stl
+│   │       │   ├───Base_Motor.stl.convex.stl
+│   │       │   ├───Fixed_Jaw.stl
+│   │       │   ├───Fixed_Jaw.stl.convex.stl
+│   │       │   ├───Fixed_Jaw_Motor.stl
+│   │       │   ├───Fixed_Jaw_Motor.stl.convex.stl
+│   │       │   ├───Fixed_Jaw_part1.ply
+│   │       │   ├───Fixed_Jaw_part1.ply.convex.stl
+│   │       │   ├───Fixed_Jaw_part2.ply
+│   │       │   ├───Fixed_Jaw_part2.ply.convex.stl
+│   │       │   ├───Lower_Arm.stl
+│   │       │   ├───Lower_Arm.stl.convex.stl
+│   │       │   ├───Lower_Arm_Motor.stl
+│   │       │   ├───Lower_Arm_Motor.stl.convex.stl
+│   │       │   ├───Moving_Jaw.stl
+│   │       │   ├───Moving_Jaw.stl.convex.stl
+│   │       │   ├───Moving_Jaw_part1.ply
+│   │       │   ├───Moving_Jaw_part1.ply.convex.stl
+│   │       │   ├───Moving_Jaw_part2.ply
+│   │       │   ├───Moving_Jaw_part2.ply.convex.stl
+│   │       │   ├───Moving_Jaw_part3.ply
+│   │       │   ├───Moving_Jaw_part3.ply.convex.stl
+│   │       │   ├───raskogbody.stl
+│   │       │   ├───raskogwheel1.stl
+│   │       │   ├───raskogwheel2.stl
+│   │       │   ├───Rotation_Pitch.stl
+│   │       │   ├───Rotation_Pitch.stl.convex.stl
+│   │       │   ├───Rotation_Pitch_Motor.stl
+│   │       │   ├───Rotation_Pitch_Motor.stl.convex.stl
+│   │       │   ├───topbase1.stl
+│   │       │   ├───topbase2.stl
+│   │       │   ├───tophead3.stl
+│   │       │   ├───tophead4.stl
+│   │       │   ├───tophead5.stl
+│   │       │   ├───tophead6.stl
+│   │       │   ├───Upper_Arm.stl
+│   │       │   ├───Upper_Arm.stl.convex.stl
+│   │       │   ├───Upper_Arm_Motor.stl
+│   │       │   ├───Upper_Arm_Motor.stl.convex.stl
+│   │       │   ├───Wrist_Pitch_Roll.stl
+│   │       │   ├───Wrist_Pitch_Roll.stl.convex.stl
+│   │       │   ├───Wrist_Pitch_Roll_Motor.stl
+│   │       │   ├───Wrist_Pitch_Roll_Motor.stl.convex.stl
+│   │       │   ├───XLeRobot_camera1.stl
+│   │       │   └───XLeRobot_camera2.stl
+│   │       ├───xlerobot.srdf
+│   │       ├───xlerobot.urdf
+│   │       └───xlerobot_front.urdf
+│   ├───envs\
+│   │   └───scenes\
+│   │       └───base_env.py
+│   ├───examples\
+│   │   ├───demo_ctrl_action.py
+│   │   ├───demo_ctrl_action_ee_cam_rerun.py
+│   │   ├───demo_ctrl_action_ee_keyboard.py
+│   │   ├───demo_ctrl_action_ee_keyboard_single.py
+│   │   ├───demo_ctrl_action_ee_VR.py
+│   │   ├───demo_ctrl_action_ee_xbox.py
+│   │   ├───demo_ctrl_ee_keyboard_record_dataset.py
+│   │   ├───test_xbox.py
+│   │   └───vr_monitor.py
+│   ├───readme.md
+│   ├───run_xlerobot_sim.py
+│   └───run_xlerobot_sim_host.py
+├───mujoco\
+│   ├───assets\
+│   │   ├───3_8-Hex-Bore-Plastic-VersaHub-217-5828-v2-1.stl
+│   │   ├───3_8-Hex-Bore-Plastic-VersaHub-217-5828-v2-2.stl
+│   │   ├───3_8-Hex-Bore-Plastic-VersaHub-217-5828-v2.stl
+│   │   ├───94868A713_NO-THREADS_Female-Threaded-Hex-Standoff-1.stl
+│   │   ├───94868A713_NO-THREADS_Female-Threaded-Hex-Standoff-2.stl
+│   │   ├───94868A713_NO-THREADS_Female-Threaded-Hex-Standoff-3.stl
+│   │   ├───94868A713_NO-THREADS_Female-Threaded-Hex-Standoff.stl
+│   │   ├───Base.stl
+│   │   ├───Base_08q-v1.stl
+│   │   ├───Base_Motor.stl
+│   │   ├───base_plate_layer1-v5-1.stl
+│   │   ├───base_plate_layer2-v1.stl
+│   │   ├───Battery---Battery-5.2-Ah-DC5521-Plug-v2.stl
+│   │   ├───Bottom-V2-v3.stl
+│   │   ├───Camera-Model-v3.stl
+│   │   ├───Camera-Mount-v6.stl
+│   │   ├───drive_motor_mount-v4-1.stl
+│   │   ├───drive_motor_mount-v4-2.stl
+│   │   ├───drive_motor_mount-v4-3.stl
+│   │   ├───drive_motor_mount-v4.stl
+│   │   ├───Fixed_Jaw.stl
+│   │   ├───Fixed_Jaw_Collision_1.stl
+│   │   ├───Fixed_Jaw_Collision_2.stl
+│   │   ├───Fixed_Jaw_Motor.stl
+│   │   ├───Fixed_Jaw_part1.stl
+│   │   ├───Fixed_Jaw_part2.stl
+│   │   ├───lipo_battery_mount-v1.stl
+│   │   ├───Lower_Arm.stl
+│   │   ├───Lower_Arm_Motor.stl
+│   │   ├───Moving_Jaw.stl
+│   │   ├───Moving_Jaw_08d-v1.stl
+│   │   ├───Moving_Jaw_Collision_1.stl
+│   │   ├───Moving_Jaw_Collision_2.stl
+│   │   ├───Moving_Jaw_Collision_3.stl
+│   │   ├───Moving_Jaw_part1.stl
+│   │   ├───Moving_Jaw_part2.stl
+│   │   ├───Moving_Jaw_part3.stl
+│   │   ├───Passive_Horn_01-v1.stl
+│   │   ├───Rotation_Pitch.stl
+│   │   ├───Rotation_Pitch_08i-v1.stl
+│   │   ├───Rotation_Pitch_Motor.stl
+│   │   ├───servo_controller_mount-v1.stl
+│   │   ├───simplify_4-Omni-Directional-Wheel_Single_Body-v1-1.stl
+│   │   ├───simplify_4-Omni-Directional-Wheel_Single_Body-v1-2.stl
+│   │   ├───simplify_4-Omni-Directional-Wheel_Single_Body-v1.stl
+│   │   ├───SO_ARM100_08k_116_Square-v1.stl
+│   │   ├───SO_ARM100_08k_Asym_Mirror_Clip-v1.stl
+│   │   ├───SO_ARM100_08k_Mirror-v1.stl
+│   │   ├───ST3215_Servo_Motor-v1-1.stl
+│   │   ├───ST3215_Servo_Motor-v1-2.stl
+│   │   ├───ST3215_Servo_Motor-v1.stl
+│   │   ├───STS3215_03a-v1-1.stl
+│   │   ├───STS3215_03a-v1-2.stl
+│   │   ├───STS3215_03a-v1-3.stl
+│   │   ├───STS3215_03a-v1-4.stl
+│   │   ├───STS3215_03a-v1.stl
+│   │   ├───STS3215_03a_Wrist_Roll-v1.stl
+│   │   ├───Top-V2-v2.stl
+│   │   ├───Upper_Arm.stl
+│   │   ├───Upper_Arm_Motor.stl
+│   │   ├───WaveShare_Mounting_Plate_01d-v1.stl
+│   │   ├───Wrist_Pitch_Roll.stl
+│   │   ├───Wrist_Pitch_Roll_Motor.stl
+│   │   ├───Wrist_Roll_08c-v1.stl
+│   │   └───Wrist_Roll_Pitch_08i-v1.stl
+│   ├───README.md
+│   ├───requirements.txt
+│   ├───scene.xml
+│   ├───xlerobot.xml
+│   └───xlerobot_mujoco.py
+├───README_CoppeliaSim.md
+└───xlerobot_coppeliasim.py
