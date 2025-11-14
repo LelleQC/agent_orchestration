@@ -1,0 +1,1582 @@
+
+
+Legacy remote API functions (Python)
+simxAddStatusbarMessage
+
+Description	Adds a message to the status bar.
+Python
+synopsis	number returnCode=simxAddStatusbarMessage(number clientID,string message,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+message: the message to display
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxAppendStringSignal
+
+Description	Deprecated. Refer to simxWriteStringStream instead.
+
+Appends a string to a string signal. If that signal is not yet present, it is added. To pack/unpack integers/floats into/from a string, refer to simxPackInts, simxPackFloats, simxUnpackInts and simxUnpackFloats. See also simxSetStringSignal.
+Python
+synopsis	number returnCode=simxAppendStringSignal(number clientID,string signalName,string signalValueToAppend,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+signalName: name of the signal
+signalValueToAppend: value to append to the signal. That value may contain any value, including embedded zeros.
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxAuxiliaryConsoleClose
+
+Description	Closes an auxiliary console window. See also simxAuxiliaryConsoleOpen.
+Python
+synopsis	number returnCode=simxAuxiliaryConsoleClose(number clientID,number consoleHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+consoleHandle: the handle of the console window, previously returned by the simxAuxiliaryConsoleOpen command
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxAuxiliaryConsoleOpen
+
+Description	Opens an auxiliary console window for text display. This console window is different from the application main console window. Console window handles are shared across all simulator scenes. See also simxAuxiliaryConsolePrint, simxAuxiliaryConsoleShow and simxAuxiliaryConsoleClose.
+Python
+synopsis	number returnCode,number consoleHandle=simxAuxiliaryConsoleOpen(number clientID,string title,number maxLines,number mode,array position,array size,array textColor,array backgroundColor,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+title: the title of the console window
+maxLines: the number of text lines that can be displayed and buffered
+mode: bit-coded value. Bit0 set indicates that the console window will automatically close at simulation end, bit1 set indicates that lines will be wrapped, bit2 set indicates that the user can close the console window, bit3 set indicates that the console will automatically be hidden during simulation pause, bit4 set indicates that the console will not automatically hide when the user switches to another scene.
+position: the initial position of the console window (x and y value). Can be None for default values.
+size: the initial size of the console window (x and y value). Can be None for default values.
+textColor: the color of the text (rgb values, 0-1). Can be None for default values.
+backgroundColor: the background color of the console window (rgb values, 0-1). Can be None for default values.
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+consoleHandle: the handle of the created console
+Other languages	C/C++, Java, Matlab, Octave
+
+simxAuxiliaryConsolePrint
+
+Description	Prints to an auxiliary console window. See also simxAuxiliaryConsoleOpen.
+Python
+synopsis	number returnCode=simxAuxiliaryConsolePrint(number clientID,number consoleHandle,string txt,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+consoleHandle: the handle of the console window, previously returned by the simxAuxiliaryConsoleOpen command
+txt: the text to append, or "None" to clear the console window
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxAuxiliaryConsoleShow
+
+Description	Shows or hides an auxiliary console window. See also simxAuxiliaryConsoleOpen and simxAuxiliaryConsoleClose.
+Python
+synopsis	number returnCode=simxAuxiliaryConsoleShow(number clientID,number consoleHandle,number showState,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+consoleHandle: the handle of the console window, previously returned by the simxAuxiliaryConsoleOpen command
+showState: indicates whether the console should be hidden (0) or shown (!=0)
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxCallScriptFunction
+
+Description	Remotely calls a CoppeliaSim script function. When calling simulation scripts, then simulation must be running. Refer to this section for additional details.
+Python
+synopsis	number returnCode,array outInts,array outFloats,array outStrings,string outBuffer=simxCallScriptFunction(number clientID,string scriptName,number scriptHandleOrType,string functionName,array inInts,array inFloats,array inStrings,string inBuffer,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+scriptName: an empty string, or:
+if scriptHandleOrType is sim_scripttype_childscript (1) or sim_scripttype_customizationscript (6), then this should be the path to the scene object this script is attached to (e.g. "/path/to/object")
+if scriptHandleOrType is sim_scripttype_addonscript (2), then this should be the name of the add-on (e.g. "Isometric scaling;)
+scriptHandleOrType: the handle of the script, otherwise the type of the script
+functionName: the name of the script function to call in the specified script.
+inInts: the input integer values that are handed over to the script function. Can be [].
+inFloats: the input floating-point values that are handed over to the script function. Can be [].
+inStrings: the input strings that are handed over to the script function. Can be [].
+inBuffer: the input buffer that is handed over to the script function. Should be a bytearray.
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+outInts: the returned integer values.
+outFloats: the returned floating-point values.
+outStrings: the returned strings.
+outBuffer: the returned buffer.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxCheckCollision
+
+Description	Checks whether two entities collide.
+Python
+synopsis	number returnCode,bool collisionState=simxCheckCollision(number clientID,number entity1,number entity2,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+entity1: the handle of the first entity.
+entity2: the handle of the second entity.
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+collisionState: the collision state
+Other languages	C/C++, Java, Matlab, Octave
+
+simxCheckDistance
+
+Description	Measures the distance between two entities.
+Python
+synopsis	number returnCode,number minimumDistance=simxCheckDistance(number clientID,number distanceObjectHandle, number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+entity1: the handle of the first entity.
+entity2: the handle of the second entity.
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+minimumDistance: the minimum distance.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxClearFloatSignal
+
+Description	Clears a float signal (removes it). See also simxSetFloatSignal, simxClearInt32Signal and simxClearStringSignal.
+Python
+synopsis	number returnCode=simxClearFloatSignal(number clientID,string signalName,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+signalName: name of the signal
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxClearInt32Signal
+
+Description	Clears an integer signal (removes it). See also simxSetInt32Signal, simxClearFloatSignal and simxClearStringSignal.
+Python
+synopsis	number returnCode=simxClearInt32Signal(number clientID,string signalName,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+signalName: name of the signal
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxClearStringSignal
+
+Description	Clears a string signal (removes it). See also simxSetStringSignal, simxClearInt32Signal and simxClearFloatSignal.
+Python
+synopsis	number returnCode=simxClearStringSignal(number clientID,string signalName,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+signalName: name of the signal
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxCloseScene
+
+Description	Closes current scene, and switches to another open scene. If there is no other open scene, a new scene is then created. Should only be called when simulation is not running and is only executed by continuous remote API server services. See also simxLoadScene.
+Python
+synopsis	number returnCode=simxCloseScene(number clientID,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxCopyPasteObjects
+
+Description	Copies and pastes objects, together with all their associated child scripts. To copy and paste whole models, you can simply copy and paste the model base object.
+Python
+synopsis	number returnCode,array newObjectHandles=simxCopyPasteObjects(number clientID,array objectHandles,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandles: an array containing the handles of the objects to copy
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+newObjectHandles: an array containing the handles of newly created objects. Individual objects of a new model are not returned, but only the model base.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxCreateBuffer
+
+Description	Creates a buffer. The buffer needs to be released with simxReleaseBuffer except otherwise explicitly specified. This is a remote API helper function.
+Python
+synopsis	charPointer buffer=simxCreateBuffer(number bufferSize)
+Python parameters	
+bufferSize: size of the buffer in bytes
+Python return values	
+buffer: the created buffer
+Other languages	C/C++, Matlab
+
+simxCreateDummy
+
+Description	Creates a dummy in the scene.
+Python
+synopsis	number returnCode,number dummyHandle=simxCreateDummy(number clientID,number size,array colors,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+size: the size of the dummy.
+colors: 4*3 bytes (0-255) for ambient_diffuse RGB, 3 reserved values (set to zero), specular RGB and emissive RGB. Can be None for default colors.
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return value	
+returnCode: a remote API function return code
+dummyHandle: handle of the created dummy.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxDisplayDialog
+
+Description	Displays a generic dialog box during simulation (and only during simulation!). Use in conjunction with simxGetDialogResult, simxGetDialogInput and simxEndDialog. Use custom user interfaces instead if a higher customization level is required.
+Python
+synopsis	number returnCode,number dialogHandle,number uiHandle=simxDisplayDialog(number clientID,string titleText,string mainText,number dialogType,string initialText,array titleColors,array dialogColors,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+titleText: Title bar text
+mainText: Information text
+dialogType: a generic dialog style
+initialText: Initial text in the edit box if the dialog is of type sim_dlgstyle_input. Cannot be None.
+titleColors: Title bar color (6 values for RGB for background and foreground). Can be None for default values.
+dialogColors: Dialog color (6 values for RGB for background and foreground). Can be None for default Values.
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+dialogHandle: handle of the generic dialog (different from OpenGl-based custom UI handle!! (see hereafter)). This handle should be used with the following functions: simxGetDialogResult, simxGetDialogInput and simxEndDialog.
+uiHandle: the handle of the corresponding OpenGl-based custom UI
+Other languages	C/C++, Java, Matlab, Octave
+
+simxEndDialog
+
+Description	Closes and releases resource from a previous call to simxDisplayDialog. Even if the dialog is not visible anymore, you should release resources by using this function (however at the end of a simulation, all dialog resources are automatically released).
+Python
+synopsis	number returnCode=simxEndDialog(number clientID,number dialogHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+dialogHandle: handle of generic dialog (return value of simxDisplayDialog)
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxEraseFile
+
+Description	Erases a file on the server side. This function is used by several other functions internally (e.g. simxLoadModel). See also simxTransferFile. This is a remote API helper function.
+Python
+synopsis	number returnCode=simxEraseFile(number clientID,string fileName_serverSide,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+fileName_serverSide: the file to erase on the server side. For now, do not specify a path (the file will be erased in the remote API plugin directory)
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxFinish
+
+Description	Ends the communication thread. This should be the very last remote API function called on the client side. simxFinish should only be called after a successfull call to simxStart. This is a remote API helper function.
+Python
+synopsis	simxFinish(number clientID)
+Python parameters	
+clientID: the client ID. refer to simxStart. Can be -1 to end all running communication threads.
+Python return values	
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetAndClearStringSignal
+
+Description	Deprecated. Refer to simxReadStringStream instead.
+
+Gets the value of a string signal, then clears it. Useful to retrieve continuous data from the server. To pack/unpack integers/floats into/from a string, refer to simxPackInts, simxPackFloats, simxUnpackInts and simxUnpackFloats. See also simxGetStringSignal.
+Python
+synopsis	number returnCode,string signalValue=simxGetAndClearStringSignal(number clientID,string signalName,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+signalName: name of the signal
+operationMode: a remote API function operation mode. Since this function will clear a read signal, and we cannot afford to wait for a reply (well, we could, but that would mean a blocking operation), the function operates in a special mode and should be used as in following example:
+
+'''Initialization phase:''' err,signal=sim.simxGetAndClearStringSignal( clientID,"sig",sim.simx_opmode_streaming) '''while we are connected:''' while sim.simxGetConnectionId(clientID) != -1: err,signal=sim.simxGetAndClearStringSignal( clientID,"sig",sim.simx_opmode_buffer) if (err==sim.simx_return_ok): '''A signal was retrieved.''' '''Enable streaming again (was automatically disabled with the positive event):''' err,signal=sim.simxGetAndClearStringSignal( clientID,"sig",sim.simx_opmode_streaming) ..
+Python return values	
+returnCode: a remote API function return code
+signalValue: the value of the signal.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetArrayParam
+
+Description	Retrieves 3 values from an array. See the array parameter identifiers. See also simxSetArrayParam, simxGetBoolParam, simxGetInt32Param, simxGetFloatParam and simxGetStringParam.
+Python
+synopsis	number returnCode,array paramValues=simxGetArrayParam(number clientID,number paramIdentifier,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+paramIdentifier: an array parameter identifier
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking (if not called on a regular basis)
+Python return values	
+returnCode: a remote API function return code
+paramValues: an array containing 3 values
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetBoolParam
+
+Description	Retrieves a bool value. See the bool parameter identifiers. See also simxSetBoolParam, simxGetInt32Param, simxGetFloatParam, simxGetArrayParam and simxGetStringParam.
+Python
+synopsis	number returnCode,bool paramValue=simxGetBoolParam(number clientID,number paramIdentifier,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+paramIdentifier: a bool parameter identifier
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking (if not called on a regular basis)
+Python return values	
+returnCode: a remote API function return code
+paramValue: the bool value
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetCollectionHandle
+
+Description	This is a convenience function. Since CoppeliaSim V4.2.0, collections should be dynamically created and do not have a name anymore. This function will first try to retrieve a static collection with the specified name (for backward compatibility's sake). If such a collection does not exist, it will try to return the integer signal with the specified name. On CoppeliaSim's side, one could do: local collectionHandle=sim.createCollection(0) sim.addItemToCollection(collectionHandle,..) .. sim.setInt32Signal('collectionName',collectionHandle)
+Python
+synopsis	number returnCode,number handle=simxGetCollectionHandle(number clientID,string collectionName,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+collectionName: name of the collection.
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+handle: the collection handle
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetCollisionHandle
+
+Description	Deprecated. see simxCheckCollision instead.
+Python
+synopsis	number returnCode,number handle=simxGetCollisionHandle(number clientID,string collisionObjectName,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+collisionObjectName: name of the collision object.
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+handle: the collision handle
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetConnectionId
+
+Description	Returns the ID of the current connection. Use this function to track the connection state to the server. See also simxStart. This is a remote API helper function.
+Python
+synopsis	number connectionId=simxGetConnectionId(number clientID)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+Python return values	
+connectionId: a connection ID, or -1 if the client is not connected to the server. Different connection IDs indicate temporary disconections in-between.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetDialogInput
+
+Description	Queries the text the user entered into a generic dialog box of style sim_dlgstyle_input. To be used after simxDisplayDialog was called and after simxGetDialogResult returned sim_dlgret_ok.
+Python
+synopsis	number returnCode,string inputText=simxGetDialogInput(number clientID,number dialogHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+dialogHandle: handle of generic dialog (return value of simxDisplayDialog)
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+inputText: the string the user entered.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetDialogResult
+
+Description	Queries the result of a dialog box. To be used after simxDisplayDialog was called.
+Python
+synopsis	number returnCode,number result=simxGetDialogResult(number clientID,number dialogHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+dialogHandle: handle of generic dialog (return value of simxDisplayDialog)
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+result: the result value.
+
+Note. If the result is sim_dlgret_still_open, the dialog was not closed and no button was pressed. Otherwise, you should free resources with simxEndDialog (the dialog might not be visible anymore, but is still present)
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetDistanceHandle
+
+Description	Deprecated. see simxCheckDistance instead.
+Python
+synopsis	number returnCode,number handle=simxGetDistanceHandle(number clientID,string distanceObjectName,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+distanceObjectName: name of the distance object.
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+handle: handle of the distance object
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetFloatParam
+
+Description	Retrieves a floating point value. See the floating-point parameter identifiers. See also simxSetFloatParam, simxGetBoolParam, simxGetInt32Param, simxGetArrayParam and simxGetStringParam.
+Python
+synopsis	number returnCode,number paramValue=simxGetFloatParam(number clientID,number paramIdentifier,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+paramIdentifier: a floating parameter identifier
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking (if not called on a regular basis)
+Python return values	
+returnCode: a remote API function return code
+paramValue: a pointer that will receive the parameter value
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetFloatSignal
+
+Description	Gets the value of a float signal. Signals are cleared at simulation start. See also simxSetFloatSignal, simxClearFloatSignal, simxGetInt32Signal and simxGetStringSignal.
+Python
+synopsis	number returnCode,number signalValue=simxGetFloatSignal(number clientID,string signalName,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+signalName: name of the signal
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+signalValue: the value of the signal
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetInMessageInfo
+
+Description	
+Retrieves information about the last received message from the server. This is a remote API helper function. See also simxGetOutMessageInfo.
+
+If the client didn't receive any command reply from the server for a while, the data retrieved with this function won't be up-to-date. In order to avoid this, you should start at least one streaming command, which will guarantee regular message income.
+Python
+synopsis	number result,number info=simxGetInMessageInfo(number clientID,number infoType)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+infoType: an inbox message info type
+Python return values	
+result: -1 in case of an error
+info: the requested information
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetInt32Param
+
+Description	Retrieves an integer value. See the integer parameter identifiers. See also simxSetInt32Param, simxGetBoolParam, simxGetFloatParam, simxGetArrayParam and simxGetStringParam.
+Python
+synopsis	number returnCode,number paramValue=simxGetInt32Param(number clientID,number paramIdentifier,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+paramIdentifier: an integer parameter identifier
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking (if not called on a regular basis)
+Python return values	
+returnCode: a remote API function return code
+paramValue: the parameter value
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetInt32Signal
+
+Description	Gets the value of an integer signal. Signals are cleared at simulation start. See also simxSetInt32Signal, simxClearInt32Signal, simxGetFloatSignal and simxGetStringSignal.
+Python
+synopsis	number returnCode,number signalValue=simxGetInt32Signal(number clientID,string signalName,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+signalName: name of the signal
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+signalValue: the value of the signal
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetJointForce
+
+Description	Retrieves the force or torque applied to a joint along/about its active axis. This function retrieves meaningful information only if the joint is prismatic or revolute, and is dynamically enabled. With the Bullet engine, this function returns the force or torque applied to the joint motor (torques from joint limits are not taken into account). With the ODE or Vortex engine, this function returns the total force or torque applied to a joint along/about its z-axis. See also simxSetJointMaxForce, simxReadForceSensor and simxGetObjectGroupData.
+Python
+synopsis	number returnCode,number force=simxGetJointForce(number clientID,number jointHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+jointHandle: handle of the joint
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+force: the force or the torque applied to the joint along/about its z-axis
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetJointMaxForce
+
+Description	Retrieves the maximum force the joint is able to exert. See also simxSetJointMaxForce and simxGetJointForce.
+Python
+synopsis	number returnCode,number force=simxGetJointMaxForce(number clientID,number jointHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+jointHandle: handle of the joint
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+force: the maximum force the joint can exert
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetJointMatrix
+
+Description	Retrieves the intrinsic transformation matrix of a joint (the transformation caused by the joint movement). See also simxSetSphericalJointMatrix.
+Python
+synopsis	number returnCode,array matrix=simxGetJointMatrix(number clientID,number jointHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+jointHandle: handle of the joint
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+matrix: array containing 12 values. See the regular API equivalent function for details
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetJointPosition
+
+Description	Retrieves the intrinsic position of a joint. This function cannot be used with spherical joints (use simxGetJointMatrix instead). See also simxSetJointPosition and simxGetObjectGroupData.
+Python
+synopsis	number returnCode,number position=simxGetJointPosition(number clientID,number jointHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+jointHandle: handle of the joint
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+position: intrinsic position of the joint. This is a one-dimensional value: if the joint is revolute, the rotation angle is returned, if the joint is prismatic, the translation amount is returned, etc.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetLastCmdTime
+
+Description	
+Retrieves the simulation time of the last fetched command (i.e. when the last fetched command was processed on the server side). The function can be used to verify how "fresh" a command reply is, or whether a command reply was recently updated. For example:
+
+data=sim.simxGetVisionSensorImage(clientID,handle,0,sim.simx_opmode_buffer) if data[0] == sim.simx_return_ok : imageAcquisitionTime=sim.simxGetLastCmdTime(clientID)
+If some streaming commands are running, simxGetLastCmdTime will always retrieve the current simulation time, otherwise, only the simulation time of the last command that retrieved data from CoppeliaSim. This is a remote API helper function.
+Python
+synopsis	number cmdTime=simxGetLastCmdTime(number clientID)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+Python return values	
+cmdTime: the simulation time in milliseconds when the command reply was generated, or 0 if simulation was not running.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetLastErrors
+
+Description	Retrieves the last 50 errors that occured on the server side, and clears the error buffer there. Only errors that occured because of this client will be reported.
+Python
+synopsis	number returnCode,array errorStrings=simxGetLastErrors(number clientID,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls) when not debugging. For debugging purposes, use simx_opmode_blocking.
+Python return values	
+returnCode: a remote API function return code
+errorStrings: the error strings
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetModelProperty
+
+Description	Retrieves the properties of a model. See also simxSetModelProperty.
+Python
+synopsis	number returnCode,number prop=simxGetModelProperty(number clientID,number objectHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the object
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls), or simx_opmode_blocking (depending on the intended usage)
+Python return values	
+returnCode: a remote API function return code
+prop: the model property value
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetObjectChild
+
+Description	Retrieves the handle of an object's child object. See also simxGetObjectParent.
+Python
+synopsis	number returnCode,number childObjectHandle=simxGetObjectChild(number clientID,number parentObjectHandle,number childIndex,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+parentObjectHandle: handle of the object
+childIndex: zero-based index of the child's position. To retrieve all children of an object, call the function by increasing the index until the child handle is -1
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+childObjectHandle: the handle of the child object. If the value is -1, there is no child at the given index
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetObjectFloatParameter
+
+Description	Retrieves a floating-point parameter of a object. See also simxSetObjectFloatParameter and simxGetObjectIntParameter.
+Python
+synopsis	number returnCode,number parameterValue=simxGetObjectFloatParameter(number clientID,number objectHandle,number parameterID,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the object
+parameterID: identifier of the parameter to retrieve. See the list of all possible object parameter identifiers
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls), or simx_opmode_blocking (depending on the intended usage)
+Python return values	
+returnCode: a remote API function return code
+parameterValue: the value of the parameter
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetObjectGroupData
+
+Description	Simultaneously retrieves data of various objects in a CoppeliaSim scene.
+Python
+synopsis	number returnCode,array handles,array intData,array floatData,array stringData=simxGetObjectGroupData(number clientID,number objectType,number dataType,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectType: a scene object type, sim_appobj_object_type for all scene objects, or a collection handle.
+dataType: the type of data that is desired:
+0: retrieves the object names (deprecated. See further down)
+1: retrieves the object types (in intData)
+2: retrieves the parent object handles (in intData)
+3: retrieves the absolute object positions (in floatData. There are 3 values for each object (x,y,z))
+4: retrieves the local object positions (in floatData. There are 3 values for each object (x,y,z))
+5: retrieves the absolute object orientations as Euler angles (in floatData. There are 3 values for each object (alpha,beta,gamma))
+6: retrieves the local object orientations as Euler angles (in floatData. There are 3 values for each object (alpha,beta,gamma))
+7: retrieves the absolute object orientations as quaternions (in floatData. There are 4 values for each object (qx,qy,qz,qw))
+8: retrieves the local object orientations as quaternions (in floatData. There are 4 values for each object (qx,qy,qz,qw))
+9: retrieves the absolute object positions and orientations (as Euler angles) (in floatData. There are 6 values for each object (x,y,z,alpha,beta,gamma))
+10: retrieves the local object positions and orientations (as Euler angles) (in floatData. There are 6 values for each object (x,y,z,alpha,beta,gamma))
+11: retrieves the absolute object positions and orientations (as quaternions) (in floatData. There are 7 values for each object (x,y,z,qx,qy,qz,qw))
+12: retrieves the local object positions and orientations (as quaternions) (in floatData. There are 7 values for each object (x,y,z,qx,qy,qz,qw))
+13: retrieves proximity sensor data (in intData (2 values): detection state, detected object handle. In floatData (6 values): detected point (x,y,z) and detected surface normal (nx,ny,nz))
+14: retrieves force sensor data (in intData (1 values): force sensor state. In floatData (6 values): force (fx,fy,fz) and torque (tx,ty,tz))
+15: retrieves joint state data (in floatData (2 values): position, force/torque)
+16: retrieves joint properties data (in intData (2 values): joint type, joint mode (bit16=hybid operation). In floatData (2 values): joint limit low, joint range (-1.0 if joint is cyclic))
+17: retrieves the object linear velocity (in floatData. There are 3 values for each object (vx,vy,vz))
+18: retrieves the object angular velocity as Euler angles per seconds (in floatData. There are 3 values for each object (dAlpha,dBeta,dGamma))
+19: retrieves the object linear and angular velocity (in floatData. There are 6 values for each object (vx,vy,vz,dAlpha,dBeta,dGamma))
+20: retrieves the object aliases (in stringData.)
+21: retrieves the object paths (in stringData.)
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking or simx_opmode_streaming.
+Python return values	
+returnCode: a remote API function return code
+handles: the object handles.
+intData: the integer values.
+floatData: the float values.
+stringData: the string values.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetObjectHandle
+
+Description	Retrieves an object handle based on its path and alias.
+Python
+synopsis	number returnCode,number handle=simxGetObjectHandle(number clientID,string objectPath,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectPath: the path of the object. See the section on accessing scene objects for details.
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+handle: the handle
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetObjectIntParameter
+
+Description	Retrieves an integer parameter of a object. See also simxSetObjectIntParameter and simxGetObjectFloatParameter.
+Python
+synopsis	number returnCode,number parameterValue=simxGetObjectIntParameter(number clientID,number objectHandle,number parameterID,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the object
+parameterID: identifier of the parameter to retrieve. See the list of all possible object parameter identifiers
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls), or simx_opmode_blocking (depending on the intended usage)
+Python return values	
+returnCode: a remote API function return code
+parameterValue: the value of the parameter
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetObjectOrientation
+
+Description	Retrieves the orientation (Euler angles) of an object. See also simxSetObjectOrientation, simxGetObjectQuaternion, simxGetObjectPosition and simxGetObjectGroupData.
+Python
+synopsis	number returnCode,array eulerAngles=simxGetObjectOrientation(number clientID,number objectHandle,number relativeToObjectHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the object
+relativeToObjectHandle: indicates relative to which reference frame we want the orientation. Specify -1 to retrieve the absolute orientation, sim_handle_parent to retrieve the orientation relative to the object's parent, or an object handle relative to whose reference frame you want the orientation
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+eulerAngles: the Euler angles (alpha, beta and gamma)
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetObjectParent
+
+Description	Retrieves the handle of an object's parent object. See also simxGetObjectChild and simxGetObjectGroupData.
+Python
+synopsis	number returnCode,number parentObjectHandle=simxGetObjectParent(number clientID,number objectHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the object
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+parentObjectHandle: the handle of the parent object. If the value is -1, the object has no parent
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetObjectPosition
+
+Description	Retrieves the position of an object. See also simxSetObjectPosition, simxGetObjectOrientation, simxGetObjectQuaternion and simxGetObjectGroupData.
+Python
+synopsis	number returnCode,array position=simxGetObjectPosition(number clientID,number objectHandle,number relativeToObjectHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the object
+relativeToObjectHandle: indicates relative to which reference frame we want the position. Specify -1 to retrieve the absolute position, sim_handle_parent to retrieve the position relative to the object's parent, or an object handle relative to whose reference frame you want the position
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+position: the position (x,y,z)
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetObjectQuaternion
+
+Description	Retrieves the quaternion of an object. See also simxSetObjectQuaternion.
+Python
+synopsis	number returnCode,array quat=simxGetObjectQuaternion(number clientID,number objectHandle,number relativeToObjectHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the object
+relativeToObjectHandle: indicates relative to which reference frame we want the quaternion. Specify -1 to retrieve the absolute quaternion, sim_handle_parent to retrieve the quaternion relative to the object's parent, or an object handle relative to whose reference frame you want the quaternion
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+quat: the quaternion (x, y, z, w)
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetObjects
+
+Description	Retrieves object handles of a given type, or of all types (i.e. all object handles). See also simxGetObjectGroupData.
+Python
+synopsis	number returnCode,array objectHandles=simxGetObjects(number clientID,number objectType,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectType: object type (sim_object_shape_type, sim_object_joint_type, etc., or sim_handle_all for any type of object
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+objectHandles: an object handle array.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetObjectSelection
+
+Description	Retrieves all selected object's handles. See also simxSetObjectSelection.
+Python
+synopsis	number returnCode,array objectHandles=simxGetObjectSelection(number clientID,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls), or simx_opmode_blocking depending on the intent.
+Python return values	
+returnCode: a remote API function return code
+objectHandles: an object handle array.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetObjectVelocity
+
+Description	Retrieves the linear and angular velocity of an object. See also simxGetObjectPosition, simxGetObjectOrientation and simxGetObjectGroupData.
+Python
+synopsis	number returnCode,array linearVelocity,array angularVelocity=simxGetObjectVelocity(number clientID,number objectHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the object
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+linearVelocity: the linear velocity (vx, vy, vz)
+angularVelocity: the angular velocity (dAlpha, dBeta, dGamma)
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetOutMessageInfo
+
+Description	
+Retrieves information about the next message to send to the server. This is a remote API helper function. See also simxGetInMessageInfo.
+Python
+synopsis	number result,number info=simxGetOutMessageInfo(number clientID,number infoType)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+infoType: an outbox message info type
+Python return values	
+result:-1 in case of an error
+info: the requested information
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetPingTime
+
+Description	Retrieves the time needed for a command to be sent to the server, executed, and sent back. That time depends on various factors like the client settings, the network load, whether a simulation is running, whether the simulation is real-time, the simulation time step, etc. The function is blocking. This is a remote API helper function.
+Python
+synopsis	number returnCode,number pingTime=simxGetPingTime(number clientID)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+Python return values	
+returnCode: a remote API function return code
+pingTime: a pointer to a simxInt value accepting the ping time in milliseconds.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetStringParam
+
+Description	Retrieves a string value. See the string parameter identifiers. See also simxGetBoolParam, simxGetInt32Param, simxGetArrayParam and simxGetFloatParam.
+Python
+synopsis	number returnCode,string paramValue=simxGetStringParam(number clientID,number paramIdentifier,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+paramIdentifier: a string parameter identifier
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking (if not called on a regular basis)
+Python return values	
+returnCode: a remote API function return code
+paramValue: the string.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetStringSignal
+
+Description	Gets the value of a string signal. Signals are cleared at simulation start. To pack/unpack integers/floats into/from a string, refer to simxPackInts, simxPackFloats, simxUnpackInts and simxUnpackFloats. See also simxSetStringSignal, simxReadStringStream, simxClearStringSignal, simxGetInt32Signal and simxGetFloatSignal.
+Python
+synopsis	number returnCode,string signalValue=simxGetStringSignal(number clientID,string signalName,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+signalName: name of the signal
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+signalValue: the value of the signal.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetUIButtonProperty (Deprecated)
+
+Description	Deprecated. Use the Qt-based custom user interfaces, via simxCallScriptFunction instead.
+
+simxGetUIEventButton (Deprecated)
+
+Description	Deprecated. Use the Qt-based custom user interfaces, via simxCallScriptFunction instead.
+
+simxGetUIHandle (Deprecated)
+
+Description	Deprecated. Use the Qt-based custom user interfaces, via simxCallScriptFunction instead.
+
+simxGetUISlider (Deprecated)
+
+Description	Deprecated. Use the Qt-based custom user interfaces, via simxCallScriptFunction instead.
+
+simxGetVisionSensorDepthBuffer
+
+Description	Retrieves the depth buffer of a vision sensor. The returned data doesn't make sense if sim.handleVisionSensor wasn't called previously (sim.handleVisionSensor is called by default in the main script if the vision sensor is not tagged as explicit handling). Use the simxGetLastCmdTime function to verify the "freshness" of the retrieved data. See also simxGetVisionSensorImage.
+Python
+synopsis	number returnCode,array resolution,array buffer=simxGetVisionSensorDepthBuffer(number clientID,number sensorHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+sensorHandle: handle of the vision sensor
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+resolution: the resolution of the image (x, y)
+buffer: the depth buffer data. Values are in the range of 0-1 (0=closest to sensor, 1=farthest from sensor).
+Other languages	C/C++, Java, Matlab, Octave
+
+simxGetVisionSensorImage
+
+Description	Retrieves the image of a vision sensor. The returned data doesn't make sense if sim.handleVisionSensor wasn't called previously (sim.handleVisionSensor is called by default in the main script if the vision sensor is not tagged as explicit handling). Use the simxGetLastCmdTime function to verify the "freshness" of the retrieved data. See also simxSetVisionSensorImage, simxGetVisionSensorDepthBuffer and simxReadVisionSensor.
+Python
+synopsis	number returnCode,array resolution,array image=simxGetVisionSensorImage(number clientID,number sensorHandle,number options,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+sensorHandle: handle of the vision sensor
+options: image options, bit-coded:
+bit0 set: each image pixel is a byte (greyscale image), otherwise each image pixel is a rgb byte-triplet
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+resolution: the resolution of the image (x,y)
+image: the image data.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxJointGetForce (Deprecated)
+
+Description	Deprecated. See simxGetJointForce instead.
+Python
+synopsis	number returnCode,number force=simxJointGetForce(number clientID,number jointHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+jointHandle: handle of the joint
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+force: the force or the torque applied to the joint along/about its z-axis
+Other languages	C/C++, Java, Matlab, Octave
+
+simxLoadModel
+
+Description	Loads a previously saved model. See also simxLoadScene and simxTransferFile.
+Python
+synopsis	number returnCode,number baseHandle=simxLoadModel(number clientID,string modelPathAndName,number options,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+modelPathAndName: the model filename, including the path and extension ("ttm"). The file is relative to the client or server system depending on the options value (see next argument)
+options: options, bit-coded:
+bit0 set: the specified file is located on the client side (in that case the function will be blocking since the model first has to be transferred to the server). Otherwise it is located on the server side
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+baseHandle: the loaded model base.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxLoadScene
+
+Description	Loads a previously saved scene. Should only be called when simulation is not running and is only executed by continuous remote API server services. See also simxCloseScene, simxLoadModel, and simxTransferFile.
+Python
+synopsis	number returnCode=simxLoadScene(number clientID,string scenePathAndName,number options,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+scenePathAndName: the scene filename, including the path and extension ("ttt"). The file is relative to the client or server system depending on the options value (see next argument)
+options: options, bit-coded:
+bit0 set: the specified file is located on the client side (in that case the function will be blocking since the scene first has to be transferred to the server). Otherwise it is located on the server side
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxLoadUI (Deprecated)
+
+Description	Deprecated. Use the Qt-based custom user interfaces, via simxCallScriptFunction instead.
+
+simxPackFloats
+
+Description	Packs an array of floats into a string. This is a remote API helper function. See also simxUnpackFloats and simxPackInts.
+Python
+synopsis	string packedData=simxPackFloats(array floatValues)
+Python parameters	
+floatValues: an array of numbers we wish to pack as floats
+Python return values	
+packedData: a string that contains the packed values. Each values takes exactly 4 bytes in the string.
+Other languages	Java, Matlab, Octave
+
+simxPackInts
+
+Description	Packs an array of integers into a string. This is a remote API helper function. See also simxUnpackInts and simxPackFloats.
+Python
+synopsis	string packedData=simxPackInts(array intValues)
+Python parameters	
+intValues: an array of numbers we wish to pack as integers
+Python return values	
+packedData: a string that contains the packed values. Each values takes exactly 4 bytes in the string.
+Other languages	Java, Matlab, Octave
+
+simxPauseCommunication
+
+Description	Allows to temporarily halt the communication thread from sending data. This can be useful if you need to send several values to CoppeliaSim that should be received and evaluated at the same time. This is a remote API helper function.
+Python
+synopsis	number returnCode=simxPauseCommunication(number clientID,bool pause)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+pause: whether the communication thread should pause or run normally.
+
+Usage example:
+sim.simxPauseCommunication(clientID,True) sim.simxSetJointPosition(clientID,joint1Handle,joint1Value,sim.simx_opmode_oneshot) sim.simxSetJointPosition(clientID,joint2Handle,joint2Value,sim.simx_opmode_oneshot) sim.simxSetJointPosition(clientID,joint3Handle,joint3Value,sim.simx_opmode_oneshot) sim.simxPauseCommunication(clientID,False) '''Above's 3 joints will be received and set on the CoppeliaSim side at the same time'''
+Python return values	
+returnCode: 0 in case of operation success.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxPauseSimulation
+
+Description	Requests a pause of a simulation. See also simxStartSimulation and simxStopSimulation.
+Python
+synopsis	number returnCode=simxPauseSimulation(number clientID,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+operationMode: a remote API function operation mode. Recommended operation modes for this function is simx_opmode_oneshot.
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxQuery
+
+Description	Deprecated. Refer to simxCallScriptFunction instead.
+
+Sends a query string to CoppeliaSim, and waits for a reply string. Query and reply strings can be accessed via string signals. This function allows for instance to have a child script, another remote API client or a ROS node handle special requests coming from this remote API client, then send a reply back. To pack/unpack integers/floats into/from a string, refer to simxPackInts, simxPackFloats, simxUnpackInts and simxUnpackFloats.
+
+Usage example where a child script handles a request:
+# Following is the remote API client side: res,replyData=sim.simxQuery(clientID,'request','send me a 42','reply',5000) if res==sim.simx_return_ok: print "The reply is: %s" % replyData
+-- This is the child script side. The child script is non-threaded and -- following part executed at each simulation pass: req=sim.getStringSignal("request") if (req) then sim.clearStringSignal("request") if (req=="send me a 42") then sim.setStringSignal("reply","42\0") -- will be automatically cleared by the client end end
+Python
+synopsis	number returnCode,string retSignalValue=simxQuery(number clientID,string signalName,string signalValue,string retSignalName,number timeOutInMs)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+signalName: name of the signal that contains the request string
+signalValue: the request string.
+retSignalName: name of the signal that contains the reply string
+timeOutInMs: the maximum time in milliseconds that the function will wait for a reply.
+Python return value	
+returnCode: a remote API function return code
+retSignalValue: the reply string
+Other languages	C/C++, Java, Matlab, Octave
+
+simxReadCollision
+
+Description	Deprecated. see simxCheckCollision instead.
+Python
+synopsis	number returnCode,bool collisionState=simxReadCollision(number clientID,number collisionObjectHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+collisionObjectHandle: handle of the collision object
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+collisionState: the collision state
+Other languages	C/C++, Java, Matlab, Octave
+
+simxReadDistance
+
+Description	Deprecated. see simxCheckDistance instead.
+Python
+synopsis	number returnCode,number minimumDistance=simxReadDistance(number clientID,number distanceObjectHandle, number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+distanceObjectHandle: handle of the distance object
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+minimumDistance: the minimum distance. If the distance object wasn't handled yet, the distance value will be larger than 1e36.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxReadForceSensor
+
+Description	Reads the force and torque applied to a force sensor (filtered values are read), and its current state ('unbroken' or 'broken'). See also simxGetJointForce and simxGetObjectGroupData.
+Python
+synopsis	number returnCode,number state,array forceVector,array torqueVector=simxReadForceSensor(number clientID,number forceSensorHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+forceSensorHandle: handle of the force sensor
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+state: the state of the force sensor
+bit 0 set: force and torque data is available, otherwise it is not (yet) available (e.g. when not enough values are present for the filter)
+bit 1 set: force sensor is broken, otherwise it is still intact ('unbroken')
+forceVector: the force vector (x,y,z)
+torqueVector: the torque vector (x,y,z)
+Other languages	C/C++, Java, Matlab, Octave
+
+simxReadProximitySensor
+
+Description	Reads the state of a proximity sensor. This function doesn't perform detection, it merely reads the result from a previous call to sim.handleProximitySensor (sim.handleProximitySensor is called in the default main script). See also simxGetObjectGroupData.
+Python
+synopsis	number returnCode,bool detectionState,array detectedPoint,number detectedObjectHandle,array detectedSurfaceNormalVector=simxReadProximitySensor(number clientID,number sensorHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+sensorHandle: handle of the proximity sensor
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+detectionState: the detection state.
+detectedPoint: the detected point coordinates (relative to the sensor reference frame).
+detectedObjectHandle:the handle of the detected object.
+detectedSurfaceNormalVector: the normal vector (normalized) of the detected surface. Relative to the sensor reference frame.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxReadStringStream
+
+Description	Gets the value of a string signal, then clears it. Useful to retrieve continuous data from the server. To pack/unpack integers/floats into/from a string, refer to simxPackInts, simxPackFloats, simxUnpackInts and simxUnpackFloats. See also simxWriteStringStream.
+Python
+synopsis	number returnCode,string signalValue=simxReadStringStream(number clientID,string signalName,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+signalName: name of the signal
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls). simx_opmode_blocking is forbidden. Use a construction like following in order to continuously exchange data with CoppeliaSim:
+
+Remote API client side: '''Initialization phase:''' err,signal=sim.simxReadStringStream( clientID,"toClient",sim.simx_opmode_streaming) '''while we are connected:''' while sim.simxGetConnectionId(clientID) != -1: err,signal=sim.simxReadStringStream( clientID,"toClient",sim.simx_opmode_buffer) if (err==sim.simx_return_ok): '''Data produced by the child script was retrieved! Send it back to the child script:''' sim.simxWriteStringStream(clientID,"fromClient",signal,sim.simx_opmode_oneshot)
+Server side (CoppeliaSim), from a child script: function sysCall_init() -- initialization phase: i=0 lastReceived=-1 end function sysCall_actuation() -- First send a stream of integers that count up: dat=sim.getStringSignal('toClient') if not dat then dat='' end dat=dat..sim.packInt32Table({i}) i=i+1 sim.setStringSignal('toClient',dat) -- Here receive the integer stream in return and check if each number is correct: dat=sim.getStringSignal('fromClient') if dat then sim.clearStringSignal('fromClient') dat=sim.unpackInt32Table(dat) for j=1,#dat,1 do if (dat[j]~=lastReceived+1) then print('Error') else io.write('.') lastReceived=dat[j] end end end end
+Python return values	
+returnCode: a remote API function return code
+signalValue: the value of the signal.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxReadVisionSensor
+
+Description	Reads the state of a vision sensor. This function doesn't perform detection, it merely reads the result from a previous call to sim.handleVisionSensor (sim.handleVisionSensor is called in the default main script). See also simxGetVisionSensorImage and simxGetObjectGroupData.
+Python
+synopsis	number returnCode,bool detectionState,array auxPackets=simxReadVisionSensor(number clientID,number sensorHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+sensorHandle: handle of the vision sensor
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_streaming (the first call) and simx_opmode_buffer (the following calls)
+Python return values	
+returnCode: a remote API function return code
+detectionState: the detection state (i.e. the trigger state).
+auxPackets: by default CoppeliaSim returns one packet of 15 auxiliary values:the minimum of {intensity, red, green, blue, depth value}, the maximum of {intensity, red, green, blue, depth value}, and the average of {intensity, red, green, blue, depth value}. Additional packets can be appended in the vision callback function.
+Other languages	C/C++, Java, Matlab, Octave
+
+simxReleaseBuffer
+
+Description	Releases a buffer previously created with simxCreateBuffer or a buffer returned by a remote API function. This is a remote API helper function.
+Python
+synopsis	simxReleaseBuffer(charPointer buffer)
+Python parameters	
+buffer: buffer to be released
+Python return values	
+Other languages	C/C++, Matlab
+
+simxRemoveModel
+
+Description	Removes a model from the scene. See also simxRemoveObject.
+Python
+synopsis	number returnCode=simxRemoveModel(number clientID,number objectHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the model to remove (object should be flagged as model base).
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot (or simx_opmode_blocking)
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxRemoveObject
+
+Description	Removes a scene object. See also simxRemoveModel.
+Python
+synopsis	number returnCode=simxRemoveObject(number clientID,number objectHandle,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the object to remove
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot (or simx_opmode_blocking)
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxRemoveUI (Deprecated)
+
+Description	Deprecated. Use the Qt-based custom user interfaces, via simxCallScriptFunction instead.
+
+simxSetArrayParam
+
+Description	Sets 3 values of an array parameter. See also simxGetArrayParam, simxSetBoolParam, simxSetInt32Param and simxSetFloatParam.
+Python
+synopsis	number returnCode=simxSetArrayParam(number clientID,number paramIdentifier,array paramValues,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+paramIdentifier: an array parameter identifier
+paramValues: the array containing the 3 values to set
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetBoolParam
+
+Description	Sets a bool parameter. See also simxGetBoolParam, simxSetInt32Param, simxSetArrayParam and simxSetFloatParam.
+Python
+synopsis	number returnCode=simxSetBoolParam(number clientID,number paramIdentifier,bool paramValue,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+paramIdentifier: a bool parameter identifier
+paramValue: the parameter value
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetFloatParam
+
+Description	Sets a floating point parameter. See also simxGetFloatParam, simxSetBoolParam, simxSetArrayParam and simxSetInt32Param.
+Python
+synopsis	number returnCode=simxSetFloatParam(number clientID,number paramIdentifier,number paramValue,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+paramIdentifier: a floating parameter identifier
+paramValue: the parameter value
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetFloatSignal
+
+Description	Sets the value of a float signal. If that signal is not yet present, it is added. See also simxGetFloatSignal, simxClearFloatSignal, simxSetInt32Signal and simxSetStringSignal.
+Python
+synopsis	number returnCode=simxSetFloatSignal(number clientID,string signalName,number signalValue,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+signalName: name of the signal
+signalValue: value of the signal
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetInt32Param
+
+Description	Sets an integer parameter. See also simxGetInt32Param, simxSetBoolParam, simxSetArrayParam and simxSetFloatParam.
+Python
+synopsis	number returnCode=simxSetInt32Param(number clientID,number paramIdentifier,number paramValue,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+paramIdentifier: an integer parameter identifier
+paramValue: the parameter value
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetInt32Signal
+
+Description	Sets the value of an integer signal. If that signal is not yet present, it is added. See also simxGetInt32Signal, simxClearInt32Signal, simxSetFloatSignal and simxSetStringSignal.
+Python
+synopsis	number returnCode=simxSetInt32Signal(number clientID,string signalName,number signalValue,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+signalName: name of the signal
+signalValue: value of the signal
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetJointMaxForce
+
+Description	Sets the maximum force or torque that a joint can exert. This function has no effect when the joint is not dynamically enabled, or when it is a spherical joint. See also simxGetJointMaxForce and simxGetJointForce.
+Python
+synopsis	number returnCode=simxSetJointMaxForce(number clientID,number jointHandle,number force,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+jointHandle: handle of the joint
+force: the maximum force or torque that the joint can exert
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetJointPosition
+
+Description	Sets the intrinsic position of a joint. May have no effect depending on the joint mode. This function cannot be used with spherical joints (use simxSetSphericalJointMatrix instead). If you want to set several joints that should be applied at the exact same time on the CoppeliaSim side, then use simxPauseCommunication. See also simxGetJointPosition and simxSetJointTargetPosition.
+Python
+synopsis	number returnCode=simxSetJointPosition(number clientID,number jointHandle,number position,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+jointHandle: handle of the joint
+position: position of the joint (angular or linear value depending on the joint type)
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_oneshot or simx_opmode_streaming
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetJointTargetPosition
+
+Description	Sets the target position of a joint if the joint is in torque/force mode (also make sure that the joint's motor and position control are enabled). See also simxSetJointPosition.
+Python
+synopsis	number returnCode=simxSetJointTargetPosition(number clientID,number jointHandle,number targetPosition,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+jointHandle: handle of the joint
+targetPosition: target position of the joint (angular or linear value depending on the joint type)
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_oneshot or simx_opmode_streaming
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetJointTargetVelocity
+
+Description	Sets the intrinsic target velocity of a non-spherical joint. This command makes only sense when the joint mode is in torque/force mode: the dynamics functionality and the joint motor have to be enabled (position control should however be disabled)
+Python
+synopsis	number returnCode=simxSetJointTargetVelocity(number clientID,number jointHandle,number targetVelocity,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+jointHandle: handle of the joint
+targetVelocity: target velocity of the joint (linear or angular velocity depending on the joint-type)
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_oneshot or simx_opmode_streaming
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetModelProperty
+
+Description	Sets the properties of a model. See also simxGetModelProperty.
+Python
+synopsis	number returnCode=simxSetModelProperty(number clientID,number objectHandle,number prop,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the object
+prop: a model property value
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetObjectFloatParameter
+
+Description	Sets a floating-point parameter of a object. See also simxGetObjectFloatParameter and simxSetObjectIntParameter.
+Python
+synopsis	number returnCode=simxSetObjectFloatParameter(number clientID,number objectHandle,number parameterID,number parameterValue,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the object
+parameterID: identifier of the parameter to set. See the list of all possible object parameter identifiers
+parameterValue: the desired value of the parameter
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetObjectIntParameter
+
+Description	Sets an integer parameter of a object. See also simxGetObjectIntParameter and simxSetObjectFloatParameter.
+Python
+synopsis	number returnCode=simxSetObjectIntParameter(number clientID,number objectHandle,number parameterID,number parameterValue,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the object
+parameterID: identifier of the parameter to set. See the list of all possible object parameter identifiers
+parameterValue: the desired value of the parameter
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetObjectOrientation
+
+Description	Sets the orientation (Euler angles) of an object. Dynamically simulated objects will implicitely be reset before the command is applied (i.e. similar to calling sim.resetDynamicObject just before). See also simxGetObjectOrientation, simxSetObjectQuaternion and simxSetObjectPosition.
+Python
+synopsis	number returnCode=simxSetObjectOrientation(number clientID,number objectHandle,number relativeToObjectHandle,array eulerAngles,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the object
+relativeToObjectHandle: indicates relative to which reference frame the orientation is specified. Specify -1 to set the absolute orientation, sim_handle_parent to set the orientation relative to the object's parent, or an object handle relative to whose reference frame the orientation is specified.
+eulerAngles: Euler angles (alpha, beta and gamma)
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetObjectParent
+
+Description	Sets an object's parent object. See also simxGetObjectParent.
+Python
+synopsis	number returnCode=simxSetObjectParent(number clientID,number objectHandle,number parentObject,bool keepInPlace,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the object that will become child of the parent object. Can be combined with sim_handleflag_assembly, if the two objects can be assembled via a predefined assembly transformation (refer to the assembling option in the object common properties). In that case, parentObject can't be -1, and keepInPlace should be set to false.
+parentObject: handle of the object that will become parent, or -1 if the object should become parentless
+keepInPlace: indicates whether the object's absolute pose should stay same
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot or simx_opmode_blocking depending on the intent
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetObjectPosition
+
+Description	Sets the position of an object. Dynamically simulated objects will implicitely be reset before the command is applied (i.e. similar to calling sim.resetDynamicObject just before). See also simxGetObjectPosition, simxSetObjectQuaternion and simxSetObjectOrientation.
+Python
+synopsis	number returnCode=simxSetObjectPosition(number clientID,number objectHandle,number relativeToObjectHandle,array position,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the object
+relativeToObjectHandle: indicates relative to which reference frame the position is specified. Specify -1 to set the absolute position, sim_handle_parent to set the position relative to the object's parent, or an object handle relative to whose reference frame the position is specified.
+position: the position values (x, y and z)
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetObjectQuaternion
+
+Description	Sets the orientation of an object as quaternion. Dynamically simulated objects will implicitely be reset before the command is applied (i.e. similar to calling sim.resetDynamicObject just before). See also simxGetObjectQuaternion.
+Python
+synopsis	number returnCode=simxSetObjectQuaternion(number clientID,number objectHandle,number relativeToObjectHandle,array quat,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandle: handle of the object
+relativeToObjectHandle: indicates relative to which reference frame the quaternion is specified. Specify -1 to set the absolute quaternion, sim_handle_parent to set the quaternion relative to the object's parent, or an object handle relative to whose reference frame the quaternion is specified.
+quat: the quaternion values (x, y, z, w)
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetObjectSelection
+
+Description	Sets the selection state for objects. See also simxGetObjectSelection.
+Python
+synopsis	number returnCode=simxSetObjectSelection(number clientID,array objectHandles,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+objectHandles: an array of object handles
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot or simx_opmode_blocking depending on the intent.
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetSphericalJointMatrix
+
+Description	Sets the intrinsic orientation matrix of a spherical joint object. This function cannot be used with non-spherical joints (use simxSetJointPosition instead). See also simxGetJointMatrix..
+Python
+synopsis	number returnCode=simxSetSphericalJointMatrix(number clientID,number jointHandle,array matrix,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+jointHandle: handle of the joint
+matrix: 12 values. See the regular API equivalent function for details
+operationMode: a remote API function operation mode. Recommended operation modes for this function are simx_opmode_oneshot or simx_opmode_streaming
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetStringSignal
+
+Description	Sets the value of a string signal. If that signal is not yet present, it is added. To pack/unpack integers/floats into/from a string, refer to simxPackInts, simxPackFloats, simxUnpackInts and simxUnpackFloats. See also simxWriteStringStream, simxGetStringSignal, simxClearStringSignal, simxSetInt32Signal and simxSetFloatSignal.
+Python
+synopsis	number returnCode=simxSetStringSignal(number clientID,string signalName,string signalValue,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+signalName: name of the signal
+signalValue: value of the signal (which may contain any value, including embedded zeros)
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSetUIButtonLabel (Deprecated)
+
+Description	Deprecated. Use the Qt-based custom user interfaces, via simxCallScriptFunction instead.
+
+simxSetUIButtonProperty (Deprecated)
+
+Description	Deprecated. Use the Qt-based custom user interfaces, via simxCallScriptFunction instead.
+
+simxSetUISlider (Deprecated)
+
+Description	Deprecated. Use the Qt-based custom user interfaces, via simxCallScriptFunction instead.
+
+simxSetVisionSensorImage
+
+Description	Sets the image of a vision sensor (and applies any image processing, if enabled. Make sure the vision sensor is flagged as use external image.
+Python
+synopsis	number returnCode=simxSetVisionSensorImage(number clientID,number sensorHandle,array image,number options,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+sensorHandle: handle of the vision sensor
+image: image data
+options: image options, bit-coded:
+bit0 set: each image pixel is a byte (greyscale image), otherwise each image pixel is a rgb byte-triplet
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxStart
+
+Description	Starts a communication thread with the server (i.e. CoppeliaSim). A same client may start several communication threads (but only one communication thread for a given IP and port). This should be the very first remote API function called on the client side. Make sure to start an appropriate remote API server service on the server side, that will wait for a connection. See also simxFinish. This is a remote API helper function.
+Python
+synopsis	number clientID=simxStart(string connectionAddress,number connectionPort,bool waitUntilConnected,bool doNotReconnectOnceDisconnected,number timeOutInMs,number commThreadCycleInMs)
+Python parameters	
+connectionAddress: the ip address where the server is located (i.e. CoppeliaSim)
+connectionPort: the port number where to connect. Specify a negative port number in order to use shared memory, instead of socket communication.
+waitUntilConnected: if True, then the function blocks until connected (or timed out).
+doNotReconnectOnceDisconnected: if True, then the communication thread will not attempt a second connection if a connection was lost.
+timeOutInMs:
+if positive: the connection time-out in milliseconds for the first connection attempt. In that case, the time-out for blocking function calls is 5000 milliseconds.
+if negative: its positive value is the time-out for blocking function calls. In that case, the connection time-out for the first connection attempt is 5000 milliseconds.
+commThreadCycleInMs: indicates how often data packets are sent back and forth. Reducing this number improves responsiveness, and a default value of 5 is recommended.
+Python return values	
+clientID: the client ID, or -1 if the connection to the server was not possible (i.e. a timeout was reached). A call to simxStart should always be followed at the end with a call to simxFinish if simxStart didn't return -1
+Other languages	C/C++, Java, Matlab, Octave
+
+simxStartSimulation
+
+Description	Requests a start of a simulation (or a resume of a paused simulation). This function is only executed by continuous remote API server services. See also simxPauseSimulation and simxStopSimulation.
+Python
+synopsis	number returnCode=simxStartSimulation(number clientID,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot.
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxStopSimulation
+
+Description	Requests a stop of the running simulation. See also simxStartSimulation and simxPauseSimulation.
+Python
+synopsis	number returnCode=simxStopSimulation(number clientID,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+operationMode: a remote API function operation mode. Recommended operation modes for this function is simx_opmode_oneshot.
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSynchronous
+
+Description	Enables or disables the stepping mode for the remote API server service that the client is connected to. The function is blocking. While in stepping mode, the client application is in charge of triggering the next simulation step. Only pre-enabled remote API server services will successfully execute this function. See also simxSynchronousTrigger and this section. This is a remote API helper function.
+Python
+synopsis	number returnCode=simxSynchronous(number clientID,bool enable)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+enable: the enable state of the stepping mode
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxSynchronousTrigger
+
+Description	Sends a synchronization trigger signal to the server. The function is blocking. The server needs to be previously enabled for stepping operation via the simxSynchronous function. The trigger signal will inform CoppeliaSim to execute the next simulation step. While in stepping mode, the client application is in charge of triggering the next simulation step, otherwise simulation will stall. See also this section. This is a remote API helper function.
+Python
+synopsis	number returnCode=simxSynchronousTrigger(number clientID)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxTransferFile
+
+Description	Allows transferring a file from the client to the server. This function is used by several other functions internally (e.g. simxLoadModel). See also simxEraseFile. This is a remote API helper function.
+Python
+synopsis	number returnCode=simxTransferFile(number clientID,string filePathAndName,string fileName_serverSide,number timeOut,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+filePathAndName: the local file name and path (i.e. on the client side)
+fileName_serverSide: a file name under which the transferred file will be saved on the server side. For now, do not specify a path (the file will be saved in the remote API plugin directory)
+timeOut: a timeout value in milliseconds
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_blocking
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+simxUnpackFloats
+
+Description	Unpacks a string into an array of floats. This is a remote API helper function. See also simxPackFloats and simxUnpackInts.
+Python
+synopsis	array floatValues=simxUnpackFloats(string packedData)
+Python parameters	
+packedData: a string that contains the packed values. Each values takes exactly 4 bytes in the string.
+Python return values	
+floatValues: an array of numbers that were unpacked as floats
+Other languages	Java, Matlab, Octave
+
+simxUnpackInts
+
+Description	Unpacks a string into an array of integers. This is a remote API helper function. See also simxPackInts and simxUnpackFloats.
+Python
+synopsis	array intValues=simxUnpackInts(string packedData)
+Python parameters	
+packedData: a string that contains the packed values. Each values takes exactly 4 bytes in the string.
+Python return values	
+intValues: an array of numbers that were unpacked as integers
+Other languages	Java, Matlab, Octave
+
+simxWriteStringStream
+
+Description	Appends a string to a string signal. If that signal is not yet present, it is added. To pack/unpack integers/floats into/from a string, refer to simxPackInts, simxPackFloats, simxUnpackInts and simxUnpackFloats. See also simxReadStringStream.
+Python
+synopsis	number returnCode=simxWriteStringStream(number clientID,string signalName,string signalValueToAppend,number operationMode)
+Python parameters	
+clientID: the client ID. refer to simxStart.
+signalName: name of the signal
+signalValueToAppend: value to append to the signal. That value may contain any value, including embedded zeros.
+operationMode: a remote API function operation mode. Recommended operation mode for this function is simx_opmode_oneshot
+Python return values	
+returnCode: a remote API function return code
+Other languages	C/C++, Java, Matlab, Octave
+
+
+

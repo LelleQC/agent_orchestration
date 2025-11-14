@@ -1,3 +1,5 @@
+
+
 ## LLM Agent Control
 
 Imagine telling the robot "go cleanup my kitchen" and watching him doing so. This tutorial will show you how you can make your XLeRobot fully autonomous, self-decision making machine by providing it with LLM agent. An agent that, by seeing world through camera and hearing your voice commands, be able to move the robot and (in the future) manipulate objects using VLA policies.

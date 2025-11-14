@@ -8,12 +8,12 @@ sim = client.getObject('sim')
 # 2. Define the robot's arm joints by their handles
 # These were identified from the list_objects.py output.
 ARM_JOINTS = {
-    "Rotation": 66,
-    "Pitch": 67,
-    "Elbow": 68,
-    "Wrist_Pitch": 69,
-    "Wrist_Roll": 70,
-    "Jaw": 71
+    "Rotation": 76,
+    "Pitch": 79,
+    "Elbow": 82,
+    "Wrist_Pitch": 85,
+    "Wrist_Roll": 88,
+    "Jaw": 91
 }
 
 # --- Main Script ---
@@ -26,6 +26,12 @@ def run_movement_demo():
     try:
         print("Successfully connected to the simulation.")
         print("Identified Arm Joints:", list(ARM_JOINTS.keys()))
+
+        # Disable position control and set max force for each joint
+        for joint_name, joint_handle in ARM_JOINTS.items():
+            sim.setObjectInt32Parameter(joint_handle, sim.jointintparam_ctrl_enabled, 0) # 0 for False
+            sim.setJointMaxForce(joint_handle, 100) # Set a high enough force
+            print(f"Disabled position control and set max force for {joint_name} (Handle: {joint_handle})")
 
         # --- Part 1: "Wake up" sequence ---
         print("\nPart 1: Running 'Wake Up' sequence...")

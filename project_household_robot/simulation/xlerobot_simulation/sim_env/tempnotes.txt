@@ -1,0 +1,64 @@
+Okay, I have now read all the existing documentation.
+
+  Here's the final analysis and the plan to complete the retroactive documentation process.
+
+  Analysis of Existing Documentation
+
+   * `README.md`, `TUTORIAL.md`, `DEVELOPER_GUIDE.md`: These documents describe a different project
+     history than the one I uncovered in the sim_env notes. They focus on the challenge of importing a
+     URDF file and completely omit the complex debugging story of the "snap-back" issue.
+   * `project_report.md`, `meta_learnings.md`: These are also based on the URDF import problem. They
+     contain valuable principles but miss the much richer learnings from the script conflict debugging.
+   * `handover_context.md` (from `sim_env`): This is the real, detailed project report. It contains the
+     true, complex story of debugging the script conflict.
+
+  Conclusion
+
+  The existing documentation in the docs folder is outdated or incomplete. It tells the story of "how
+  to get the robot into the simulation," while the real, more complex and valuable work was "how to
+  make the robot actually move."
+
+  Final Plan to Synthesize and Complete
+
+   1. Create a new `roadmap.md`: I will create a comprehensive roadmap.md in the project_household_robot
+      directory. This roadmap will tell the full story, starting from the initial connection, through
+      the URDF import, and detailing the entire "snap-back" debugging process as a series of [DONE]
+      tasks. This will accurately reflect the project's history.
+
+   2. Update `project_report.md` and `meta_learnings.md`: I will rewrite these two files.
+       * The project_report.md will be based on the detailed history from handover_context.md.
+       * The meta_learnings.md will be updated to include the much more sophisticated learnings from
+         the script conflict debugging (e.g., "how to debug conflicting control scripts," "dynamic
+         script modification as a workaround for write-protection").
+
+   3. Update `DEVELOPER_GUIDE.md`: I will add a new section explaining the defaultMainScript.lua
+      modification and the purpose of the modify_and_write_sandbox_script.py and
+
+   4. Stamp Agent Version: I will create the .agent_version file.
+
+  I will now begin with Step 1: Creating the `roadmap.md` file. I will generate the content and then        
+  use the write_file tool.
+╭───────────────────────────────────────────────────────────────────────────────────────────────────╮       
+│ ?  WriteFile Writing to project_household_robot\roadmap.md ←                                      │       
+│                                                                                                   │       
+│ ... first 46 lines hidden ...                                                                     │       
+│    "wobble" issues.                                                                               │       
+│ 44                                                                                                │       
+│ 45 ## 5. Final Documentation                                                                      │       
+│ 46                                                                                                │       
+│ 47 -   [IN PROGRESS] Create a comprehensive `roadmap.md` (this file).                             │       
+│ 48 -   [TODO] Update `project_report.md` to reflect the full debugging story.                     │       
+│ 49 -   [TODO] Update `meta_learnings.md` with principles derived from the script conflict.        │       
+│ 50 -   [TODO] Update `DEVELOPER_GUIDE.md` to explain the final architecture, including the        │       
+│    script modification workaround.                                                                │       
+│ 51 -   [TODO] Create `.agent_version` file.                                                       │       
+│                                                                                                   │       
+│ Apply this change?                                                                                │       
+│                                                                                                   │       
+│ ● 1. Yes, allow once                                                                              │       
+│   2. Yes, allow always                                                                            │       
+│   3. Modify with external editor                                                                  │       
+│   4. No, suggest changes (esc)                                                                    │       
+│                                                                                                   │       
+╰───────────────────────────────────────────────────────────────────────────────────────────────────╯       
+Press ctrl-s to show more lines

@@ -9,12 +9,18 @@ Dieses Handbuch richtet sich an Entwickler, die das Projekt erweitern und eigene
 Alle relevanten Skripte befinden sich im Ordner `.../project_household_robot/simulation/xlerobot_simulation/sim_env/`.
 
 *   **`control_*.py` Skripte:**
-    *   Diese Skripte sind Beispiele für die Ansteuerung des Roboters.
-    *   Sie nutzen die `coppeliasim-zmqremoteapi-client` Bibliothek, um eine Verbindung zum Simulator aufzubauen.
-    *   Die Kernfunktionalität liegt im Abrufen eines "Handles" (einer eindeutigen ID) für ein bestimmtes Gelenk und dem anschließenden Setzen seiner Zielposition.
+    *   `control_arm.py`: Demonstriert die Steuerung des gesamten Roboterarms.
+    *   `control_base.py`: Demonstriert die Steuerung der mobilen Basis des Roboters.
+    *   Diese Skripte sind die primären Beispiele für die Ansteuerung des Roboters.
+
+*   **`modify_and_write_sandbox_script.py` / `revert_sandbox_script.py`:**
+    *   Wichtige Utility-Skripte zur Handhabung des "Snap-Back"-Problems. Siehe Abschnitt 4 für Details.
+
+*   **`defaultMainScript.lua`:**
+    *   Eine modifizierte Version des Haupt-Simulationsskripts von CoppeliaSim. Die Zeile `sim.handleJointMotion()` ist hier auskommentiert, um das "Snap-Back"-Problem zu verhindern.
 
 *   **`.venv/`:**
-    *   Der Ordner für die virtuelle Python-Umgebung. Alle Abhängigkeiten sind hier installiert.
+    *   Der Ordner für die virtuelle Python-Umgebung.
     *   **Aktivierung:** Führen Sie `.venv\Scripts\activate` im Terminal aus, bevor Sie Skripte starten.
 
 ---
@@ -26,50 +32,46 @@ Der Schlüssel zur Steuerung des Roboters liegt im Zugriff auf seine `Joint`-Obj
 ### Schritt 1: Gelenk-Handles finden
 
 1.  **Laden Sie das Modell in CoppeliaSim.**
-2.  **Führen Sie `list_objects.py` aus.** Dieses Skript gibt eine vollständige Liste aller Objekte in der Szene aus, inklusive ihres Namens, Typs und Handles.
+2.  **Führen Sie `list_objects.py` aus.** Dieses Skript gibt eine vollständige Liste aller Objekte in der Szene aus.
 3.  **Suchen Sie nach Objekten vom Typ `Joint`** und notieren Sie sich den Handle des Gelenks, das Sie steuern möchten.
-
-    *Beispiel-Output von `list_objects.py`:*
-    ```
-    - Name: 'Elbow', Handle: 68, Type: Joint
-    - Name: 'Wrist_Roll', Handle: 70, Type: Joint
-    ```
 
 ### Schritt 2: Gelenk im Code ansteuern
 
 Verwenden Sie die folgenden `sim`-Funktionen in Ihrem Python-Skript:
 
-*   **`sim.getJointPosition(joint_handle)`:**
-    *   Gibt die aktuelle Position (Winkel in Radiant) des Gelenks zurück. Nützlich, um die Ausgangsposition zu bestimmen.
+*   **`sim.setObjectInt32Parameter(joint_handle, sim.jointintparam_ctrl_enabled, 0)`:**
+    *   **ESSENTIELL:** Deaktiviert den internen Positions-Controller des Gelenks. Ohne diesen Aufruf wird das Gelenk immer wieder in seine Ausgangsposition zurückspringen.
+
+*   **`sim.setJointMaxForce(joint_handle, force)`:**
+    *   Gibt dem Gelenk die nötige Kraft, um sich zu bewegen. Ein Wert von `100` ist in der Regel ausreichend.
 
 *   **`sim.setJointTargetPosition(joint_handle, target_angle_rad)`:**
-    *   Setzt die Zielposition für das Gelenk. Die interne Physik-Engine von CoppeliaSim bewegt das Gelenk dann in Richtung dieser Position.
-    *   `target_angle_rad` muss in Radiant angegeben werden.
+    *   Setzt die Zielposition für ein Gelenk (z.B. im Arm).
 
-*Beispiel-Code zum Bewegen des Handgelenks (`Wrist_Roll`):*
+*   **`sim.setJointTargetVelocity(joint_handle, target_velocity_rad_s)`:**
+    *   Setzt die Zielgeschwindigkeit für ein Gelenk (z.B. für die Räder der Basis).
+
+*Beispiel-Code zum Bewegen des Ellbogens:*
 ```python
 import time
 from coppeliasim_zmqremoteapi_client import RemoteAPIClient
 
-# Verbindung herstellen
 client = RemoteAPIClient()
 sim = client.getObject('sim')
 
-# Handle für das Handgelenk (aus list_objects.py entnommen)
-wrist_roll_handle = 70
+elbow_handle = 82 # Aus list_objects.py entnommen
 
-# Aktuelle Position auslesen
-current_pos = sim.getJointPosition(wrist_roll_handle)
-print(f"Aktuelle Position des Handgelenks: {current_pos:.2f} rad")
+# 1. Controller deaktivieren
+sim.setObjectInt32Parameter(elbow_handle, sim.jointintparam_ctrl_enabled, 0)
 
-# Handgelenk um 90 Grad (pi/2 Radiant) drehen
-print("Drehe Handgelenk...")
-sim.setJointTargetPosition(wrist_roll_handle, current_pos + 1.57)
-time.sleep(2) # Zeit geben für die Bewegung
+# 2. Kraft setzen
+sim.setJointMaxForce(elbow_handle, 100)
 
-# Zurück zur Ausgangsposition
-print("Drehe zurück...")
-sim.setJointTargetPosition(wrist_roll_handle, current_pos)
+# 3. Zielposition setzen
+sim.setJointTargetPosition(elbow_handle, 1.0) # Bewege zu 1.0 Radiant
+time.sleep(2) # Zeit für die Bewegung geben
+
+sim.setJointTargetPosition(elbow_handle, 0.0) # Zurück zur Ausgangsposition
 time.sleep(2)
 
 print("Skript beendet.")
@@ -79,10 +81,25 @@ print("Skript beendet.")
 
 ## 3. Wichtige Hinweise
 
-*   **Radiant vs. Grad:** Alle Winkel für Gelenkpositionen müssen in **Radiant** angegeben werden.
-*   **`time.sleep()`:** Geben Sie der Simulation nach dem Senden eines Bewegungsbefehls immer etwas Zeit, die Bewegung auch auszuführen. Ohne eine Pause (`time.sleep()`) würden Befehle zu schnell aufeinander folgen und die Bewegungen wären nicht sichtbar.
-*   **Fehlersuche:** Wenn ein Skript fehlschlägt, überprüfen Sie Folgendes:
-    1.  Ist CoppeliaSim geöffnet und die Simulation gestartet?
-    2.  Ist der ZMQ Remote API Server aktiv?
-    3.  Ist das Robotermodell korrekt in der Szene geladen?
-    4.  Stimmt der `joint_handle` im Skript mit dem in der aktuellen Szene überein? (Überprüfen mit `list_objects.py`)
+*   **Radiant vs. Grad:** Alle Winkel müssen in **Radiant** angegeben werden.
+*   **`time.sleep()`:** Geben Sie der Simulation nach einem Befehl immer Zeit, die Bewegung auszuführen.
+
+---
+
+## 4. Umgang mit dem "Snap-Back"-Problem und Schreibschutz
+
+Das Kernproblem dieses Projekts war ein "Snap-Back"-Effekt, der durch das Hauptskript von CoppeliaSim (`defaultMainScript.lua`) verursacht wurde. Da dieses Skript im schreibgeschützten Installationsverzeichnis liegt, wurde eine dynamische Lösung entwickelt.
+
+*   **Problem:** `defaultMainScript.lua` ruft `sim.handleJointMotion()` auf und überschreibt damit unsere externen Befehle.
+*   **Lösung:** Wir weisen CoppeliaSim an, zur Laufzeit eine modifizierte Version dieses Skripts zu verwenden.
+
+### Workflow:
+
+1.  **`modify_and_write_sandbox_script.py`:**
+    *   Dieses Skript muss **einmal pro Sitzung** nach dem Start von CoppeliaSim ausgeführt werden.
+    *   Es modifiziert das `sandboxScript`-System von CoppeliaSim im Speicher, sodass es unsere lokale, angepasste `defaultMainScript.lua` (in der die problematische Zeile auskommentiert ist) verwendet.
+
+2.  **`revert_sandbox_script.py`:**
+    *   Dieses Skript kann ausgeführt werden, um die Änderungen rückgängig zu machen und das Standardverhalten von CoppeliaSim wiederherzustellen, ohne die Anwendung neu starten zu müssen.
+
+**Für Entwickler bedeutet das:** Wenn Sie das "Snap-Back"-Verhalten nach einem Neustart von CoppeliaSim wieder bemerken, führen Sie einfach `python modify_and_write_sandbox_script.py` erneut aus.
