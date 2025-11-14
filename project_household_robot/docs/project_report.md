@@ -1,38 +1,39 @@
-# Projektbericht: XLeRobot "Snap-Back" Fehlerbehebung
+# Projektbericht: XLeRobot CoppeliaSim Integration & Fehlerbehebung
 
-Dieser Bericht dokumentiert den Prozess, die Herausforderungen und die Lösungen bei der Behebung eines kritischen Steuerungsproblems in der XLeRobot-Simulationsumgebung.
-
----
-
-## 1. Projektziel
-
-Das ursprüngliche Ziel war die Steuerung des XLeRobot in CoppeliaSim über externe Python-Skripte. Dieses Ziel wurde schnell durch ein schwerwiegendes Problem blockiert: Ein "Snap-Back"-Verhalten, bei dem der Roboterarm jeden externen Befehl sofort rückgängig machte. Das neue Hauptziel wurde daher die Identifizierung und Lösung dieses Problems.
+Dieser Bericht dokumentiert den Prozess, die Herausforderungen und die Lösungen bei der Einrichtung und Inbetriebnahme der XLeRobot-Simulationsumgebung. Das Projekt gliederte sich in zwei Hauptphasen: den Import des Robotermodells und die Behebung eines kritischen Steuerungsproblems.
 
 ---
 
-## 2. Zusammenfassung des Verlaufs
+## Phase 1: Die Herausforderung des Modell-Imports
 
-Das Projekt war eine intensive Debugging-Sitzung, die von Hypothesenbildung, API-Erkundung und schrittweiser Eliminierung von Fehlerquellen geprägt war.
+Das erste Ziel war, das URDF-Modell des Roboters in die CoppeliaSim-Szene zu laden, um es steuerbar zu machen. Diese scheinbar einfache Aufgabe erwies sich als komplex.
 
-1.  **Problem-Identifikation:** Nach erfolgreichem Import des Robotermodells wurde festgestellt, dass jeder Versuch, ein Gelenk über die ZMQ-API zu bewegen, zu einem sofortigen "Zurückschnappen" in die Ausgangsposition führte.
+1.  **Problem - Die leere Szene:** Erste Skript-Tests (`test_move.py`) scheiterten, weil die Simulationsszene leer war. Es gab kein Objekt zum Steuern.
 
-2.  **Hypothese 1: Aktiver Positions-Controller:** Die erste korrekte Annahme war, dass ein interner Positions-Controller (`sim.jointintparam_ctrl_enabled`) des Gelenks aktiv war. Ein Skript (`check_joint_mode.py`) bestätigte dies.
+2.  **Fehlversuch 1: Konvertierungstools:** Der erste Lösungsansatz war die Suche nach externen Tools, um die `.urdf`-Datei in ein für CoppeliaSim natives Format (`.ttt`) zu konvertieren. Dieser Weg erwies sich als Sackgasse.
 
-3.  **Hypothese 2: Überschreibendes Skript:** Der Versuch, diesen Controller per API zu deaktivieren (`disable_control_mode.py`), schlug fehl. Der Befehl wurde zwar ausgeführt, der Zustand des Gelenks änderte sich jedoch nicht. Dies war der entscheidende Beweis, dass ein anderes, höherpriores Skript die Einstellungen kontinuierlich überschreibt.
+3.  **Fehlversuch 2: Manueller Mesh-Import:** Der nächste Versuch bestand darin, die einzelnen 3D-Modelle (Meshes) des Roboters manuell in die Szene zu importieren. Dies führte zwar zu einer visuellen Darstellung, aber das Modell war nur eine statische Hülle ohne Gelenke (`Joints`) und daher nicht steuerbar.
 
-4.  **Workaround - "Brute-Force"-Methode:** Um die Existenz des Skripts weiter zu beweisen, wurde ein Skript entwickelt (`oscillate_control.py`), das in einer Hochfrequenzschleife abwechselnd den Controller deaktiviert und eine Zielposition setzt. Dieser Ansatz funktionierte und brachte den Arm zur Bewegung, wenn auch mit einem sichtbaren "Wackeln".
+4.  **Durchbruch - Der interne URDF-Importer:** Die entscheidende Erkenntnis war, dass die Lösung nicht in externen Tools, sondern in der Anwendung selbst lag. Nach gezielter Recherche und Exploration der Anwendungsmenüs wurde ein eingebautes **URDF Importer Add-on** (`Module -> Importers`) gefunden. Die späte Entdeckung lag an mangelndem Wissen über die spezifische CoppeliaSim-Version und ihre Features. Der Import über dieses Add-on war erfolgreich und erstellte ein voll-artikuliertes, steuerbares Modell.
 
-5.  **Durchbruch - `sandboxScript`:** Ein vom Benutzer bereitgestellter Log-Ausschnitt, der `[sandboxScript:info]` enthielt, lieferte den Namen des gesuchten Skriptsystems.
+---
 
-6.  **Tiefenanalyse:** Die Untersuchung des `sandboxScript`-Systems führte zur Entdeckung von `defaultMainScript.lua` als dem zentralen Steuerungsskript. Die Analyse dieses Skripts identifizierte die Funktion **`sim.handleJointMotion()`** als den direkten Verursacher des Problems, da sie bei jedem Simulationsschritt die Gelenk-Controller zurücksetzte.
+## Phase 2: Die Behebung des "Snap-Back"-Problems
 
-7.  **Lösung - Gezielte Deaktivierung:**
-    *   Die Zeile `sim.handleJointMotion()` wurde in einer lokalen Kopie von `defaultMainScript.lua` auskommentiert.
-    *   Die Python-Steuerungsskripte (`control_arm.py`, `control_base.py`) wurden so angepasst, dass sie zu Beginn explizit den Positions-Controller für jedes Gelenk deaktivieren und eine ausreichende Kraft (`sim.setJointMaxForce`) einstellen.
+Nach dem erfolgreichen Import trat sofort das nächste, schwerwiegendere Problem auf: Jeder Steuerungsbefehl wurde umgehend rückgängig gemacht.
 
-8.  **Technische Hürde - Schreibschutz:** Da das CoppeliaSim-Installationsverzeichnis schreibgeschützt war, konnte das Originalskript nicht direkt geändert werden. Dieses Problem wurde durch einen dynamischen Lade-Mechanismus umgangen: Ein Python-Skript (`modify_and_write_sandbox_script.py`) modifiziert das Sandbox-System zur Laufzeit, um die angepasste `defaultMainScript.lua` zu laden.
+1.  **Problem-Identifikation:** Ein an ein Gelenk gesendeter Befehl bewegte dieses nur für einen Frame, bevor es in seine Ausgangsposition "zurückschnappte".
 
-9.  **Verifizierung und Abschluss:** Nach Anwendung der Lösung funktionierten alle Steuerungsskripte reibungslos, ohne "Snap-Back" oder "Wackeln". Das Projekt war damit erfolgreich abgeschlossen.
+2.  **Hypothesen & Validierung:**
+    *   **Hypothese 1:** Ein interner Positions-Controller ist aktiv. **Validiert:** `check_joint_mode.py` bestätigte dies.
+    *   **Hypothese 2:** Ein Skript überschreibt unsere Befehle. **Validiert:** Der Versuch, den Controller per API zu deaktivieren, schlug fehl. Ein "Brute-Force"-Skript (`oscillate_control.py`), das Befehle in einer Schleife sendete, konnte das Gelenk bewegen, was die Existenz eines konkurrierenden Skripts bewies.
+
+3.  **Tiefenanalyse & Lösung:**
+    *   Ein Log-Hinweis (`[sandboxScript:info]`) führte zur Identifizierung von `defaultMainScript.lua` als Quelle.
+    *   Die Funktion **`sim.handleJointMotion()`** in diesem Skript wurde als Ursache für das Zurücksetzen der Gelenke identifiziert.
+    *   Die Lösung bestand darin, diese Zeile in einer lokalen Kopie des Skripts auszukommentieren.
+
+4.  **Technische Hürde - Schreibschutz:** Da das Originalskript nicht verändert werden konnte, wurde ein Mechanismus zur dynamischen Modifikation entwickelt (`modify_and_write_sandbox_script.py`), der CoppeliaSim anweist, zur Laufzeit die angepasste Version des Skripts zu laden.
 
 ---
 
@@ -40,12 +41,12 @@ Das Projekt war eine intensive Debugging-Sitzung, die von Hypothesenbildung, API
 
 | Herausforderung | Fehlgeschlagene Lösungsansätze | Erfolgreiche Lösung |
 | :--- | :--- | :--- |
-| **"Snap-Back"-Verhalten des Roboterarms** | 1. Direkter Versuch, den Positions-Controller zu deaktivieren (wurde überschrieben).<br>2. Suche nach einfachen Child-Skripten am Modell (keine gefunden). | **Identifizierung und Deaktivierung von `sim.handleJointMotion()`** in `defaultMainScript.lua`. |
-| **Schreibgeschütztes CoppeliaSim-Verzeichnis** | Direkte Modifikation der Lua-Skripte war nicht möglich. | **Dynamische Modifikation des Sandbox-Skripts** zur Laufzeit über die API, um eine lokale, angepasste Version des Skripts zu laden. |
-| **Unbekannte API-Funktionen** | Verwendung veralteter oder falscher Funktionsnamen. | Systematische Erkundung der API mit einem Skript (`inspect_api.py`), um die korrekten Funktionsnamen und Parameter-IDs zu finden. |
+| **Import eines steuerbaren Modells** | 1. Externe Konvertierungstools.<br>2. Manueller Import von 3D-Meshes. | **Nutzung des internen URDF Importer Add-ons** nach gezielter Exploration der Anwendungs-GUI. |
+| **"Snap-Back"-Verhalten des Roboterarms** | 1. Direkter Versuch, den Positions-Controller zu deaktivieren.<br>2. Suche nach einfachen Child-Skripten. | **Identifizierung und Deaktivierung von `sim.handleJointMotion()`** in `defaultMainScript.lua` und dynamisches Laden des modifizierten Skripts. |
+| **Automatisierung von Terminal-Ausgaben** | Manuelles Kopieren und Einfügen durch den Benutzer. | *Nicht gelöst.* Die Notwendigkeit, eine Methode zum automatischen Auslesen der Konsolenausgabe zu finden, wurde als Learning für die Zukunft identifiziert. |
 
 ---
 
 ## 4. Fazit
 
-Dieses Projekt war ein Paradebeispiel für eine komplexe Fehlersuche in einer "Black-Box"-Umgebung. Der Erfolg basierte auf einem systematischen, hypothesengestützten Vorgehen und der Fähigkeit, kreative Workarounds (wie die Brute-Force-Schleife und die dynamische Skript-Modifikation) zu entwickeln, um Annahmen zu validieren und Hindernisse zu überwinden.
+Dieses Projekt unterstreicht zwei Kernpunkte: Erstens ist tiefgreifendes, anwendungsspezifisches Wissen (z.B. über Add-ons und interne Skripte) entscheidend für eine erfolgreiche Integration. Zweitens ist bei komplexen "Black-Box"-Systemen eine systematische, hypothesengestützte Fehlersuche, die auch kreative Workarounds zur Validierung nutzt, unerlässlich.

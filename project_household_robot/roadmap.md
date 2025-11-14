@@ -13,10 +13,13 @@ This document outlines the development process for integrating and controlling t
 
 -   [DONE] Attempt to run a movement script (`test_move.py`) and diagnose the failure (`object does not exist`).
 -   [DONE] Conclude that the simulation scene is empty.
--   [DONE] Attempt to import the robot model by manually importing mesh files (`.stl`, `.ply`).
--   [DONE] Diagnose that manual mesh import does not create controllable `Joint` objects.
--   [DONE] Research and identify the correct import method: the **URDF Importer Add-on** in CoppeliaSim.
--   [DONE] Instruct the user to manually import the `xlerobot.urdf` file using the add-on.
+-   [DONE] Formulate hypothesis that the robot model must be imported.
+-   [DONE] Attempt to find a command-line tool to convert the `.urdf` file to a `.ttt` scene file. (Failed)
+-   [DONE] Attempt to import the robot model by manually importing all its mesh files (`.stl`, `.ply`).
+-   [DONE] Diagnose that manual mesh import does not create controllable `Joint` objects, only static shapes.
+-   [DONE] Realize that specific application knowledge is missing and research is needed on the CoppeliaSim application itself.
+-   [DONE] Identify the correct import method after exploring the application's menus: the **URDF Importer Add-on**.
+-   [DONE] Instruct the user to manually find and use the importer via the menu (`Module -> Importers -> URDF`).
 -   [DONE] Create `list_objects.py` to verify that the model, including `Joint` objects, is now correctly loaded in the scene.
 
 ## 3. Basic Arm Control & "Snap-Back" Debugging
