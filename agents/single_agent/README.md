@@ -1,0 +1,1 @@
+This directory contains the implementation of a single-agent architecture. This agent uses a set of tools to accomplish tasks.

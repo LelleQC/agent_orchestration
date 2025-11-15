@@ -1,0 +1,1 @@
+This directory contains the implementation of an agent that uses Retrieval-Augmented Generation (RAG). This agent can query a knowledge base to inform its actions.

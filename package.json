@@ -1,0 +1,27 @@
+{
+  "name": "agent_orchestration",
+  "version": "1.0.0",
+  "description": "Dieses Dokument besteht aus vielen kleinen Abschnitten (Zellen), damit Sie Ihre Notizen präzise an der richtigen Stelle einfügen können. So fügen Sie eine persönliche, rote Notizbox hinzu:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LelleQC/agent_orchestration.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/LelleQC/agent_orchestration/issues"
+  },
+  "homepage": "https://github.com/LelleQC/agent_orchestration#readme",
+  "dependencies": {
+    "@chroma-core/default-embed": "^0.1.8",
+    "@playwright/mcp": "^0.0.46",
+    "chromadb": "^3.1.1",
+    "hnswlib-node": "^3.0.0"
+  }
+}

@@ -1,0 +1,1 @@
+This directory contains the implementation of a multi-agent system. This system consists of multiple specialized agents that collaborate to achieve a goal.

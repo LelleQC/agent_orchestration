@@ -33,7 +33,7 @@ A high-level summary of all development projects.
     -   `requestAnimationFrame` provides smoother animation than `setInterval` for action games.
     -   Mouse input is effective for paddle control.
     -   Simple `alert()` and `document.location.reload()` for game state management are functional but could be improved with a dedicated state machine for better UX.
-*   **Recommended Next Steps:**
+*   **Potential Next Steps:**
     -   **Short-Term:** Implement a more sophisticated game state machine (e.g., main menu, play, game over screens with restart options).
     -   **Long-Term:** Consider adding power-ups, different brick types, or level progression.
 
@@ -47,7 +47,7 @@ A high-level summary of all development projects.
     -   Clear scoping (random mover AI) enabled timely MVP delivery.
     -   DOM elements are effective for rendering grid-based games like chess.
     -   A small `setTimeout` delay for AI moves improves UX.
-*   **Recommended Next Steps:**
+*   **Potential Next Steps:**
     -   **Short-Term:** Implement Phase 1 of the roadmap: replace the random AI with Stockfish integration.
     -   **Long-Term:** Implement Phase 2 of the roadmap: add ELO power adjustment for Stockfish difficulty.
 
@@ -58,7 +58,7 @@ A high-level summary of all development projects.
     -   **Summary:** A functional Doodle Jump clone, but with known issues regarding platform dynamics and game speed.
 *   **Key Learnings & Metrics:**
     -   Project-specific learning from `INC-2025-001` (Node.js modules in browser, initial jump force) was critical for initial setup.
-*   **Recommended Next Steps:**
+*   **Potential Next Steps:**
     -   **Short-Term:** Investigate and adjust game speed and vertical scrolling logic to fix platform dynamics.
     -   **Long-Term:** Review gravity and jump force in relation to canvas size and player movement.
 
@@ -71,7 +71,7 @@ A high-level summary of all development projects.
     -   Successful application of TDD for game logic.
     -   Modular architecture (separation of game logic and rendering) enhances testability and maintainability.
     -   Comprehensive documentation (README, TUTORIAL, DEVELOPER_GUIDE) was produced.
-*   **Recommended Next Steps:**
+*   **Potential Next Steps:**
     -   **Short-Term:** Explore adding new features like different platform types, power-ups, or visual enhancements.
     -   **Long-Term:** Consider integrating sound effects and a high-score system.
 
@@ -84,7 +84,7 @@ A high-level summary of all development projects.
     -   Successful adherence to TDD workflow and integration of knowledge base learnings.
     -   Architecture with a central `Game` class and `getGameState()` method proved effective for isolated testing.
     -   Minor self-correction during test creation (positive vs. negative vertical velocity for jump).
-*   **Recommended Next Steps:**
+*   **Potential Next Steps:**
     -   **Short-Term:** Implement scoring and different platform types.
     -   **Long-Term:** Add sound effects and expand the test suite to cover more game mechanics.
 
@@ -96,7 +96,7 @@ A high-level summary of all development projects.
 *   **Key Learnings & Metrics:**
     -   Successful implementation of visual and audio enhancements.
     -   Challenge with external sound assets led to using Web Audio API for programmatic sound generation.
-*   **Recommended Next Steps:**
+*   **Potential Next Steps:**
     -   **Short-Term:** Optimize performance for various devices, if not already done.
     -   **Long-Term:** Introduce more complex gameplay mechanics or level design.
 
@@ -109,7 +109,7 @@ A high-level summary of all development projects.
     -   Strategic use of Three.js library for 3D rendering.
     -   Simplified "Arcade Physics" model for MVP.
     -   Manual testing was deemed appropriate due to the complexity of automated 3D environment testing.
-*   **Recommended Next Steps:**
+*   **Potential Next Steps:**
     -   **Short-Term:** Implement more sophisticated camera controls or additional aircraft maneuvers.
     -   **Long-Term:** Explore adding environmental elements (e.g., clouds, mountains) or basic collision detection.
 
@@ -122,7 +122,7 @@ A high-level summary of all development projects.
     -   Successful application of TDD for core game mechanics, particularly collision detection.
     -   Effective use of `test.html` for visual test results.
     -   The project has a detailed roadmap and a clear handover context for debugging.
-*   **Recommended Next Steps:**
+*   **Potential Next Steps:**
     -   **Short-Term:** Await user feedback on collision tests in `test.html`. Debug and fix any failing tests.
     -   **Long-Term:** Continue with the next features outlined in the roadmap once current tests pass.
 
@@ -135,7 +135,7 @@ A high-level summary of all development projects.
     -   Rapid development due to clear task and structured manual.
     -   Zero dependencies and clear modularity.
     -   Complete autonomy in project completion.
-*   **Recommended Next Steps:**
+*   **Potential Next Steps:**
     -   **Short-Term:** Implement increasing game speed with score.
     -   **Long-Term:** Add high score persistence using `localStorage` and a "Restart" button for improved UX. Consider modularizing `script.js` for larger projects.
 
@@ -147,6 +147,6 @@ A high-level summary of all development projects.
 *   **Key Learnings & Metrics:**
     -   The project has generated extensive meta-learnings regarding debugging complex UI issues, the insufficiency of basic error catching, and the critical need for autonomous state management.
     -   The "black screen" bug is a deeply perplexing issue, suggesting non-obvious dependencies or global state corruption.
-*   **Recommended Next Steps:**
+*   **Potential Next Steps:**
     -   **Short-Term:** Follow the explicit instructions in `handover_context.md`: reset to a minimal working state (simple cube), re-introduce components one-by-one, and use automated visual verification (`debug.js`) at every step to isolate the exact trigger of the black screen.
     -   **Long-Term:** Once the black screen bug is resolved, continue with further gameplay mechanics and refinement as per the roadmap.

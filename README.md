@@ -66,6 +66,15 @@ Dies ist der erste Schritt zu einem lernfähigen System.
 -   **Versionierung:** Eine `VERSION`-Datei im Root und `.agent_version` in jedem Projekt stempeln den genauen Prozess, nach dem ein Projekt erstellt wurde.
 -   **Automatischer Git-Workflow:** Der Agent erstellt nach jedem abgeschlossenen Feature eigenständig einen Commit. Dies sorgt für eine saubere, nachvollziehbare Git-Historie.
 
+### 2.4 Betriebsmodi: Autonom & Kollaborativ
+
+Das System ist so konzipiert, dass es in zwei Modi arbeiten kann, um maximale Flexibilität zu gewährleisten:
+
+*   **Autonomer Modus:** Für große, komplexe Aufgaben. Der Agent plant, entwickelt und testet selbstständig nach den in seinem Handbuch (`agent_manual.md`) festgelegten Prozessen.
+*   **Kollaborativer Modus:** Für interaktive Sitzungen. Der Agent agiert als intelligenter "Paar-Programmierer", der direkte Anweisungen ausführt, während der Benutzer die strategische Führung übernimmt.
+
+Diese duale Fähigkeit ermöglicht sowohl die unabhängige Abwicklung ganzer Projekte als auch die gezielte, schrittweise Zusammenarbeit bei spezifischen Problemen.
+
 ---
 
 ## 3. System-Bewertung: Stärken, Schwächen & Einordnung

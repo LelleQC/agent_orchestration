@@ -1,0 +1,81 @@
+# 🔧 Projekt-Konsolidierung & Qualitätsrekonstruktion
+**Ziel:** Wiederherstellung der ursprünglichen Qualität und architektonischen Integrität nach Bearbeitungen durch Gemini Flash.  
+**Modell:** Gemini 2.5 Pro
+
+---
+
+## 🧠 Projektkontext
+**Projektname:** [HIER EINTRAGEN]  
+**Beschreibung:** [Kurzbeschreibung des Multi-Agenten-Systems, z. B. „Ein adaptives Koordinationssystem für verteilte KI-Agenten mit modularer Entscheidungslogik.“]  
+**Wichtige Module / Ordner:**  
+- `/agents/` – Agentenrollen und Verhalten  
+- `/core/` – zentrale Logik / Entscheidungs-Engine  
+- `/planner/` – Aufgabenplanung und Koordination  
+- `/utils/` – Hilfsfunktionen  
+- `/prompts/` – interne Prompt-Templates  
+*(Passe bei Bedarf an.)*
+
+---
+
+## 🧩 Aufgabe für Gemini 2.5 Pro
+
+Du bist **Gemini 2.5 Pro**, ein präziser Systemarchitekt und Code-Analyst.  
+Dieses Projekt wurde teilweise von **Gemini Flash** bearbeitet, und der genaue Umfang der Änderungen ist unbekannt.  
+Deine Aufgabe ist es, das gesamte Projekt **zu prüfen, rekonstruieren und verbessern**, sodass es wieder dem ursprünglichen Qualitätsniveau von Gemini 2.5 Pro entspricht.
+
+---
+
+## 🎯 Ziele
+
+1. **Analyse & Diagnose**
+   - Identifiziere logische, architektonische oder stilistische Abweichungen.
+   - Erkenne Flash-typische Muster:
+     - vereinfachte Logik
+     - inkonsistente Agentenkommunikation
+     - doppelte Hilfsfunktionen
+     - generische Variablen- oder Funktionsnamen
+   - Markiere Bereiche, die vertieft überprüft oder rekonstruiert werden sollten.
+
+2. **Rekonstruktion & Konsolidierung**
+   - Stelle Architektur, Agentenrollen und Entscheidungsflüsse wieder her.
+   - Vereinheitliche Naming, Imports, Kommentare und Dokumentation.
+   - Optimiere Codequalität, Teststruktur und Modularität.
+
+3. **Qualitative Verbesserung**
+   - Implementiere tiefes Reasoning, Strategie-Planung und klare Modulabgrenzung.
+   - Dokumentiere Designentscheidungen (z. B. warum eine Agentenstruktur so gewählt ist).
+   - Füge eine `RECON_REPORT.md` hinzu, die deine Korrekturen zusammenfasst.
+
+4. **Output-Erwartung**
+   - Übersicht der neuen Architektur
+   - Liste der wichtigsten Korrekturen
+   - Optional: konsolidierte oder verbesserte Hauptdateien
+
+---
+
+## ⚙️ Vorgehen
+
+1. **Schritt 1:** Lies und analysiere alle Projektdateien.  
+2. **Schritt 2:** Beschreibe die Hauptprobleme und Architekturbrüche.  
+3. **Schritt 3:** Rekonstruiere und verbessere den Code.  
+4. **Schritt 4:** Erstelle optional `RECON_REPORT.md` mit:
+   - identifizierte Schwachstellen  
+   - durchgeführte Verbesserungen  
+   - empfohlene nächste Schritte  
+
+---
+
+## 🧭 Leitprinzipien
+
+- **Tiefe Logik vor Oberflächenverbesserung.**
+- **Konsistenz in Terminologie, Datenstrukturen und Rollenverhalten.**
+- **Keine übermäßige Vereinfachung.**
+- **Strukturierte, erklärbare Architekturentscheidungen.**
+- **Dokumentierte interne Schnittstellen.**
+
+---
+
+## 💬 Beispiel für Aufruf (CLI)
+
+```bash
+gemini pro chat --prompt ./prompts/rebuild_prompt.md --files ./agents ./core ./planner ./utils

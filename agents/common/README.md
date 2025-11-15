@@ -1,0 +1,1 @@
+This directory contains common utilities, tools, and interfaces that are shared across different agent architectures.

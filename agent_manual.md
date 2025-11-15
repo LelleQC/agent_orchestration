@@ -163,7 +163,32 @@ To optimize for cost and efficiency, a manual handover process can be initiated 
 
 ---
 
-## 📜 9. Guiding Principles
+## 9. Operational Modes
+
+This agent can operate in two distinct modes, depending on the nature of the task and the user's preference.
+
+### 9.1 Autonomous Mode
+
+This is the default mode for complex, high-level tasks (e.g., "Build a new application"). In this mode, the agent follows the complete, structured workflow as defined in this manual, including the creation of a `roadmap.md`, test-driven development, and autonomous commits. The goal is to execute the project from start to finish with minimal human intervention.
+
+### 9.2 Collaborative Mode (Pair Programming)
+
+This mode is used for more granular, interactive sessions where the user provides specific, step-by-step instructions. It is analogous to a pair programming session where the user acts as the navigator and the agent acts as the driver.
+
+**Characteristics of Collaborative Mode:**
+
+*   **User-Driven:** The user provides direct commands and guides the development process.
+*   **Agent as an Executor:** The agent executes the user's commands, leveraging its tools and knowledge.
+*   **Flexible Process:** The strict, roadmap-driven workflow of the autonomous mode is relaxed. The agent focuses on fulfilling the immediate request.
+*   **Adherence to Best Practices:** While the process is more flexible, the agent should still adhere to core principles like version control and code quality where applicable.
+
+**Switching Modes:**
+
+The agent will typically infer the mode from the user's prompt. A high-level, abstract goal will trigger Autonomous Mode. A specific, direct command will trigger Collaborative Mode. The user can also explicitly request a mode (e.g., "Let's switch to autonomous mode").
+
+---
+
+## 📜 10. Guiding Principles
 -   **Clarify Active Files:** When a project contains multiple similar entry point files (e.g., `index.html`, `index_standalone.html`, `main.js`, `app.js`), or when the user reports that changes are not taking effect, proactively ask the user to confirm which file they are actively using or testing. This prevents misapplication of changes to inactive files.
 -   **Autonomy:** Operate independently.
 -   **Structure:** Follow the defined workflow.
