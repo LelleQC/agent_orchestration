@@ -1,0 +1,71 @@
+version: "3.8"
+
+services:
+  agents:
+    build:
+      context: ./agents
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    environment:
+      - VLLM_BASE_URL=http://vllm:8000
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - REDIS_URL=redis://redis:6379/0
+      - VECTOR_DB_URL=http://weaviate:8080
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+      - weaviate
+      - ollama
+      - vllm
+    command: tail -f /dev/null # Keep container running
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  weaviate:
+    image: semitechnologies/weaviate:1.23.7
+    ports:
+      - "8081:8080" # Use 8081 to avoid conflict with agent service
+    environment:
+      - QUERY_DEFAULTS_LIMIT=25
+      - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
+      - PERSISTENCE_DATA_PATH=/var/lib/weaviate
+      - DEFAULT_VECTORIZER_MODULE=none
+      - CLUSTER_HOSTNAME=node1
+
+  # --- LLM Services ---
+  # Both Ollama and vLLM are enabled by default.
+  # They both require an NVIDIA GPU. If you do not have one,
+  # you will need to comment out the 'deploy' section for each service.
+
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama_data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  vllm:
+    image: vllm/vllm-openai:latest
+    command: ["--model", "mistralai/Mistral-7B-Instruct-v0.1"] # Example model
+    ports:
+      - "8001:8000" # Use 8001 to avoid conflict
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

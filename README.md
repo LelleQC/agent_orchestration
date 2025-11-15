@@ -443,3 +443,10 @@ The movement system is now correctly implemented. The browser tools were invalua
 *   **Ziel:** Einrichtung einer funktionierenden Simulation des XLeRobot in CoppeliaSim, steuerbar über Python.
 *   **Ergebnis:** Die Simulation ist vollständig konfiguriert. Der Roboter kann über die ZMQ Remote API mit den bereitgestellten Python-Skripten (`control_arm.py`) gesteuert werden.
 *   **Dokumentation:** Eine vollständige, neu organisierte Dokumentation befindet sich im Ordner `project_household_robot/docs/`. Sie enthält ein Tutorial, ein Entwicklerhandbuch und einen detaillierten Projektbericht über die aufgetretenen Herausforderungen und deren Lösungen.
+
+### 8.2 Projekt: Modular Agent Stack (`project_agent_stack`)
+
+*   **Status:** In Arbeit.
+*   **Ziel:** Aufbau eines voll ausgestatteten, modularisierbaren Agenten-Stacks in einem VS Code Devcontainer.
+*   **Architektur:** Das Projekt nutzt Docker Compose, um eine Multi-Container-Anwendung zu orchestrieren, die einen AutoGen-basierten Supervisor-Agenten, mehrere lokale LLM-Server (Ollama, vLLM), eine Weaviate-Vektordatenbank für RAG und Redis für Caching umfasst.
+*   **Dokumentation:** Eine detaillierte technische Dokumentation und eine Schnellstartanleitung befinden sich im `project_agent_stack/README.md`.

@@ -1,0 +1,6 @@
+autogen
+pyautogen
+requests
+redis
+weaviate-client
+python-dotenv
