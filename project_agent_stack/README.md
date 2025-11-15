@@ -2,126 +2,146 @@
 
 This project provides a modular, containerized agent stack for developing and experimenting with various LLMs and agentic frameworks. It is designed to be run within a VS Code Dev Container, providing a consistent and reproducible environment.
 
-## Quick Start
+## Core Features
 
-1.  **Prerequisites:**
-    *   Docker and Docker Compose
-    *   VS Code with the "Dev Containers" extension
-    *   (For GPU acceleration) An NVIDIA GPU with the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) installed.
-
-2.  **Set up Environment:**
-    *   Copy the `.env.template` file to `.env`.
-    *   Fill in your `GEMINI_API_KEY` and any other necessary credentials.
-    ```bash
-    cp .env.template .env
-    ```
-
-3.  **Build and Start Services:**
-    *   Run the start script. This will build the Docker images and start all services in the background.
-    ```bash
-    ./scripts/start_all.sh
-    ```
-
-4.  **Open in Dev Container:**
-    *   Open the `project_agent_stack` folder in VS Code.
-    *   When prompted, click "Reopen in Container". This will connect your VS Code instance to the `agents` service.
-
-5.  **Prepare Local LLMs:**
-    *   Once inside the dev container, open a terminal.
-    *   Pull a model for Ollama to use:
-    ```bash
-    ollama pull llama3
-    ```
-    *   The vLLM service starts with a default model, but you can configure it in `docker-compose.yml`.
-
-6.  **Ingest Knowledge:**
-    *   Add any Markdown files you want to be included in the knowledge base to the `docs_to_ingest` directory.
-    *   Run the ingestion script:
-    ```bash
-    python scripts/ingest_docs.py
-    ```
-
-7.  **Run a Test:**
-    *   Execute the health check script to verify all components are working:
-    ```bash
-    python scripts/run_checks.py
-    ```
+-   **Multi-Agent Framework:** Built around a supervisor agent using **AutoGen** to orchestrate tasks.
+-   **Dual Local LLMs:** Pre-configured to run both **Ollama** and **vLLM** simultaneously, allowing for easy comparison and selection of different local LLM providers.
+-   **RAG Pipeline:** Includes a Retrieval-Augmented Generation pipeline using **Weaviate** as the vector database for long-term memory.
+-   **Containerized Environment:** All services (agents, LLMs, databases) are managed via **Docker Compose** for a one-command setup.
+-   **Integrated Development:** Develop directly inside the running `agents` container using the **VS Code Dev Containers** extension.
+-   **Utility Scripts:** A set of scripts to easily manage the stack (start, stop, verify).
 
 ## Architecture
 
 The stack is composed of several services orchestrated by Docker Compose.
 
 ```
-+------------------------+      +-----------------------+
-|   VS Code Dev Env      |      |      Gemini CLI       |
-| (Running in 'agents')  |----->| (External Tool)       |
-+------------------------+      +-----------------------+
-           |
-           v
-+------------------------+      +-----------------------+
-|   Supervisor Agent     |----->|   LLM Services        |
-|   (agents/supervisor.py) |      | - Ollama (localhost:11434)|
-|   (AutoGen)            |      | - vLLM (localhost:8001)   |
-+------------------------+      +-----------------------+
-           |
-           v
-+------------------------+      +-----------------------+
-|   Knowledge Base       |----->|   Short-Term Memory   |
-|   (Weaviate @ 8081)    |      |   (Redis @ 6379)      |
-+------------------------+      +-----------------------+
++-------------------------------------------------------------------+
+|                      Developer (VS Code)                          |
+|                                                                   |
+|  +-------------------------------------------------------------+  |
+|  |                 Dev Container ('agents' service)              |  |
+|  |                                                               |  |
+|  |  +----------------------+      +---------------------------+  |  |
+|  |  | Supervisor (AutoGen) |----->| Tools (wrappers.py)       |  |  |
+|  |  | (supervisor.py)      |      | - Gemini CLI              |  |  |
+|  |  +----------------------+      | - External Agent          |  |  |
+|  |           |              |      +---------------------------+  |  |
+|  |           |              |                                     |  |
+|  |           v              |                                     |  |
+|  |  +----------------------+      +---------------------------+  |  |
+|  |  | RAG Query            |----->| LLM Client (OpenAI format)|  |  |
+|  |  +----------------------+      +---------------------------+  |  |
+|  |                                                               |  |
+|  +-------------------------------------------------------------+  |
+|                                                                   |
++------------------------+--------------------+---------------------+
+                         |                    |
+                         v                    v
++------------------------+--------------------+---------------------+
+|                 Docker Network                                    |
+|                                                                   |
+|  +-----------------+  +-----------------+  +--------------------+ |
+|  | Ollama          |  | vLLM            |  | Weaviate (VectorDB)| |
+|  | (localhost:11434) |  | (localhost:8001)|  | (localhost:8081)   | |
+|  +-----------------+  +-----------------+  +--------------------+ |
+|                                                                   |
+|  +-----------------+                                              |
+|  | Redis           |                                              |
+|  | (localhost:6379)|                                              |
+|  +-----------------+                                              |
+|                                                                   |
++-------------------------------------------------------------------+
 ```
 
--   **`agents` Service:** The main container where the Python-based supervisor agent (using AutoGen) runs. This is also where you develop and interact with the system from within the VS Code Dev Container.
--   **LLM Services (`ollama`, `vllm`):** These are local LLM servers that expose OpenAI-compatible APIs. They are configured to use GPU resources but can be modified to run in CPU-only mode.
--   **`weaviate` Service:** A vector database that serves as the long-term memory or knowledge base for the RAG system.
--   **`redis` Service:** A fast in-memory store, intended for short-term memory, caching, or message queuing between agents.
+-   **`agents` Service:** The main container where the Python-based supervisor agent runs. This is where you develop and interact with the system from within VS Code.
+-   **LLM Services (`ollama`, `vllm`):** Local LLM servers that expose OpenAI-compatible APIs.
+-   **`weaviate` Service:** A vector database that serves as the long-term memory for the RAG system.
+-   **`redis` Service:** A fast in-memory store for short-term memory or caching.
 
-## LLM Services
+## Getting Started
 
-This stack supports multiple local LLM providers simultaneously.
+1.  **Prerequisites:**
+    *   Docker and Docker Compose
+    *   VS Code with the "Dev Containers" extension
+    *   (For GPU acceleration) An NVIDIA GPU with the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
 
-### Ollama (Enabled by default)
+2.  **Set up Environment:**
+    *   Copy `.env.template` to `.env` and fill in your `GEMINI_API_KEY`.
+    ```bash
+    cp .env.template .env
+    ```
 
--   **Description:** A user-friendly service for running a wide range of open-source models.
--   **GPU Requirement:** The service is configured for GPU use. To run on CPU, remove the `deploy` section from the `ollama` service in `docker-compose.yml`.
--   **Usage:** After starting the stack, you must pull a model. From the dev container terminal, run:
+3.  **Build and Start Services:**
+    *   This will build the Docker images and start all services.
+    ```bash
+    ./scripts/start_all.sh
+    ```
+
+4.  **Open in Dev Container:**
+    *   Open the `project_agent_stack` folder in VS Code.
+    *   Click "Reopen in Container" when prompted.
+
+5.  **Prepare Local LLMs:**
+    *   Once inside the dev container, open a terminal.
+    *   Pull a model for Ollama:
     ```bash
     ollama pull llama3
     ```
 
-### vLLM (Enabled by default)
+6.  **Ingest Knowledge:**
+    *   Add Markdown files to the `docs_to_ingest` directory. A sample file is already included.
+    *   Run the ingestion script:
+    ```bash
+    python scripts/ingest_docs.py
+    ```
 
--   **Description:** A high-performance serving library optimized for fast inference.
--   **GPU Requirement:** Requires a powerful NVIDIA GPU. If you don't have one, comment out the `vllm` service in `docker-compose.yml`.
--   **Usage:** The service starts automatically with a default model (`mistralai/Mistral-7B-Instruct-v0.1`). You can change this by editing the `command` in the `docker-compose.yml`.
+7.  **Verify the Stack:**
+    *   Execute the health check script to ensure all components are working.
+    ```bash
+    python scripts/run_checks.py
+    ```
+    *   This script will test connections to Docker, Redis, Weaviate, and the LLM endpoints, and then run a sample RAG query using the supervisor.
 
-## RAG and Knowledge Base
+## How It Works
 
-The system uses a Retrieval-Augmented Generation (RAG) pipeline to provide agents with relevant information from a knowledge base.
+### LLM Services (Ollama & vLLM)
 
--   **Vector DB:** Weaviate is used to store document embeddings.
--   **Ingestion:** The `scripts/ingest_docs.py` script is used to process documents.
-    1.  Place your Markdown files in the `docs_to_ingest` directory.
-    2.  Run `python scripts/ingest_docs.py`. This will create a Weaviate collection named `DocumentChunk` and ingest the content.
--   **Querying:** The `supervisor.py` agent contains a `search_knowledge_base` function that queries Weaviate to retrieve relevant document chunks based on a natural language query.
+This stack runs two popular LLM serving platforms by default. Both are configured for GPU usage but can be adapted for CPU.
 
-## Evaluation and Testing
+-   **Ollama:** A user-friendly service. After starting the stack, you must pull a model for it to use (e.g., `ollama pull llama3`).
+-   **vLLM:** A high-performance server. It starts automatically with a default model (`mistralai/Mistral-7B-Instruct-v0.1`), which can be changed in `docker-compose.yml`.
 
-The project includes scripts to verify the health of the stack and evaluate agent performance.
+**Switching between LLMs:**
+The `supervisor.py` agent defaults to using Ollama. To switch to vLLM, you can:
+1.  **Modify `.env`:** Change the `OLLAMA_BASE_URL` to the `VLLM_BASE_URL` value.
+2.  **Modify `supervisor.py`:** Change the `base_url` in the `OpenAIClient` configuration to use the `VLLM_BASE_URL` environment variable.
 
--   **`scripts/run_checks.py`:** This script runs a series of health checks against all services, including Docker, Redis, Weaviate, and the LLM endpoints. It also runs a sample RAG query.
--   **`agents/evaluator.py`:** This file contains a template for an "evaluator" agent. It can be used to programmatically assess the output of other agents for correctness and quality.
+### RAG Pipeline
+
+The RAG (Retrieval-Augmented Generation) pipeline allows the agent to query a knowledge base for relevant information.
+
+1.  **Ingestion:** The `scripts/ingest_docs.py` script scans the `docs_to_ingest` directory, chunks the documents, and stores them in the Weaviate vector database. (Note: The current implementation uses a placeholder for embeddings).
+2.  **Retrieval:** The `supervisor.py` agent has a `search_knowledge_base` function that is registered as a tool. When called, it queries Weaviate and returns the most relevant document chunks.
+
+### Key Scripts
+
+-   `scripts/start_all.sh`: Starts all services defined in `docker-compose.yml` in detached mode.
+-   `scripts/stop_all.sh`: Stops and removes all containers.
+-   `scripts/verify_endpoints.sh`: A simple shell script to quickly check if the main service ports are responsive.
+-   `scripts/ingest_docs.py`: Populates the Weaviate vector database with documents from the `docs_to_ingest` folder.
+-   `scripts/run_checks.py`: A comprehensive health check that verifies all components of the stack, including a test of the RAG pipeline.
 
 ## Troubleshooting
 
--   **GPU Errors:** If you see errors related to `nvidia` or `gpu` during startup, it likely means the NVIDIA Container Toolkit is not installed correctly, or you do not have a compatible GPU. In this case, either disable the `deploy` section in the `ollama` and `vllm` services in `docker-compose.yml` to run them in CPU mode (if supported) or comment them out entirely.
--   **Endpoint not available:** If `run_checks.py` reports that an endpoint is not responsive, ensure the corresponding service is running correctly with `docker-compose ps`. Check the service logs with `docker-compose logs <service_name>`.
--   **Weaviate Connection Error:** Ensure the Weaviate container is running and healthy. It can sometimes take a minute to start up fully.
+-   **GPU Errors:** If you see errors related to `nvidia` or `gpu`, you likely do not have the NVIDIA Container Toolkit installed correctly. To run in CPU mode, remove the `deploy` section from the `ollama` and `vllm` services in `docker-compose.yml`.
+-   **Endpoint not available:** If `run_checks.py` fails on an endpoint check, use `docker-compose ps` to see if the service is running and `docker-compose logs <service_name>` to inspect its logs.
+-   **Weaviate Connection Error:** Weaviate can take a minute to start. If you get a connection error, wait a moment and try again.
 
 ## Next Steps
 
--   **Implement more tools:** Add more tool wrappers in `agents/tools/` for the supervisor to use.
--   **Flesh out the evaluator:** Integrate the `evaluator.py` into a full feedback loop within the supervisor.
+-   **Implement Real Embeddings:** Replace the placeholder embedding logic in `ingest_docs.py` with a call to a real embedding model (either local or API-based).
+-   **Flesh out the Evaluator:** Integrate the `evaluator.py` into a full feedback loop within the supervisor.
 -   **Experiment with different models:** Download new models for Ollama or configure vLLM to use a different model.
 -   **Expand the knowledge base:** Add more documents to `docs_to_ingest` and re-run the ingestion script.
 
