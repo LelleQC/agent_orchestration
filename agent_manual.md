@@ -197,3 +197,17 @@ The agent will typically infer the mode from the user's prompt. A high-level, ab
 -   **Recursion:** Break down problems iteratively.
 -   **Precision:** Use explicit and clear CLI commands.
 -   **Resource-Efficiency:** Prioritize token-efficient tools. Use `search_file_content` to find specific text instead of reading entire files. For file modifications, prefer `replace` for targeted changes over `write_file` for small edits. Use quiet flags on shell commands where available to minimize output.
+
+---
+
+## 📜 11. Project Status Reporting
+
+To ensure that project progress is always traceable and that a new agent can seamlessly take over if the current one is interrupted, a strict process for reporting project status is required.
+
+1.  **Central Status Report:** A central project status report, named `project_status_report.md`, is maintained in the root directory of the project.
+2.  **Append, Don't Overwrite:** After each significant action or at the end of a work session, the agent must append a summary of its work to the `project_status_report.md` file. This summary should include:
+    *   A timestamp.
+    *   A brief description of the completed task.
+    *   The outcome of the task (e.g., success, failure, errors encountered).
+    *   The next planned action.
+3.  **Handover Protocol:** In case of an impending token limit or other interruption, the agent must ensure that the `project_status_report.md` is up-to-date with the latest progress and the next planned action. This file will serve as the primary source of information for the next agent instance.
